@@ -1,0 +1,20 @@
+.resizer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  z-index: 201;
+}
+
+.resizer.row {
+  height: 4px;
+  cursor: row-resize;
+  left: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.resizer.col {
+  width: 4px;
+  cursor: col-resize;
+  top: 0;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
+}

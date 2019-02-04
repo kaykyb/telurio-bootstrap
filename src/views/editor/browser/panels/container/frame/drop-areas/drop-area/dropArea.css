@@ -1,0 +1,38 @@
+.dropArea {
+  position: absolute;
+  z-index: 101;
+}
+
+.dragOver {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.right,
+.left {
+  top: 0;
+  bottom: 0;
+  width: 25%;
+}
+
+.right {
+  right: 0;
+}
+
+.left {
+  left: 0;
+}
+
+.top,
+.bottom {
+  left: 0;
+  right: 0;
+  height: 25%;
+}
+
+.top {
+  top: 0;
+}
+
+.bottom {
+  bottom: 0;
+}

@@ -1,0 +1,9 @@
+.row {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  z-index: 200;
+  min-height: 32px;
+  flex-shrink: 1;
+}

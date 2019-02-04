@@ -1,0 +1,41 @@
+.searchBar {
+  margin: 0;
+  padding: 0;
+  height: 32px;
+  border: none;
+  border-bottom: 1px solid #d8d8d8;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.02);
+  display: flex;
+}
+
+.input {
+  margin: 0;
+  padding: 0 12px;
+  height: 32px;
+  border: none;
+  background: none;
+  flex: 1;
+  font-family: "Inter UI";
+  font-size: 12px;
+  outline: none;
+}
+
+.input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-style: italic;
+}
+
+.icon {
+  height: 32px;
+  width: 32px;
+  display: block !important;
+  line-height: 32px !important;
+  text-align: center;
+  font-size: 16px !important;
+  opacity: 0.2;
+}
+
+.searchBar:focus-within .icon {
+  opacity: 0.5;
+}
