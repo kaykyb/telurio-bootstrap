@@ -8,17 +8,15 @@ import I18nService from "../common/node/services/i18n/i18nService";
 console.log("\n\x1b[46m\x1b[30m\x1b[1m ELECTRON \x1b[0m Processo main iniciado.");
 
 let i18n: I18nService;
+let rawI18nJson: string;
 
 const editors: Editor[] = [];
 
-let marketplace: Marketplace;
-
 function startEditor() {
   i18n = new I18nService(app.getLocale(), true);
-  const rawJson = i18n.disposeRawJson() as string;
+  rawI18nJson = i18n.disposeRawJson() as string;
 
-  const editor = new Editor();
-  marketplace = new Marketplace(i18n, rawJson);
+  const editor = new Editor(i18n, rawI18nJson);
   editors.push(editor);
 }
 

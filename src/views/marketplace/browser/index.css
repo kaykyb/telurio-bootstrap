@@ -16,7 +16,7 @@ html :global {
 }
 
 body :global {
-  border: 1px solid #d8d8d8;
+  border: 1px solid blue;
 }
 
 .root {

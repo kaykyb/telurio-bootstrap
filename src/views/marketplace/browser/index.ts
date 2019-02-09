@@ -6,18 +6,16 @@ import InitializationArgs from "../../editor/common/classes/initializationArgs";
 import I18nArgs from "../../../common/common/ipcEvents/i18nArgs";
 import MarketplaceBrowserService from "./service/marketplaceBrowserService";
 import BrowserI18nService from "../../../common/browser/i18nService";
+import MainView from "./marketplace/main-view/mainView";
+import Electron from "electron";
+import IpcService from "../../../common/browser/ipcService";
 
-// insert root class
-declare global {
-  // tslint:disable-next-line:interface-name
-  interface Window {
-    ipc: Electron.IpcRenderer;
-  }
-}
+// starts ipc service
+MarketplaceBrowserService.ipcService = new IpcService();
 
-if (window.ipc) {
+if (MarketplaceBrowserService.ipcService.ipc) {
   // window.ipc.on(IPC_CHANNELS.INITIALIZATION_ARGUMENTS, (e: Event, i: InitializationArgs) => start(i));
-  window.ipc.on(IPC_CHANNELS.I18N_STRINGS, (e: Event, i: I18nArgs) => start(i));
+  MarketplaceBrowserService.ipcService.ipc.on(IPC_CHANNELS.I18N_STRINGS, (e: Event, i: I18nArgs) => start(i));
 }
 
 function start(i18nArgs: I18nArgs) {
@@ -32,7 +30,12 @@ function start(i18nArgs: I18nArgs) {
 
     const sidebar = new Sidebar();
     root.appendChild(sidebar.render());
+
+    const mainView = new MainView();
+    root.appendChild(mainView.render());
   }
 }
 
-window.ipc.send(IPC_CHANNELS.BROWSER_READY);
+if (MarketplaceBrowserService.ipcService.ipc) {
+  MarketplaceBrowserService.ipcService.ipc.send(IPC_CHANNELS.BROWSER_READY);
+}

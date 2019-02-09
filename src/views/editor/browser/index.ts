@@ -5,17 +5,16 @@ import { IPC_CHANNELS } from "../../../common/common/ipcChannels";
 import InitializationArgs from "../common/classes/initializationArgs";
 
 import styles from "./index.css";
+import Electron from "electron";
 
-declare global {
-  // tslint:disable-next-line:interface-name
-  interface Window {
-    ipc: Electron.IpcRenderer;
-  }
-}
+import EditorBrowserService from "./service/editorBrowserService";
+import IpcService from "../../../common/browser/ipcService";
 
-if (window.ipc) {
-  window.ipc.on(IPC_CHANNELS.INITIALIZATION_ARGUMENTS, (e: Event, i: InitializationArgs) => start(i));
-}
+EditorBrowserService.ipcService = new IpcService();
+
+// if (window.ipc) {
+//   window.ipc.on(IPC_CHANNELS.INITIALIZATION_ARGUMENTS, (e: Event, i: InitializationArgs) => start(i));
+// }
 
 // script ----------------------------
 const root = document.getElementById("app-root") as HTMLElement;
@@ -26,4 +25,6 @@ function start(args: InitializationArgs) {
   panelManager = new PanelManager(root, args.layoutConfig);
 }
 
-window.ipc.send(IPC_CHANNELS.BROWSER_READY);
+if (EditorBrowserService.ipcService.ipc) {
+  start(EditorBrowserService.ipcService.ipc.sendSync(IPC_CHANNELS.BROWSER_READY));
+}

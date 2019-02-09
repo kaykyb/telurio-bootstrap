@@ -1,0 +1,28 @@
+.button {
+  height: 30px;
+  width: 47px;
+  border: none;
+  padding: 0;
+  background: none;
+}
+
+.button:hover {
+  background: red;
+}
+
+.button:hover .icon.close {
+  background: white;
+}
+
+.icon {
+  height: 29px;
+  width: 47px;
+  border: none;
+  padding: 0;
+  background: black;
+}
+
+.close {
+  mask: url("../../../../../../common/assets/icons/close.svg") no-repeat 50% 50%;
+  -webkit-mask: url("../../../../../../common/assets/icons/close.svg") no-repeat 50% 50%;
+}
