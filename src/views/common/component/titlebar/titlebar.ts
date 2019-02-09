@@ -1,6 +1,10 @@
 import styles from "./titlebar.css";
 import WindowControls from "./window-controls/windowControls";
 import CommonEvent from "../../../../common/common/commonEvent";
+import { IS_DEV } from "../../../../env";
+import IconButton from "./icon-button/iconButton";
+import CommonViewBrowserService from "../../services/commonViewBrowserService";
+import { IPC_CHANNELS } from "../../../../common/common/ipcChannels";
 
 export default class Titlebar {
   public onClose = new CommonEvent();
@@ -10,8 +14,13 @@ export default class Titlebar {
   private domElement?: HTMLDivElement;
   private windowControls?: WindowControls;
 
-  constructor(closable: boolean) {
+  private rightSideElements?: HTMLElement;
+  private leftSideElements?: HTMLElement;
+
+  constructor(closable: boolean, rightSideElements?: HTMLElement, leftSideElements?: HTMLElement) {
     this.closable = closable;
+    this.rightSideElements = rightSideElements;
+    this.leftSideElements = leftSideElements;
   }
 
   public render(): HTMLDivElement {
@@ -34,6 +43,23 @@ export default class Titlebar {
       subtree: true
     });
 
+    // Left Side Controls
+    const leftSideControlsContainer = document.createElement("div");
+    leftSideControlsContainer.classList.add(styles.controlsContainer);
+
+    // adds code button to devtools
+    if (IS_DEV) {
+      const devBtn = new IconButton("code");
+      leftSideControlsContainer.appendChild(devBtn.render());
+
+      devBtn.onClick.addListener(() => {
+        if (CommonViewBrowserService.ipcService.ipc) {
+          CommonViewBrowserService.ipcService.ipc.send(IPC_CHANNELS.SHOW_DEV_TOOLS);
+        }
+      });
+    }
+
+    // Window Controls
     const windowControlsContainer = document.createElement("div");
     windowControlsContainer.classList.add(styles.controlsContainer);
 
@@ -42,6 +68,7 @@ export default class Titlebar {
 
     windowControlsContainer.appendChild(this.windowControls.render());
 
+    this.domElement.appendChild(leftSideControlsContainer);
     this.domElement.appendChild(dragArea);
     this.domElement.appendChild(windowControlsContainer);
     this.domElement.appendChild(title);

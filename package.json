@@ -2,7 +2,7 @@
   "name": "telurio-bootstrap",
   "version": "0.1.0",
   "description": "A fundação para os editores com base no Telurio",
-  "main": "dist/main/main.js",
+  "main": "dist/node/main.js",
   "scripts": {
     "copy-assets": "node scripts/copy-assets.js",
     "clean-dist": "node scripts/clean-dist.js",

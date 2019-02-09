@@ -101,6 +101,7 @@ export default class Editor {
       this.marketplace = new Marketplace(this.i18nService, this.i18nJson, this);
 
       this.marketplace.onClose.addListener(() => {
+        console.log("Marketplace Closed");
         this.marketplace = undefined;
       });
     }

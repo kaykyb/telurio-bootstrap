@@ -1,0 +1,17 @@
+.button {
+  height: 30px;
+  width: 36px;
+  border: none;
+  padding: 0;
+  background: none;
+}
+
+.button:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.icon {
+  text-align: center;
+  font-size: 16px;
+  line-height: 30px;
+}

@@ -1,7 +1,7 @@
 import Titlebar from "../../../../common/component/titlebar/titlebar";
 import styles from "./mainView.css";
 import { IPC_CHANNELS } from "../../../../../common/common/ipcChannels";
-import service from "../../service/marketplaceBrowserService";
+import service from "../../../../common/services/commonViewBrowserService";
 
 export default class MainView {
   private domElement?: HTMLDivElement;

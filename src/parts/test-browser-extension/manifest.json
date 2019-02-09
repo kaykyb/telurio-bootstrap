@@ -1,0 +1,14 @@
+{
+  "entry": "main.js",
+  "package": "ext-test",
+  "label": [
+    {
+      "lang": "en",
+      "content": "Test Extension"
+    }
+  ],
+  "version": "0.1.0",
+  "author": "Kayky B.",
+  "permissions": ["core.fs", "core.panels"],
+  "commands": ["a", "b"]
+}
