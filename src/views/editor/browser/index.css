@@ -1,6 +1,7 @@
 * :global {
   box-sizing: border-box;
   user-select: none;
+  outline: none;
 }
 
 body :global,
@@ -11,11 +12,16 @@ html :global {
   height: 100%;
   font-family: "Inter UI", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 12px;
+  overflow: hidden;
+}
+
+body :global {
+  border: 1px solid blue;
 }
 
 .root {
-  height: 100vh;
-  width: 100vw;
+  height: calc(100vh - 2px);
+  width: calc(100vw - 2px);
   display: flex;
   flex-direction: column;
 }

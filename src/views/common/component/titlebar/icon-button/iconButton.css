@@ -12,6 +12,6 @@
 
 .icon {
   text-align: center;
-  font-size: 16px;
-  line-height: 30px;
+  font-size: 16px !important;
+  line-height: 30px !important;
 }

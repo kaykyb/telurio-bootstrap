@@ -11,15 +11,7 @@ import CommonViewInitArgs from "./commonViewInitArgs";
 export default class CommonViewMain {
   public onWindowReady = new CommonEvent();
 
-  private browserWindow?: BrowserWindow;
-  private i18nJson: string;
-  private i18nService: I18nService;
-
-  constructor(browserWindow: BrowserWindow, i18nService: I18nService, i18nJson: string) {
-    this.i18nService = i18nService;
-    this.i18nJson = i18nJson;
-    this.browserWindow = browserWindow;
-
+  constructor(private browserWindow: BrowserWindow, private i18nService: I18nService, private i18nJson: string) {
     this.handleBrowserReady = this.handleBrowserReady.bind(this);
     this.handleCloseRequest = this.handleCloseRequest.bind(this);
     this.handleShowDevTools = this.handleShowDevTools.bind(this);
@@ -61,14 +53,22 @@ export default class CommonViewMain {
   }
 
   private handleCloseRequest(event: Electron.Event) {
-    if (this.browserWindow) {
-      this.browserWindow.close();
+    if (this.browserWindow && this.browserWindow.webContents) {
+      if (this.browserWindow.webContents === event.sender) {
+        if (this.browserWindow) {
+          this.browserWindow.close();
+        }
+      }
     }
   }
 
   private handleShowDevTools(event: Electron.Event) {
-    if (this.browserWindow) {
-      this.browserWindow.webContents.toggleDevTools();
+    if (this.browserWindow && this.browserWindow.webContents) {
+      if (this.browserWindow.webContents === event.sender) {
+        if (this.browserWindow) {
+          this.browserWindow.webContents.toggleDevTools();
+        }
+      }
     }
   }
 

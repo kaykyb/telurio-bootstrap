@@ -1,30 +1,28 @@
 import PanelManager from "./panels/panelManager";
 
-import { IPC_CHANNELS } from "../../../common/common/ipcChannels";
-
-import InitializationArgs from "../common/classes/initializationArgs";
-
 import styles from "./index.css";
-import Electron from "electron";
 
 import EditorBrowserService from "./service/editorBrowserService";
-import IpcService from "../../../common/browser/ipcService";
+import CommonViewBrowserService from "../../common/services/commonViewBrowserService";
+import CommonLayoutConfig from "../common/classes/commonLayoutConfig";
+import Titlebar from "../../common/component/titlebar/titlebar";
 
-EditorBrowserService.ipcService = new IpcService();
-
-// if (window.ipc) {
-//   window.ipc.on(IPC_CHANNELS.INITIALIZATION_ARGUMENTS, (e: Event, i: InitializationArgs) => start(i));
-// }
+CommonViewBrowserService.init();
 
 // script ----------------------------
 const root = document.getElementById("app-root") as HTMLElement;
 root.classList.add(styles.root);
+
 let panelManager: PanelManager;
+let titlebar: Titlebar;
 
-function start(args: InitializationArgs) {
-  panelManager = new PanelManager(root, args.layoutConfig);
+function start(config: CommonLayoutConfig) {
+  document.title = CommonViewBrowserService.i18n.s("editorView.Title");
+
+  titlebar = new Titlebar(true);
+  root.appendChild(titlebar.render());
+
+  panelManager = new PanelManager(root, config);
 }
 
-if (EditorBrowserService.ipcService.ipc) {
-  start(EditorBrowserService.ipcService.ipc.sendSync(IPC_CHANNELS.BROWSER_READY));
-}
+start(EditorBrowserService.getLayoutConfigs());

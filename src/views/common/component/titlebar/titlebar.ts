@@ -64,7 +64,11 @@ export default class Titlebar {
     windowControlsContainer.classList.add(styles.controlsContainer);
 
     this.windowControls = new WindowControls(this.closable);
-    this.windowControls.onCloseClick.addListener(() => this.onClose.propagate({}));
+    this.windowControls.onCloseClick.addListener(() => {
+      if (CommonViewBrowserService.ipcService.ipc) {
+        CommonViewBrowserService.ipcService.ipc.send(IPC_CHANNELS.CLOSE_REQUEST);
+      }
+    });
 
     windowControlsContainer.appendChild(this.windowControls.render());
 
