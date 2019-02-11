@@ -72,8 +72,14 @@ export default class Titlebar {
 
     windowControlsContainer.appendChild(this.windowControls.render());
 
+    if (this.leftSideElements) {
+      this.domElement.appendChild(this.leftSideElements);
+    }
     this.domElement.appendChild(leftSideControlsContainer);
     this.domElement.appendChild(dragArea);
+    if (this.rightSideElements) {
+      this.domElement.appendChild(this.rightSideElements);
+    }
     this.domElement.appendChild(windowControlsContainer);
     this.domElement.appendChild(title);
 

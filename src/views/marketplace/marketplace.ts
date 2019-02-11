@@ -12,12 +12,10 @@ const WINDOW_WIDTH = 800;
 export default class Marketplace {
   public onClose = new CommonEvent();
 
-  private parentEditor: Editor;
   private commonMain?: CommonViewMain;
   private browserWindow?: BrowserWindow;
 
-  constructor(i18nService: I18nService, i18nJson: string, parentEditor: Editor) {
-    this.parentEditor = parentEditor;
+  constructor(i18nService: I18nService, i18nJson: string, private parentWindow: BrowserWindow) {
     this.createWindow(i18nService, i18nJson);
   }
 
@@ -30,7 +28,7 @@ export default class Marketplace {
       frame: false,
       maximizable: false,
       minimizable: false,
-      parent: this.parentEditor.browserWindow,
+      parent: this.parentWindow,
       resizable: false,
       show: false,
       webPreferences: {

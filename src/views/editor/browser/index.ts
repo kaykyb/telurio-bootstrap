@@ -7,6 +7,7 @@ import CommonViewBrowserService from "../../common/services/commonViewBrowserSer
 import CommonLayoutConfig from "../common/classes/commonLayoutConfig";
 import Titlebar from "../../common/component/titlebar/titlebar";
 import ExtensionHost from "./extensions/extensionHost";
+import IconButton from "../../common/component/titlebar/icon-button/iconButton";
 
 CommonViewBrowserService.init();
 
@@ -21,7 +22,14 @@ let titlebar: Titlebar;
 function start(config: CommonLayoutConfig) {
   document.title = CommonViewBrowserService.i18n.s("editorView.Title");
 
-  titlebar = new Titlebar(true);
+  const leftSideElements = document.createElement("div");
+  const marketplaceButton = new IconButton("extension");
+  leftSideElements.appendChild(marketplaceButton.render());
+  marketplaceButton.onClick.addListener(() => {
+    EditorBrowserService.showMarketplace();
+  });
+
+  titlebar = new Titlebar(true, undefined, leftSideElements);
   root.appendChild(titlebar.render());
 
   panelManager = new PanelManager(root, config);

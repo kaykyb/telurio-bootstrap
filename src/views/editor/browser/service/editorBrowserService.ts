@@ -5,6 +5,7 @@ import CommonViewBrowserService from "../../../common/services/commonViewBrowser
 import { EDITOR_IPC_CHANNELS } from "../../common/ipcChannels";
 import CommonPanelRow from "../../common/classes/panelRow";
 import ExtensionManifest from "../../../../common/common/extensions/manifest-type/extensionManifest";
+import { IPC_CHANNELS } from "../../../../common/common/ipcChannels";
 
 export default class EditorBrowserService {
   public static getLayoutConfigs(): CommonLayoutConfig {
@@ -15,11 +16,9 @@ export default class EditorBrowserService {
     return new CommonLayoutConfig(new CommonPanelRow(0));
   }
 
-  public static getExtensions(): Array<{ exts: ExtensionManifest[]; sourceDir: string }> {
+  public static showMarketplace() {
     if (CommonViewBrowserService.ipcService.ipc) {
-      return CommonViewBrowserService.ipcService.ipc.sendSync(EDITOR_IPC_CHANNELS.LOAD_EXTENSIONS);
+      return CommonViewBrowserService.ipcService.ipc.send(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE);
     }
-
-    return [];
   }
 }

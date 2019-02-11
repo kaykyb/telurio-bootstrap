@@ -4,6 +4,8 @@ export const IPC_CHANNELS = {
   IS_DEV: "isDev",
   SHOW_DEV_TOOLS: "showDevTools",
 
+  GET_EXTENSIONS: "LoadExtensions",
+
   /** Envia o I18nArgs */
   I18N_STRINGS: "i18nStrings",
 

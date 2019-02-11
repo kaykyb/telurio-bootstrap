@@ -4,17 +4,21 @@ import * as path from "path";
 import { IPC_CHANNELS } from "../../common/common/ipcChannels";
 import I18nService from "../../common/node/services/i18n/i18nService";
 import I18nArgs from "../../common/common/ipcEvents/i18nArgs";
-import Editor from "../editor/editor";
 import CommonEvent from "../../common/common/commonEvent";
 import CommonViewInitArgs from "./commonViewInitArgs";
+import ExtensionManager from "./extensionManager";
 
 export default class CommonViewMain {
   public onWindowReady = new CommonEvent();
+
+  private extensionsManager: ExtensionManager = new ExtensionManager();
 
   constructor(private browserWindow: BrowserWindow, private i18nService: I18nService, private i18nJson: string) {
     this.handleBrowserReady = this.handleBrowserReady.bind(this);
     this.handleCloseRequest = this.handleCloseRequest.bind(this);
     this.handleShowDevTools = this.handleShowDevTools.bind(this);
+    this.handleLoadExtensions = this.handleLoadExtensions.bind(this);
+
     this.handleClosing = this.handleClosing.bind(this);
 
     this.startIpc();
@@ -24,6 +28,8 @@ export default class CommonViewMain {
     ipcMain.removeListener(IPC_CHANNELS.BROWSER_READY, this.handleBrowserReady);
     ipcMain.removeListener(IPC_CHANNELS.CLOSE_REQUEST, this.handleCloseRequest);
     ipcMain.removeListener(IPC_CHANNELS.SHOW_DEV_TOOLS, this.handleShowDevTools);
+    ipcMain.removeListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
+
     if (this.browserWindow) {
       this.browserWindow.removeListener("closed", this.handleClosing);
     }
@@ -33,6 +39,8 @@ export default class CommonViewMain {
     ipcMain.addListener(IPC_CHANNELS.BROWSER_READY, this.handleBrowserReady);
     ipcMain.addListener(IPC_CHANNELS.CLOSE_REQUEST, this.handleCloseRequest);
     ipcMain.addListener(IPC_CHANNELS.SHOW_DEV_TOOLS, this.handleShowDevTools);
+    ipcMain.addListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
+
     if (this.browserWindow) {
       this.browserWindow.addListener("closed", this.handleClosing);
     }
@@ -40,6 +48,14 @@ export default class CommonViewMain {
 
   private handleClosing() {
     this.removeListeners();
+  }
+
+  private handleLoadExtensions(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender) && this.extensionsManager) {
+      // Array<{ exts: ExtensionManifest[]; sourceDir: string }>
+      const srcDir = path.join(__dirname, "..", "..", "parts");
+      event.returnValue = [{ exts: this.extensionsManager.loadExtensionsDir(srcDir), sourceDir: "file:///" + srcDir }];
+    }
   }
 
   private handleBrowserReady(event: Electron.Event) {
@@ -75,5 +91,15 @@ export default class CommonViewMain {
   private getCommonConfigs(): CommonViewInitArgs {
     const i18nArgs = new I18nArgs(this.i18nService.locale, this.i18nJson);
     return new CommonViewInitArgs(i18nArgs);
+  }
+
+  private isCurrentWindow(webContents: any): boolean {
+    if (this.browserWindow && this.browserWindow.webContents) {
+      if (this.browserWindow.webContents === webContents) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

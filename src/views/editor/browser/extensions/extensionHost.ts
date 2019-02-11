@@ -1,12 +1,13 @@
 import EditorBrowserService from "../service/editorBrowserService";
 import ExtensionManifest from "../../../../common/common/extensions/manifest-type/extensionManifest";
+import CommonViewBrowserService from "../../../common/services/commonViewBrowserService";
 
 export default class ExtensionHost {
   private extensionsDirs: Array<{ exts: ExtensionManifest[]; sourceDir: string }>;
   private extHosts: { [ext: string]: HTMLIFrameElement } = {};
 
   constructor() {
-    this.extensionsDirs = EditorBrowserService.getExtensions();
+    this.extensionsDirs = CommonViewBrowserService.getExtensions();
 
     this.loadExtensions();
   }
