@@ -13,6 +13,7 @@ import I18nService from "../../common/node/services/i18n/i18nService";
 import Marketplace from "../marketplace/marketplace";
 import CommonViewMain from "../common/commonViewMain";
 import { EDITOR_IPC_CHANNELS } from "./common/ipcChannels";
+import ExtensionManager from "./extensionManager";
 
 const WINDOW_HEIGHT = 600;
 const WINDOW_WIDTH = 800;
@@ -21,10 +22,14 @@ export default class Editor {
   public browserWindow?: BrowserWindow;
   private commonMain?: CommonViewMain;
   private marketplace?: Marketplace;
+  private extensionsManager: ExtensionManager = new ExtensionManager();
 
   constructor(private i18nService: I18nService, private i18nJson: string) {
     this.removeListeners = this.removeListeners.bind(this);
+
     this.handleGetWorkspaceConfigs = this.handleGetWorkspaceConfigs.bind(this);
+    this.handleLoadExtensions = this.handleLoadExtensions.bind(this);
+
     this.createWindow(i18nService, i18nJson);
   }
 
@@ -58,6 +63,8 @@ export default class Editor {
     this.startIpc();
 
     this.browserWindow.loadFile(path.join(__dirname, "browser", "index.html"));
+    this.browserWindow.webContents.openDevTools();
+
     this.browserWindow.on("closed", () => {
       this.browserWindow = undefined;
     });
@@ -68,6 +75,7 @@ export default class Editor {
 
   private startIpc() {
     ipcMain.addListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
+    ipcMain.addListener(EDITOR_IPC_CHANNELS.LOAD_EXTENSIONS, this.handleLoadExtensions);
 
     if (this.browserWindow) {
       this.browserWindow.addListener("closed", this.removeListeners);
@@ -76,17 +84,24 @@ export default class Editor {
 
   private removeListeners() {
     ipcMain.removeListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
+    ipcMain.removeListener(EDITOR_IPC_CHANNELS.LOAD_EXTENSIONS, this.handleLoadExtensions);
 
     if (this.browserWindow) {
       this.browserWindow.removeListener("closed", this.removeListeners);
     }
   }
 
+  private handleLoadExtensions(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender) && this.extensionsManager) {
+      // Array<{ exts: ExtensionManifest[]; sourceDir: string }>
+      const srcDir = path.join(__dirname, "..", "..", "parts");
+      event.returnValue = [{ exts: this.extensionsManager.loadExtensionsDir(srcDir), sourceDir: "file:///" + srcDir }];
+    }
+  }
+
   private handleGetWorkspaceConfigs(event: Electron.Event) {
-    if (this.browserWindow && this.browserWindow.webContents) {
-      if (this.browserWindow.webContents === event.sender) {
-        event.returnValue = this.getConfigs();
-      }
+    if (this.isCurrentWindow(event.sender)) {
+      event.returnValue = this.getConfigs();
     }
   }
 
@@ -122,5 +137,15 @@ export default class Editor {
         this.marketplace = undefined;
       });
     }
+  }
+
+  private isCurrentWindow(webContents: any): boolean {
+    if (this.browserWindow && this.browserWindow.webContents) {
+      if (this.browserWindow.webContents === webContents) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

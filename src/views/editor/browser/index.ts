@@ -6,6 +6,7 @@ import EditorBrowserService from "./service/editorBrowserService";
 import CommonViewBrowserService from "../../common/services/commonViewBrowserService";
 import CommonLayoutConfig from "../common/classes/commonLayoutConfig";
 import Titlebar from "../../common/component/titlebar/titlebar";
+import ExtensionHost from "./extensions/extensionHost";
 
 CommonViewBrowserService.init();
 
@@ -14,6 +15,7 @@ const root = document.getElementById("app-root") as HTMLElement;
 root.classList.add(styles.root);
 
 let panelManager: PanelManager;
+let extHost: ExtensionHost;
 let titlebar: Titlebar;
 
 function start(config: CommonLayoutConfig) {
@@ -23,6 +25,7 @@ function start(config: CommonLayoutConfig) {
   root.appendChild(titlebar.render());
 
   panelManager = new PanelManager(root, config);
+  extHost = new ExtensionHost();
 }
 
 start(EditorBrowserService.getLayoutConfigs());

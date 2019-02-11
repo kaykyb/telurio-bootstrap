@@ -9,6 +9,7 @@ console.log("\n\x1b[46m\x1b[30m\x1b[1m ELECTRON \x1b[0m Processo main iniciado."
 
 let i18n: I18nService;
 let rawI18nJson: string;
+// let extensionManager: ExtensionManager;
 
 const editors: Editor[] = [];
 
@@ -18,6 +19,9 @@ function startEditor() {
 
   const editor = new Editor(i18n, rawI18nJson);
   editors.push(editor);
+
+  // extensionManager = new ExtensionManager();
+  // extensionManager.loadExtensionsDir(path.join(__dirname, "..", "parts"));
 }
 
 app.on("ready", startEditor);

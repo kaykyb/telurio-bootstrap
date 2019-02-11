@@ -1,6 +1,6 @@
 {
   "entry": "main.js",
-  "package": "ext-test",
+  "name": "ext-test",
   "label": [
     {
       "lang": "en",
