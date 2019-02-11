@@ -4,7 +4,23 @@
 }
 
 .dragOver {
-  background: rgba(0, 0, 0, 0.5);
+  border: 10px dashed rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.1);
+  animation-name: pulse;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes pulse {
+  0% {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
 }
 
 .right,
