@@ -42,7 +42,18 @@ toCompile.forEach(p => {
           exclude: /node_modules/
         },
         {
-          test: /\.css$/,
+          test: /\.global.css$/,
+          use: [
+            {
+              loader: "style-loader"
+            },
+            {
+              loader: "css-loader"
+            }
+          ]
+        },
+        {
+          test: /^((?!\.global).)*.css$/,
           use: [
             {
               loader: "style-loader"
@@ -57,7 +68,10 @@ toCompile.forEach(p => {
             }
           ]
         },
-        { test: /\.(png|woff|woff2|eot|ttf|svg)$/, use: [{ loader: "url-loader?limit=100000" }] }
+        {
+          test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+          use: [{ loader: "url-loader?limit=100000" }]
+        }
       ]
     },
     resolve: {

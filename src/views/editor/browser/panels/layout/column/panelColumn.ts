@@ -83,7 +83,8 @@ export default class PanelColumn extends PanelCel {
 
     this.removePanels();
 
-    this.rows = sender.pos === "bottom" ? [selfCopy, newRow] : [newRow, selfCopy];
+    this.rows =
+      sender.pos === "bottom" ? [selfCopy, newRow] : [newRow, selfCopy];
 
     // insert columns
     this.domElement!.appendChild(this.getRows(this.rows));
@@ -92,7 +93,7 @@ export default class PanelColumn extends PanelCel {
 
   private splitHorizontally(tab: Tab, sender: DropArea) {
     if (this.domElement && (sender.pos === "left" || sender.pos === "right")) {
-      const width = this.width;
+      const width = this.domElement.offsetWidth;
 
       this.width = width * 0.75;
       this.domElement!.style.width = this.width + "px";
@@ -107,7 +108,9 @@ export default class PanelColumn extends PanelCel {
         this.insertResizer();
       }
 
-      this.onHorizontalTabDrop.propagate(new HorizontalDropArgs(sender.pos, this, newCol));
+      this.onHorizontalTabDrop.propagate(
+        new HorizontalDropArgs(sender.pos, this, newCol)
+      );
     }
   }
 
@@ -132,7 +135,9 @@ export default class PanelColumn extends PanelCel {
   private assignRowEvents(row: PanelRow) {
     row.startResizing = this.handleRowStartResize.bind(this);
     row.endResizing = this.handleRowEndResize.bind(this);
-    row.onVerticalTabDrop.addListener(this.handleRowOnVerticalTabDrop.bind(this));
+    row.onVerticalTabDrop.addListener(
+      this.handleRowOnVerticalTabDrop.bind(this)
+    );
     row.onEmpty.addListener(this.removeRow.bind(this));
   }
 
@@ -177,7 +182,8 @@ export default class PanelColumn extends PanelCel {
       this.assignRowEvents(args.row);
 
       let nextRow: PanelRow | undefined;
-      let insertBefore: Node | null = args.baseRow.domElement !== undefined ? args.baseRow.domElement : null;
+      let insertBefore: Node | null =
+        args.baseRow.domElement !== undefined ? args.baseRow.domElement : null;
 
       if (args.rowPos === "bottom") {
         nextRow = this.rows[baseRowIndex + 1];
@@ -195,7 +201,10 @@ export default class PanelColumn extends PanelCel {
         }
       }
 
-      this.domElement.insertBefore(args.row.render(this, nextRow), insertBefore);
+      this.domElement.insertBefore(
+        args.row.render(this, nextRow),
+        insertBefore
+      );
       this.recalcFill();
     }
   }

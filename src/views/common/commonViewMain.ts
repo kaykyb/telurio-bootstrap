@@ -18,7 +18,8 @@ export default class CommonViewMain {
     this.handleCloseRequest = this.handleCloseRequest.bind(this);
     this.handleShowDevTools = this.handleShowDevTools.bind(this);
     this.handleLoadExtensions = this.handleLoadExtensions.bind(this);
-
+    
+    this.handleShow = this.handleShow.bind(this);
     this.handleClosing = this.handleClosing.bind(this);
 
     this.startIpc();
@@ -29,6 +30,7 @@ export default class CommonViewMain {
     ipcMain.removeListener(IPC_CHANNELS.CLOSE_REQUEST, this.handleCloseRequest);
     ipcMain.removeListener(IPC_CHANNELS.SHOW_DEV_TOOLS, this.handleShowDevTools);
     ipcMain.removeListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
+    ipcMain.removeListener(IPC_CHANNELS.READY_TO_SHOW, this.handleShow);
 
     if (this.browserWindow) {
       this.browserWindow.removeListener("closed", this.handleClosing);
@@ -40,9 +42,16 @@ export default class CommonViewMain {
     ipcMain.addListener(IPC_CHANNELS.CLOSE_REQUEST, this.handleCloseRequest);
     ipcMain.addListener(IPC_CHANNELS.SHOW_DEV_TOOLS, this.handleShowDevTools);
     ipcMain.addListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
+    ipcMain.addListener(IPC_CHANNELS.READY_TO_SHOW, this.handleShow);
 
     if (this.browserWindow) {
       this.browserWindow.addListener("closed", this.handleClosing);
+    }
+  }
+
+  private handleShow(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender)) {
+      this.browserWindow.show();
     }
   }
 

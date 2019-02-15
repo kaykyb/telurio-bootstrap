@@ -29,4 +29,10 @@ export default class CommonViewBrowserService {
 
     return [];
   }
+
+  public static show() {
+    if (CommonViewBrowserService.ipcService.ipc) {
+      return CommonViewBrowserService.ipcService.ipc.send(IPC_CHANNELS.READY_TO_SHOW);
+    }
+  }
 }

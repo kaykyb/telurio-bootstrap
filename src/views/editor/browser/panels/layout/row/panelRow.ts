@@ -23,7 +23,11 @@ export default class PanelRow extends PanelCel {
 
   private parentColumn?: PanelColumn;
 
-  constructor(height: number, columns?: PanelColumn[], panels?: ObservableArray<Tab>) {
+  constructor(
+    height: number,
+    columns?: PanelColumn[],
+    panels?: ObservableArray<Tab>
+  ) {
     super(panels);
     this.height = height;
     this.columns = columns;
@@ -86,7 +90,8 @@ export default class PanelRow extends PanelCel {
 
     this.removePanels();
 
-    this.columns = sender.pos === "right" ? [selfCopy, newCol] : [newCol, selfCopy];
+    this.columns =
+      sender.pos === "right" ? [selfCopy, newCol] : [newCol, selfCopy];
 
     // insert columns
     this.domElement!.appendChild(this.getCols(this.columns));
@@ -95,7 +100,7 @@ export default class PanelRow extends PanelCel {
 
   private splitVertically(tab: Tab, sender: DropArea) {
     if (this.domElement && (sender.pos === "top" || sender.pos === "bottom")) {
-      const height = this.height;
+      const height = this.domElement.offsetHeight;
       this.height = height * 0.75;
       this.domElement!.style.height = this.height + "px";
 
@@ -109,7 +114,9 @@ export default class PanelRow extends PanelCel {
         this.insertResizer();
       }
 
-      this.onVerticalTabDrop.propagate(new VerticalDropArgs(sender.pos, this, newRow));
+      this.onVerticalTabDrop.propagate(
+        new VerticalDropArgs(sender.pos, this, newRow)
+      );
     }
   }
 
@@ -134,7 +141,9 @@ export default class PanelRow extends PanelCel {
   private assignColEvents(col: PanelColumn) {
     col.startResizing = this.handleColStartResize.bind(this);
     col.endResizing = this.handleColEndResize.bind(this);
-    col.onHorizontalTabDrop.addListener(this.handleColOnHorizontalTabDrop.bind(this));
+    col.onHorizontalTabDrop.addListener(
+      this.handleColOnHorizontalTabDrop.bind(this)
+    );
     col.onEmpty.addListener(this.removeCol.bind(this));
   }
 
@@ -162,7 +171,12 @@ export default class PanelRow extends PanelCel {
     }
   }
 
-  private insertCol(col: PanelColumn, insertIn: DocumentFragment, parentRow?: PanelRow, nextCol?: PanelColumn) {
+  private insertCol(
+    col: PanelColumn,
+    insertIn: DocumentFragment,
+    parentRow?: PanelRow,
+    nextCol?: PanelColumn
+  ) {
     this.assignColEvents(col);
     insertIn.appendChild(col.render(parentRow, nextCol));
   }
@@ -174,7 +188,8 @@ export default class PanelRow extends PanelCel {
       this.assignColEvents(args.col);
 
       let nextCol: PanelColumn | undefined;
-      let insertBefore: Node | null = args.baseCol.domElement !== undefined ? args.baseCol.domElement : null;
+      let insertBefore: Node | null =
+        args.baseCol.domElement !== undefined ? args.baseCol.domElement : null;
 
       if (args.colPos === "right") {
         nextCol = this.columns[baseColIndex + 1];
@@ -189,7 +204,10 @@ export default class PanelRow extends PanelCel {
         this.columns[baseColIndex - 1].nextColumn = args.col;
       }
 
-      this.domElement.insertBefore(args.col.render(this, nextCol), insertBefore);
+      this.domElement.insertBefore(
+        args.col.render(this, nextCol),
+        insertBefore
+      );
       this.recalcFill();
     }
   }

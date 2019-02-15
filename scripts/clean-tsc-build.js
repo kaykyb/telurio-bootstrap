@@ -15,7 +15,10 @@ function cleanBrowser() {
   state("Removendo diretórios vazios compilados...");
 
   // remove empty dirs
-  let browserFolders = glob.sync("/**/browser/", { absolute: true, root: BROWSER_DIST }); // get browser folders
+  let browserFolders = glob.sync("/**/browser/", {
+    absolute: true,
+    root: BROWSER_DIST
+  }); // get browser folders
 
   browserFolders.forEach(bF => {
     state("Preparando para limpar " + bF);
@@ -28,7 +31,7 @@ function cleanBrowser() {
 
     dirs.forEach(dir => {
       try {
-        state("Tentando apagar o diretório " + dir);
+        state("Tentando apagar o diretório: " + dir);
         fs.rmdirSync(dir);
       } catch (error) {
         state("Diretório populado. Pulando...");

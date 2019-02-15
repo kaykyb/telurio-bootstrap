@@ -61,19 +61,29 @@ export default class Editor {
     this.startIpc();
 
     this.browserWindow.loadFile(path.join(__dirname, "browser", "index.html"));
-    this.browserWindow.webContents.openDevTools();
+    // this.browserWindow.webContents.openDevTools();
 
     this.browserWindow.on("closed", () => {
       this.browserWindow = undefined;
     });
 
-    this.commonMain = new CommonViewMain(this.browserWindow, i18nService, i18nJson);
-    this.commonMain.onWindowReady.addListener(this.onWindowReady.bind(this));
+    this.commonMain = new CommonViewMain(
+      this.browserWindow,
+      i18nService,
+      i18nJson
+    );
+    // this.commonMain.onWindowReady.addListener(this.onWindowReady.bind(this));
   }
 
   private startIpc() {
-    ipcMain.addListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
-    ipcMain.addListener(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE, this.handleShowMarketplace);
+    ipcMain.addListener(
+      EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS,
+      this.handleGetWorkspaceConfigs
+    );
+    ipcMain.addListener(
+      EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE,
+      this.handleShowMarketplace
+    );
 
     if (this.browserWindow) {
       this.browserWindow.addListener("closed", this.removeListeners);
@@ -81,8 +91,14 @@ export default class Editor {
   }
 
   private removeListeners() {
-    ipcMain.removeListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
-    ipcMain.removeListener(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE, this.handleShowMarketplace);
+    ipcMain.removeListener(
+      EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS,
+      this.handleGetWorkspaceConfigs
+    );
+    ipcMain.removeListener(
+      EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE,
+      this.handleShowMarketplace
+    );
 
     if (this.browserWindow) {
       this.browserWindow.removeListener("closed", this.removeListeners);
@@ -113,12 +129,24 @@ export default class Editor {
         new CommonPanelColumn(800, [
           new CommonPanelRow(400, [
             new CommonPanelColumn(300, [
-              new CommonPanelRow(400, undefined, [new Tab("a", "Painel A", true), new Tab("b", "Painel B")]),
-              new CommonPanelRow(200, undefined, [new Tab("c", "Painel C"), new Tab("d", "Painel D", true)])
+              new CommonPanelRow(400, undefined, [
+                new Tab("a", "Painel A", true),
+                new Tab("b", "Painel B")
+              ]),
+              new CommonPanelRow(200, undefined, [
+                new Tab("c", "Painel C"),
+                new Tab("d", "Painel D", true)
+              ])
             ]),
-            new CommonPanelColumn(500, undefined, [new Tab("e", "Painel E", true), new Tab("f", "Painel F")])
+            new CommonPanelColumn(500, undefined, [
+              new Tab("e", "Painel E", true),
+              new Tab("f", "Painel F")
+            ])
           ]),
-          new CommonPanelRow(200, undefined, [new Tab("g", "Painel G", true), new Tab("h", "Painel H")])
+          new CommonPanelRow(200, undefined, [
+            new Tab("g", "Painel G", true),
+            new Tab("h", "Painel H")
+          ])
         ])
       ])
     );
@@ -127,7 +155,11 @@ export default class Editor {
   // Methods
   private showMarketplace() {
     if (!this.marketplace && this.browserWindow) {
-      this.marketplace = new Marketplace(this.i18nService, this.i18nJson, this.browserWindow);
+      this.marketplace = new Marketplace(
+        this.i18nService,
+        this.i18nJson,
+        this.browserWindow
+      );
 
       this.marketplace.onClose.addListener(() => {
         this.marketplace = undefined;

@@ -34,6 +34,8 @@ function start(config: CommonLayoutConfig) {
 
   panelManager = new PanelManager(root, config);
   extHost = new ExtensionHost();
+
+  CommonViewBrowserService.show();
 }
 
 start(EditorBrowserService.getLayoutConfigs());
