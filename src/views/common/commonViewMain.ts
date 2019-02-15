@@ -18,7 +18,7 @@ export default class CommonViewMain {
     this.handleCloseRequest = this.handleCloseRequest.bind(this);
     this.handleShowDevTools = this.handleShowDevTools.bind(this);
     this.handleLoadExtensions = this.handleLoadExtensions.bind(this);
-    
+
     this.handleShow = this.handleShow.bind(this);
     this.handleClosing = this.handleClosing.bind(this);
 
