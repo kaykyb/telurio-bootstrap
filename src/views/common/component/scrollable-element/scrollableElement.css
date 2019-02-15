@@ -1,0 +1,82 @@
+.scrollElement {
+  overflow: hidden;
+  position: relative;
+}
+
+.container {
+  overflow: hidden;
+  position: relative;
+}
+
+.horizontalScrollTrack {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: transparent;
+
+  height: 8px;
+  transition: visibility 1ms 1s, opacity 1s 0s;
+}
+
+.horizontalScrollThumb {
+  visibility: inherit;
+  position: absolute;
+
+  background: rgba(0, 0, 0, 0.2);
+
+  height: 8px;
+}
+
+.verticalScrollTrack {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background: transparent;
+
+  width: 8px;
+  transition: visibility 1ms 1s, opacity 1s 0s;
+}
+
+.verticalScrollThumb {
+  visibility: inherit;
+  position: absolute;
+
+  background: rgba(0, 0, 0.2);
+
+  width: 8px;
+}
+
+.scrollElement:hover .horizontalScrollTrack,
+.scrollElement:hover .verticalScrollTrack {
+  opacity: 1;
+  visibility: visible;
+
+  transition: none;
+}
+
+.horizontalScrollThumb:hover,
+.verticalScrollThumb:hover {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.horizontalScrollTrack.scrolling .horizontalScrollThumb,
+.verticalScrollTrack.scrolling .verticalScrollThumb {
+  background: rgba(0, 0, 255, 0.8);
+}
+
+.notVisible {
+  visibility: hidden !important;
+}
+
+.scrolling {
+  visibility: visible !important;
+  opacity: 1;
+}

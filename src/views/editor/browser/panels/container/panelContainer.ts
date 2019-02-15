@@ -63,7 +63,11 @@ export default class PanelContainer {
     this.tabsPanel.onTabDrop.addListener(this.handlePanelTabsDrop);
     this.tabsPanel.onTabClick.addListener(this.handlePanelTabsTabClick);
 
-    this.domElement.appendChild(this.tabsPanel.render());
+    const tabsPanelContainer = document.createElement("div");
+    tabsPanelContainer.classList.add(styles.tabsPanelContainer);
+    tabsPanelContainer.appendChild(this.tabsPanel.render());
+
+    this.domElement.appendChild(tabsPanelContainer);
 
     this.panelFrame = new PanelFrame(this.panels);
     this.domElement.appendChild(this.panelFrame.render());

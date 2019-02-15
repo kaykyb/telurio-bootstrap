@@ -4,12 +4,9 @@
 
 .tabs {
   height: 32px;
-  width: 100%;
-  overflow-x: auto;
+  min-width: 100%;
   display: flex;
-  box-shadow: inset 0px -1px #e5e5e5;
   /*background: rgba(0, 0, 0, 0.05);*/
-  overflow-y: hidden;
   padding-left: 8px;
   min-height: 32px;
 }

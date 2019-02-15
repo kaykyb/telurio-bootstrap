@@ -6,6 +6,7 @@ import ObservableArray, { ObservableArrayEvent } from "../../../../../../common/
 
 import * as styles from "./panelTabs.css";
 import CommonEvent from "../../../../../../common/common/commonEvent";
+import ScrollableElement from "../../../../../common/component/scrollable-element/scrollableElement";
 
 export default class PanelTabs {
   public onTabDragOut = new TrackableEvent<Tab, PanelTabs>();
@@ -41,7 +42,7 @@ export default class PanelTabs {
 
   public render(): HTMLDivElement {
     this.domElement = document.createElement("div");
-    this.domElement.className = styles.tabs;
+    this.domElement.classList.add(styles.tabs);
 
     const frag = document.createDocumentFragment();
 
@@ -61,7 +62,7 @@ export default class PanelTabs {
 
     this.domElement.appendChild(frag);
 
-    return this.domElement;
+    return new ScrollableElement(this.domElement, "x", "4px").render();
   }
 
   public setActiveTab(tabId: string) {
