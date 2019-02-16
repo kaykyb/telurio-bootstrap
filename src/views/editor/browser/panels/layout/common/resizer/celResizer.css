@@ -7,14 +7,14 @@
 
 .resizer.row {
   height: 4px;
-  cursor: row-resize;
+  cursor: ns-resize;
   left: 0;
   border-bottom: 1px solid #e5e5e5;
 }
 
 .resizer.col {
   width: 4px;
-  cursor: col-resize;
+  cursor: ew-resize;
   top: 32px;
   border-right: 1px solid #e5e5e5;
 }

@@ -1,5 +1,9 @@
-.dragOver {
-  border-left: 8px solid rgba(0, 0, 0, 0.5);
+.tab.dragOver {
+  animation-name: pulse;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .tab {
@@ -7,10 +11,25 @@
   line-height: 32px;
   padding: 0 8px;
   flex-shrink: 0;
-  /*background: rgba(0, 0, 0, 0.1);*/
+  background: white;
   cursor: pointer;
+  opacity: 0.5;
 }
 
 .active {
   border-bottom: 1px solid blue;
+  color: blue;
+  opacity: 1;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
 }
