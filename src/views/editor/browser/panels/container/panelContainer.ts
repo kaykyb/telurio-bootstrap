@@ -11,9 +11,6 @@ import DropArea from "./frame/drop-areas/drop-area/dropArea";
 import CommonEvent from "../../../../../common/common/commonEvent";
 import PanelTab from "./tabs/tab/panelTab";
 
-/**
- * @class [COMPONENT] [CONTAINER] PanelContainer
- */
 export default class PanelContainer {
   public onEmpty = new CommonEvent();
 

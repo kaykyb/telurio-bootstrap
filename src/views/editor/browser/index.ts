@@ -9,7 +9,8 @@ import Titlebar from "../../common/component/titlebar/titlebar";
 import ExtensionHost from "./extensions/extensionHost";
 import IconButton from "../../common/component/titlebar/icon-button/iconButton";
 
-CommonViewBrowserService.init();
+const coreService = new CommonViewBrowserService();
+const editorService = new EditorBrowserService(coreService);
 
 // script ----------------------------
 const root = document.getElementById("app-root") as HTMLElement;
@@ -20,22 +21,22 @@ let extHost: ExtensionHost;
 let titlebar: Titlebar;
 
 function start(config: CommonLayoutConfig) {
-  document.title = CommonViewBrowserService.i18n.s("editorView.Title");
+  document.title = coreService.i18n.s("editorView.Title");
 
   const leftSideElements = document.createElement("div");
   const marketplaceButton = new IconButton("extension");
   leftSideElements.appendChild(marketplaceButton.render());
   marketplaceButton.onClick.addListener(() => {
-    EditorBrowserService.showMarketplace();
+    editorService.showMarketplace();
   });
 
-  titlebar = new Titlebar(true, undefined, leftSideElements);
+  titlebar = new Titlebar(coreService, true, undefined, leftSideElements);
   root.appendChild(titlebar.render());
 
   panelManager = new PanelManager(root, config);
-  extHost = new ExtensionHost();
+  extHost = new ExtensionHost(coreService);
 
-  CommonViewBrowserService.show();
+  coreService.show();
 }
 
-start(EditorBrowserService.getLayoutConfigs());
+start(editorService.getLayoutConfigs());

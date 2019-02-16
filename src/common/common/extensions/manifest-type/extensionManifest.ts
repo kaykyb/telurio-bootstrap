@@ -1,4 +1,5 @@
 import Label from "./label";
+import ExtensionContributions from "./extensionContributions";
 
 export default class ExtensionManifest {
   constructor(
@@ -8,7 +9,7 @@ export default class ExtensionManifest {
     public version: string,
     public author: string,
     public permissions: string[],
-    public commands: string[],
+    public contributions?: ExtensionContributions,
     public settingsFile?: string
   ) {}
 }

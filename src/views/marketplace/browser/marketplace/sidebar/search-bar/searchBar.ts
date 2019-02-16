@@ -1,8 +1,9 @@
 import styles from "./searchBar.css";
 import materialIcons from "../../../../../common/fonts/material-icons/material-icons.css";
 import CommonViewBrowserService from "../../../../../common/services/commonViewBrowserService";
+import ViewComponent from "../../../../../common/viewComponent";
 
-export default class SearchBar {
+export default class SearchBar extends ViewComponent {
   private domElement?: HTMLDivElement;
 
   public render(): HTMLDivElement {
@@ -11,7 +12,7 @@ export default class SearchBar {
 
     const input = document.createElement("input");
     input.classList.add(styles.input);
-    input.placeholder = CommonViewBrowserService.i18n.s("extView.SearchBarText");
+    input.placeholder = this.commonService.i18n.s("extView.SearchBarText");
 
     const icon = document.createElement("i");
     icon.classList.add(materialIcons.materialIcons, styles.icon);

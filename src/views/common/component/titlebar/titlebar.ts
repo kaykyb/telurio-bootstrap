@@ -17,7 +17,12 @@ export default class Titlebar {
   private rightSideElements?: HTMLElement;
   private leftSideElements?: HTMLElement;
 
-  constructor(closable: boolean, rightSideElements?: HTMLElement, leftSideElements?: HTMLElement) {
+  constructor(
+    private commonBrowserService: CommonViewBrowserService,
+    closable: boolean,
+    rightSideElements?: HTMLElement,
+    leftSideElements?: HTMLElement
+  ) {
     this.closable = closable;
     this.rightSideElements = rightSideElements;
     this.leftSideElements = leftSideElements;
@@ -53,8 +58,10 @@ export default class Titlebar {
       leftSideControlsContainer.appendChild(devBtn.render());
 
       devBtn.onClick.addListener(() => {
-        if (CommonViewBrowserService.ipcService.ipc) {
-          CommonViewBrowserService.ipcService.ipc.send(IPC_CHANNELS.SHOW_DEV_TOOLS);
+        if (this.commonBrowserService.ipcService.ipc) {
+          this.commonBrowserService.ipcService.ipc.send(
+            IPC_CHANNELS.SHOW_DEV_TOOLS
+          );
         }
       });
     }
@@ -65,8 +72,10 @@ export default class Titlebar {
 
     this.windowControls = new WindowControls(this.closable);
     this.windowControls.onCloseClick.addListener(() => {
-      if (CommonViewBrowserService.ipcService.ipc) {
-        CommonViewBrowserService.ipcService.ipc.send(IPC_CHANNELS.CLOSE_REQUEST);
+      if (this.commonBrowserService.ipcService.ipc) {
+        this.commonBrowserService.ipcService.ipc.send(
+          IPC_CHANNELS.CLOSE_REQUEST
+        );
       }
     });
 

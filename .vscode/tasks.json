@@ -16,6 +16,22 @@
       "type": "npm",
       "script": "build:dev-webpack",
       "group": "build"
+    },
+    // Thanks to https://github.com/johnfn at https://github.com/Microsoft/vscode/issues/13953
+    // and https://github.com/ekulabuhov at https://github.com/Microsoft/vscode/issues/13953
+    {
+      "label": "Check TS Errors",
+      "command": "./node_modules/.bin/tsc",
+      "type": "shell",
+      "args": ["--watch", "--project", ".", "--noEmit"],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch"
     }
   ]
 }

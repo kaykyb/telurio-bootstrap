@@ -8,17 +8,19 @@ import ExtensionManifest from "../../../../common/common/extensions/manifest-typ
 import { IPC_CHANNELS } from "../../../../common/common/ipcChannels";
 
 export default class EditorBrowserService {
-  public static getLayoutConfigs(): CommonLayoutConfig {
-    if (CommonViewBrowserService.ipcService.ipc) {
-      return CommonViewBrowserService.ipcService.ipc.sendSync(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS);
+  constructor(public commonService: CommonViewBrowserService) {}
+
+  public getLayoutConfigs(): CommonLayoutConfig {
+    if (this.commonService.ipcService.ipc) {
+      return this.commonService.ipcService.ipc.sendSync(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS);
     }
 
     return new CommonLayoutConfig(new CommonPanelRow(0));
   }
 
-  public static showMarketplace() {
-    if (CommonViewBrowserService.ipcService.ipc) {
-      return CommonViewBrowserService.ipcService.ipc.send(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE);
+  public showMarketplace() {
+    if (this.commonService.ipcService.ipc) {
+      return this.commonService.ipcService.ipc.send(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE);
     }
   }
 }

@@ -9,6 +9,25 @@
   ],
   "version": "0.1.0",
   "author": "Kayky B.",
-  "permissions": ["core.fs", "core.panels"],
-  "commands": ["a", "b"]
+  "permissions": ["core.panels"],
+  "contributions": {
+    "commands": [
+      {
+        "name": "test",
+        "permissionRequired": "testCommands"
+      }
+    ],
+    "permissions": [
+      {
+        "name": "testCommands",
+        "label": [
+          {
+            "lang": "en",
+            "content": "Basic commands of the extension."
+          }
+        ],
+        "risk": 0
+      }
+    ]
+  }
 }

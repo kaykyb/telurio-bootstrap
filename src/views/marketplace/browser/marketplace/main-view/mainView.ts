@@ -1,9 +1,9 @@
 import Titlebar from "../../../../common/component/titlebar/titlebar";
 import styles from "./mainView.css";
 import { IPC_CHANNELS } from "../../../../../common/common/ipcChannels";
-import service from "../../../../common/services/commonViewBrowserService";
+import ViewComponent from "../../../../common/viewComponent";
 
-export default class MainView {
+export default class MainView extends ViewComponent {
   private domElement?: HTMLDivElement;
   private titlebar?: Titlebar;
 
@@ -11,10 +11,10 @@ export default class MainView {
     this.domElement = document.createElement("div");
     this.domElement.classList.add(styles.root);
 
-    this.titlebar = new Titlebar(true);
+    this.titlebar = new Titlebar(this.commonService, true);
     this.titlebar.onClose.addListener(() => {
-      if (service.ipcService.ipc) {
-        service.ipcService.ipc.send(IPC_CHANNELS.CLOSE_REQUEST);
+      if (this.commonService.ipcService.ipc) {
+        this.commonService.ipcService.ipc.send(IPC_CHANNELS.CLOSE_REQUEST);
       }
     });
 
