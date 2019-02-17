@@ -1,14 +1,15 @@
 import PanelColumn from "../column/panelColumn";
 import PanelCel from "../common/cel/panelCel";
 import CelResizer from "../common/resizer/celResizer";
-
-import * as styles from "./panelRow.css";
-import Tab from "../../../../common/classes/tab";
-import DropArea from "../../container/frame/drop-areas/drop-area/dropArea";
-import CommonEvent from "../../../../../../common/common/commonEvent";
 import { VerticalDropArgs } from "../common/verticalDropArgs";
 import { HorizontalDropArgs } from "../common/horizontalDropArgs";
-import ObservableArray from "../../../../../../common/common/observableArray";
+
+import * as styles from "./panelRow.css";
+
+import Tab from "@src/views/editor/common/classes/tab";
+import DropArea from "@src/views/editor/browser/panels/container/frame/drop-areas/drop-area/dropArea";
+import CommonEvent from "@src/common/common/commonEvent";
+import ObservableArray from "@src/common/common/observableArray";
 
 export default class PanelRow extends PanelCel {
   public onEmpty = new CommonEvent<PanelRow>();

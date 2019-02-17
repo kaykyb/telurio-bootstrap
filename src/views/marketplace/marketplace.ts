@@ -1,10 +1,10 @@
 import { BrowserWindow } from "electron";
 import * as path from "path";
 
-import I18nService from "../../common/node/services/i18n/i18nService";
+import I18nService from "@src/common/node/services/i18n/i18nService";
 import Editor from "../editor/editor";
 import CommonViewMain from "../common/commonViewMain";
-import CommonEvent from "../../common/common/commonEvent";
+import CommonEvent from "@src/common/common/commonEvent";
 
 const WINDOW_HEIGHT = 500;
 const WINDOW_WIDTH = 800;

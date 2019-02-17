@@ -1,10 +1,11 @@
 import styles from "./titlebar.css";
 import WindowControls from "./window-controls/windowControls";
-import CommonEvent from "../../../../common/common/commonEvent";
-import { IS_DEV } from "../../../../env";
 import IconButton from "./icon-button/iconButton";
-import CommonViewBrowserService from "../../services/commonViewBrowserService";
-import { IPC_CHANNELS } from "../../../../common/common/ipcChannels";
+
+import CommonEvent from "@src/common/common/commonEvent";
+import { IS_DEV } from "@src/env";
+import CommonViewBrowserService from "@src/views/common/services/commonViewBrowserService";
+import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
 
 export default class Titlebar {
   public onClose = new CommonEvent();
@@ -59,9 +60,7 @@ export default class Titlebar {
 
       devBtn.onClick.addListener(() => {
         if (this.commonBrowserService.ipcService.ipc) {
-          this.commonBrowserService.ipcService.ipc.send(
-            IPC_CHANNELS.SHOW_DEV_TOOLS
-          );
+          this.commonBrowserService.ipcService.ipc.send(IPC_CHANNELS.SHOW_DEV_TOOLS);
         }
       });
     }
@@ -73,9 +72,7 @@ export default class Titlebar {
     this.windowControls = new WindowControls(this.closable);
     this.windowControls.onCloseClick.addListener(() => {
       if (this.commonBrowserService.ipcService.ipc) {
-        this.commonBrowserService.ipcService.ipc.send(
-          IPC_CHANNELS.CLOSE_REQUEST
-        );
+        this.commonBrowserService.ipcService.ipc.send(IPC_CHANNELS.CLOSE_REQUEST);
       }
     });
 

@@ -1,13 +1,12 @@
-import Tab from "../../../../common/classes/tab";
+import DropArea from "./drop-areas/drop-area/dropArea";
+import PanelViews from "./views/panelViews";
+import InnerPanelDropAreas from "./drop-areas/innerPanelDropAreas";
 
 import * as styles from "./panelFrame.css";
 
-import InnerPanelDropAreas from "./drop-areas/innerPanelDropAreas";
-
-import ObservableArray, { ObservableArrayEvent } from "../../../../../../common/common/observableArray";
-import TrackableEvent from "../../../../../../common/common/trackableEvent";
-import DropArea from "./drop-areas/drop-area/dropArea";
-import PanelViews from "./views/panelViews";
+import Tab from "@src/views/editor/common/classes/tab";
+import ObservableArray, { ObservableArrayEvent } from "@src/common/common/observableArray";
+import TrackableEvent from "@src/common/common/trackableEvent";
 
 export default class PanelFrame {
   public onTabDrop = new TrackableEvent<Tab, DropArea>();

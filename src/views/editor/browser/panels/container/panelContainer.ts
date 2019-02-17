@@ -5,10 +5,10 @@ import PanelFrame from "./frame/panelFrame";
 
 import * as styles from "./panelContainer.css";
 
-import ObservableArray from "../../../../../common/common/observableArray";
-import TrackableEvent from "../../../../../common/common/trackableEvent";
+import ObservableArray from "@src/common/common/observableArray";
+import TrackableEvent from "@src/common/common/trackableEvent";
 import DropArea from "./frame/drop-areas/drop-area/dropArea";
-import CommonEvent from "../../../../../common/common/commonEvent";
+import CommonEvent from "@src/common/common/commonEvent";
 import PanelTab from "./tabs/tab/panelTab";
 
 export default class PanelContainer {

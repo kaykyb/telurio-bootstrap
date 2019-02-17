@@ -1,15 +1,15 @@
 import PanelCel from "../common/cel/panelCel";
 import PanelRow from "../row/panelRow";
-
+import { VerticalDropArgs } from "../common/verticalDropArgs";
 import CelResizer from "../common/resizer/celResizer";
+import { HorizontalDropArgs } from "../common/horizontalDropArgs";
 
 import * as styles from "./panelcolumn.css";
-import Tab from "../../../../common/classes/tab";
-import DropArea from "../../container/frame/drop-areas/drop-area/dropArea";
-import { VerticalDropArgs } from "../common/verticalDropArgs";
-import CommonEvent from "../../../../../../common/common/commonEvent";
-import { HorizontalDropArgs } from "../common/horizontalDropArgs";
-import ObservableArray from "../../../../../../common/common/observableArray";
+
+import Tab from "@src/views/editor/common/classes/tab";
+import DropArea from "@src/views/editor/browser/panels/container/frame/drop-areas/drop-area/dropArea";
+import CommonEvent from "@src/common/common/commonEvent";
+import ObservableArray from "@src/common/common/observableArray";
 
 export default class PanelColumn extends PanelCel {
   public onEmpty = new CommonEvent<PanelColumn>();
@@ -83,8 +83,7 @@ export default class PanelColumn extends PanelCel {
 
     this.removePanels();
 
-    this.rows =
-      sender.pos === "bottom" ? [selfCopy, newRow] : [newRow, selfCopy];
+    this.rows = sender.pos === "bottom" ? [selfCopy, newRow] : [newRow, selfCopy];
 
     // insert columns
     this.domElement!.appendChild(this.getRows(this.rows));
@@ -108,9 +107,7 @@ export default class PanelColumn extends PanelCel {
         this.insertResizer();
       }
 
-      this.onHorizontalTabDrop.propagate(
-        new HorizontalDropArgs(sender.pos, this, newCol)
-      );
+      this.onHorizontalTabDrop.propagate(new HorizontalDropArgs(sender.pos, this, newCol));
     }
   }
 
@@ -135,9 +132,7 @@ export default class PanelColumn extends PanelCel {
   private assignRowEvents(row: PanelRow) {
     row.startResizing = this.handleRowStartResize.bind(this);
     row.endResizing = this.handleRowEndResize.bind(this);
-    row.onVerticalTabDrop.addListener(
-      this.handleRowOnVerticalTabDrop.bind(this)
-    );
+    row.onVerticalTabDrop.addListener(this.handleRowOnVerticalTabDrop.bind(this));
     row.onEmpty.addListener(this.removeRow.bind(this));
   }
 
@@ -182,8 +177,7 @@ export default class PanelColumn extends PanelCel {
       this.assignRowEvents(args.row);
 
       let nextRow: PanelRow | undefined;
-      let insertBefore: Node | null =
-        args.baseRow.domElement !== undefined ? args.baseRow.domElement : null;
+      let insertBefore: Node | null = args.baseRow.domElement !== undefined ? args.baseRow.domElement : null;
 
       if (args.rowPos === "bottom") {
         nextRow = this.rows[baseRowIndex + 1];
@@ -201,10 +195,7 @@ export default class PanelColumn extends PanelCel {
         }
       }
 
-      this.domElement.insertBefore(
-        args.row.render(this, nextRow),
-        insertBefore
-      );
+      this.domElement.insertBefore(args.row.render(this, nextRow), insertBefore);
       this.recalcFill();
     }
   }

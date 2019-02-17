@@ -1,6 +1,6 @@
 import DropArea from "./drop-area/dropArea";
-import Tab from "../../../../../common/classes/tab";
-import TrackableEvent from "../../../../../../../common/common/trackableEvent";
+import Tab from "@src/views/editor/common/classes/tab";
+import TrackableEvent from "@src/common/common/trackableEvent";
 
 export default class InnerPanelDropAreas {
   public onTabDrop = new TrackableEvent<Tab, DropArea>();

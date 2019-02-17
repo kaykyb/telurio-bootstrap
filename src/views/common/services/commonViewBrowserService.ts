@@ -1,9 +1,9 @@
-import BrowserI18nService from "../../../common/browser/i18nService";
-import IpcService from "../../../common/browser/ipcService";
-import I18nArgs from "../../../common/common/ipcEvents/i18nArgs";
-import { IPC_CHANNELS } from "../../../common/common/ipcChannels";
 import CommonViewInitArgs from "../commonViewInitArgs";
-import ExtensionManifest from "../../../common/common/extensions/manifest-type/extensionManifest";
+
+import BrowserI18nService from "@src/common/browser/browseri18nService";
+import IpcService from "@src/common/browser/ipcService";
+import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
+import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
 
 export default class CommonViewBrowserService {
   public i18n: BrowserI18nService;
@@ -13,9 +13,7 @@ export default class CommonViewBrowserService {
     this.ipcService = new IpcService();
 
     if (this.ipcService.ipc) {
-      const initArgs: CommonViewInitArgs = this.ipcService.ipc.sendSync(
-        IPC_CHANNELS.BROWSER_READY
-      );
+      const initArgs: CommonViewInitArgs = this.ipcService.ipc.sendSync(IPC_CHANNELS.BROWSER_READY);
       this.i18n = new BrowserI18nService(initArgs.i18nArgs.strJson);
 
       return;

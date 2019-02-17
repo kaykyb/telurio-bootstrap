@@ -1,9 +1,9 @@
-import PanelContainer from "../../../container/panelContainer";
+import PanelContainer from "@src/views/editor/browser/panels/container/panelContainer";
 
 import * as styles from "./panelCel.css";
-import Tab from "../../../../../common/classes/tab";
-import DropArea from "../../../container/frame/drop-areas/drop-area/dropArea";
-import ObservableArray from "../../../../../../../common/common/observableArray";
+import Tab from "@src/views/editor/common/classes/tab";
+import DropArea from "@src/views/editor/browser/panels/container/frame/drop-areas/drop-area/dropArea";
+import ObservableArray from "@src/common/common/observableArray";
 
 export default abstract class PanelCel {
   public startResizing?: () => void;

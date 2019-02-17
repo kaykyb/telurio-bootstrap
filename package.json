@@ -33,5 +33,10 @@
     "webpack": "^4.28.3",
     "webpack-cli": "^3.2.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "module-alias": "^2.2.0"
+  },
+  "_moduleAliases": {
+    "@src": "dist"
+  }
 }

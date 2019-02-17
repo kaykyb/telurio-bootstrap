@@ -3,11 +3,11 @@ import PanelManager from "./panels/panelManager";
 import styles from "./index.css";
 
 import EditorBrowserService from "./service/editorBrowserService";
-import CommonViewBrowserService from "../../common/services/commonViewBrowserService";
+import CommonViewBrowserService from "@src/views/common/services/commonViewBrowserService";
 import CommonLayoutConfig from "../common/classes/commonLayoutConfig";
-import Titlebar from "../../common/component/titlebar/titlebar";
+import Titlebar from "@src/views/common/component/titlebar/titlebar";
 import ExtensionManager from "./extensions/extensionManager";
-import IconButton from "../../common/component/titlebar/icon-button/iconButton";
+import IconButton from "@src/views/common/component/titlebar/icon-button/iconButton";
 
 const coreService = new CommonViewBrowserService();
 const editorService = new EditorBrowserService(coreService);

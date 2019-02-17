@@ -1,10 +1,8 @@
 import EditorBrowserService from "../service/editorBrowserService";
-import ExtensionManifest from "../../../../common/common/extensions/manifest-type/extensionManifest";
-import CommonViewBrowserService from "../../../common/services/commonViewBrowserService";
-import ViewComponent from "../../../common/viewComponent";
+import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
 import EditorViewComponent from "../editorViewComponent";
-import ExtensionMessage from "../../../../common/common/extensions/extensionMessage";
-import ExtensionCommandActivationArgs from "../../../../common/common/extensions/extensionCommandActivationArgs";
+import ExtensionMessage from "@src/common/common/extensions/extensionMessage";
+import ExtensionCommandActivationArgs from "@src/common/common/extensions/extensionCommandActivationArgs";
 
 export default class ExtensionManager extends EditorViewComponent {
   private returnCmds: { [callbackId: string]: (v: any) => any } = {};
@@ -25,10 +23,10 @@ export default class ExtensionManager extends EditorViewComponent {
   }
 
   private loadExtensions() {
-    const extHostContainer = document.createElement("div");
+    const extHostContainer: HTMLDivElement = document.createElement("div");
     extHostContainer.style.display = "none";
 
-    const frag = document.createDocumentFragment();
+    const frag: DocumentFragment = document.createDocumentFragment();
 
     this.extensionsDirs.forEach(extDir => {
       extDir.exts.forEach(extManifest => {

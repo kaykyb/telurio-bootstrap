@@ -1,6 +1,7 @@
 import styles from "./windowControls.css";
 import WindowButton from "./window-button/windowButton";
-import CommonEvent from "../../../../../common/common/commonEvent";
+
+import CommonEvent from "@src/common/common/commonEvent";
 
 export default class WindowControls {
   public onCloseClick = new CommonEvent();

@@ -1,8 +1,9 @@
-import CommonLayoutConfig from "../../common/classes/commonLayoutConfig";
-import CommonViewBrowserService from "../../../common/services/commonViewBrowserService";
-import { EDITOR_IPC_CHANNELS } from "../../common/ipcChannels";
-import CommonPanelRow from "../../common/classes/panelRow";
 import EditorExtensionBridge from "./editorExtensionBridge";
+
+import CommonLayoutConfig from "@src/views/editor/common/classes/commonLayoutConfig";
+import CommonViewBrowserService from "@src/views/common/services/commonViewBrowserService";
+import { EDITOR_IPC_CHANNELS } from "@src/views/editor/common/ipcChannels";
+import CommonPanelRow from "@src/views/editor/common/classes/panelRow";
 
 export default class EditorBrowserService {
   public extensionBridge: EditorExtensionBridge = new EditorExtensionBridge();

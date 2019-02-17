@@ -1,5 +1,6 @@
-import Tab from "../../../../../../common/classes/tab";
 import * as styles from "./panelView.css";
+
+import Tab from "@src/views/editor/common/classes/tab";
 
 export default class PanelView {
   public domElement!: HTMLElement;

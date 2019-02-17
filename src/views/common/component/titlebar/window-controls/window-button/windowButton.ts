@@ -1,5 +1,6 @@
 import styles from "./windowButton.css";
-import CommonEvent from "../../../../../../common/common/commonEvent";
+
+import CommonEvent from "@src/common/common/commonEvent";
 
 export default class WindowButton {
   public onClick = new CommonEvent();

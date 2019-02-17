@@ -1,4 +1,4 @@
-import Tab from "../../../../common/classes/tab";
+import Tab from "@src/views/editor/common/classes/tab";
 
 export default class TabUtils {
   public static getTabFromDropData(ev: DragEvent): Tab | undefined {

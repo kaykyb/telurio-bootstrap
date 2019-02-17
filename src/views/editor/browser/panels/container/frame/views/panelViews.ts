@@ -1,5 +1,5 @@
-import ObservableArray, { ObservableArrayEvent } from "../../../../../../../common/common/observableArray";
-import Tab from "../../../../../common/classes/tab";
+import ObservableArray, { ObservableArrayEvent } from "@src/common/common/observableArray";
+import Tab from "@src/views/editor/common/classes/tab";
 import PanelView from "./view/panelView";
 
 export default class PanelViews {

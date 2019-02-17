@@ -1,7 +1,8 @@
 import * as styles from "./dropArea.css";
-import TrackableEvent from "../../../../../../../../common/common/trackableEvent";
-import Tab from "../../../../../../common/classes/tab";
-import TabUtils from "../../../common/tabUtils";
+
+import TrackableEvent from "@src/common/common/trackableEvent";
+import Tab from "@src/views/editor/common/classes/tab";
+import TabUtils from "@src/views/editor/browser/panels/container/common/tabUtils";
 
 export default class DropArea {
   public pos: "right" | "left" | "top" | "bottom";

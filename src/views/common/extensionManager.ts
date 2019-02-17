@@ -1,6 +1,6 @@
 import fs from "fs";
 import path from "path";
-import ExtensionManifest from "../../common/common/extensions/manifest-type/extensionManifest";
+import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
 
 export default class ExtensionManager {
   private extManifests: ExtensionManifest[] = [];

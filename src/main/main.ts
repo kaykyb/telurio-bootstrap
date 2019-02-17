@@ -1,8 +1,10 @@
+import "module-alias/register"; // register path aliases
+
 import { app, BrowserWindow } from "electron";
 import * as path from "path";
-import Editor from "../views/editor/editor";
-import Marketplace from "../views/marketplace/marketplace";
-import I18nService from "../common/node/services/i18n/i18nService";
+import Editor from "@src/views/editor/editor";
+import Marketplace from "@src/views/marketplace/marketplace";
+import I18nService from "@src/common/node/services/i18n/i18nService";
 
 // tslint:disable-next-line:no-console
 console.log("\n\x1b[46m\x1b[30m\x1b[1m ELECTRON \x1b[0m Processo main iniciado.");

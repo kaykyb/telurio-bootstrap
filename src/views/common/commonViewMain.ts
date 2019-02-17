@@ -1,10 +1,10 @@
 import { BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 
-import { IPC_CHANNELS } from "../../common/common/ipcChannels";
-import I18nService from "../../common/node/services/i18n/i18nService";
-import I18nArgs from "../../common/common/ipcEvents/i18nArgs";
-import CommonEvent from "../../common/common/commonEvent";
+import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
+import I18nService from "@src/common/node/services/i18n/i18nService";
+import I18nArgs from "@src/common/common/ipcEvents/i18nArgs";
+import CommonEvent from "@src/common/common/commonEvent";
 import CommonViewInitArgs from "./commonViewInitArgs";
 import ExtensionManager from "./extensionManager";
 

@@ -75,7 +75,11 @@ toCompile.forEach(p => {
       ]
     },
     resolve: {
-      extensions: [".tsx", ".ts", ".js"]
+      extensions: [".tsx", ".ts", ".js"],
+      modules: [path.resolve("./node_modules")],
+      alias: {
+        "@src": path.resolve("./src")
+      }
     },
     output: {
       filename: "bundle.compiled.js",

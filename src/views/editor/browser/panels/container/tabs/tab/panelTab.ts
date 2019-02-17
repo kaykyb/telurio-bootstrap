@@ -1,9 +1,10 @@
-import Tab from "../../../../../common/classes/tab";
+import Tab from "@src/views/editor/common/classes/tab";
+
 import * as styles from "./panelTab.css";
 
-import TrackableEvent from "../../../../../../../common/common/trackableEvent";
-import TabUtils from "../../common/tabUtils";
-import CommonEvent from "../../../../../../../common/common/commonEvent";
+import TrackableEvent from "@src/common/common/trackableEvent";
+import TabUtils from "@src/views/editor/browser/panels/container/common/tabUtils";
+import CommonEvent from "@src/common/common/commonEvent";
 
 export default class PanelTab {
   public onTabDragOut = new TrackableEvent<Tab, PanelTab>();

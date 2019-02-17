@@ -3,11 +3,11 @@ import PanelRow from "./layout/row/panelRow";
 
 import PanelContainer from "./container/panelContainer";
 
-import CommonPanelColumn from "../../common/classes/panelColumn";
-import CommonPanelRow from "../../common/classes/panelRow";
+import CommonPanelColumn from "@src/views/editor/common/classes/panelColumn";
+import CommonPanelRow from "@src/views/editor/common/classes/panelRow";
 
-import CommonLayoutConfig from "../../common/classes/commonLayoutConfig";
-import ObservableArray from "../../../../common/common/observableArray";
+import CommonLayoutConfig from "@src/views/editor/common/classes/commonLayoutConfig";
+import ObservableArray from "@src/common/common/observableArray";
 
 export default class PanelManager {
   public config!: PanelRow;

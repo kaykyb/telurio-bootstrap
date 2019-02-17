@@ -1,7 +1,8 @@
 export default class BrowserI18nService {
-  private strings!: { [k: string]: string };
+  private readonly strings: { [k: string]: string };
 
   constructor(strsJson: string) {
+    // tslint:disable-next-line: no-unsafe-any
     this.strings = JSON.parse(strsJson);
   }
 
