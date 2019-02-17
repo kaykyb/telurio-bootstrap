@@ -6,7 +6,7 @@ import EditorBrowserService from "./service/editorBrowserService";
 import CommonViewBrowserService from "../../common/services/commonViewBrowserService";
 import CommonLayoutConfig from "../common/classes/commonLayoutConfig";
 import Titlebar from "../../common/component/titlebar/titlebar";
-import ExtensionHost from "./extensions/extensionHost";
+import ExtensionManager from "./extensions/extensionManager";
 import IconButton from "../../common/component/titlebar/icon-button/iconButton";
 
 const coreService = new CommonViewBrowserService();
@@ -17,7 +17,7 @@ const root = document.getElementById("app-root") as HTMLElement;
 root.classList.add(styles.root);
 
 let panelManager: PanelManager;
-let extHost: ExtensionHost;
+let extManager: ExtensionManager;
 let titlebar: Titlebar;
 
 function start(config: CommonLayoutConfig) {
@@ -34,7 +34,7 @@ function start(config: CommonLayoutConfig) {
   root.appendChild(titlebar.render());
 
   panelManager = new PanelManager(root, config);
-  extHost = new ExtensionHost(coreService);
+  extManager = new ExtensionManager(editorService);
 
   coreService.show();
 }
