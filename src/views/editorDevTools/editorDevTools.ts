@@ -2,7 +2,6 @@ import { BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 
 import I18nService from "@src/common/node/services/i18n/i18nService";
-import Editor from "../editor/editor";
 import CommonViewMain from "../common/commonViewMain";
 import CommonEvent from "@src/common/common/commonEvent";
 import { EditorExtensionBridgeCommand } from "../editor/browser/service/editorExtensionBridge";
