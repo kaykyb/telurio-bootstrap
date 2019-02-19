@@ -1,0 +1,37 @@
+.commandsListItem {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.commandsListItem:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.name {
+  padding: 0px;
+  margin: 0;
+  font-size: 16px;
+  font-family: monospace;
+  user-select: text;
+}
+
+.permissionLabel {
+  margin: 0;
+  padding: 0;
+  display: inline;
+}
+
+.permissionContrib {
+  margin: 0;
+  padding: 4px 8px;
+  display: inline-block;
+  margin-left: 8px;
+  font-family: monospace;
+  background: rgba(0, 0, 0, 0.1);
+  user-select: text;
+}
+
+.permission {
+  margin-top: 8px;
+}
