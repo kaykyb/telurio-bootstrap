@@ -18,7 +18,6 @@ export default class EditorDevTools {
 
   constructor(
     i18nService: I18nService,
-    i18nJson: string,
     private editorWindow: BrowserWindow,
     private editorCommands: { [key: string]: EditorExtensionBridgeCommand }
   ) {
@@ -27,10 +26,10 @@ export default class EditorDevTools {
     this.removeListeners = this.removeListeners.bind(this);
 
     // starts
-    this.createWindow(i18nService, i18nJson);
+    this.createWindow(i18nService);
   }
 
-  private createWindow(i18nService: I18nService, i18nJson: string) {
+  private createWindow(i18nService: I18nService) {
     this.browserWindow = new BrowserWindow({
       height: WINDOW_HEIGHT,
       width: WINDOW_WIDTH,
@@ -58,7 +57,7 @@ export default class EditorDevTools {
       this.onClose.propagate({});
     });
 
-    this.commonMain = new CommonViewMain(this.browserWindow, i18nService, i18nJson);
+    this.commonMain = new CommonViewMain(this.browserWindow, i18nService);
   }
 
   private startIpc() {

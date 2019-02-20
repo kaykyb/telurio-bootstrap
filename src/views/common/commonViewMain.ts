@@ -13,7 +13,7 @@ export default class CommonViewMain {
 
   private extensionsManager: ExtensionManager = new ExtensionManager();
 
-  constructor(private browserWindow: BrowserWindow, private i18nService: I18nService, private i18nJson: string) {
+  constructor(private browserWindow: BrowserWindow, private i18nService: I18nService) {
     this.handleBrowserReady = this.handleBrowserReady.bind(this);
     this.handleCloseRequest = this.handleCloseRequest.bind(this);
     this.handleShowDevTools = this.handleShowDevTools.bind(this);
@@ -98,7 +98,7 @@ export default class CommonViewMain {
   }
 
   private getCommonConfigs(): CommonViewInitArgs {
-    const i18nArgs = new I18nArgs(this.i18nService.locale, this.i18nJson);
+    const i18nArgs = new I18nArgs(this.i18nService.language!);
     return new CommonViewInitArgs(i18nArgs);
   }
 

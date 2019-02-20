@@ -21,14 +21,23 @@ let extManager: ExtensionManager;
 let titlebar: Titlebar;
 
 function start(config: CommonLayoutConfig) {
-  document.title = coreService.i18n.s("editorView.Title");
+  document.title = coreService.i18n.contents.editorView.title;
 
   const leftSideElements = document.createElement("div");
+
+  // mktplace btn
   const marketplaceButton = new IconButton("extension");
-  leftSideElements.appendChild(marketplaceButton.render());
   marketplaceButton.onClick.addListener(() => {
     editorService.showMarketplace();
   });
+  leftSideElements.appendChild(marketplaceButton.render());
+
+  // telurio editor devtools
+  const devToolsBtn = new IconButton("build");
+  devToolsBtn.onClick.addListener(() => {
+    editorService.showEditorDevTools();
+  });
+  leftSideElements.appendChild(devToolsBtn.render());
 
   titlebar = new Titlebar(coreService, true, undefined, leftSideElements);
   root.appendChild(titlebar.render());

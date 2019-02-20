@@ -15,6 +15,8 @@ export default class CommandsListItem extends EditorDevToolsViewComponent {
   }
 
   public render(): HTMLDivElement {
+    const i18n = this.editorDevToolsService.commonService.i18n.contents;
+
     this.domElement = document.createElement("div");
     this.domElement.classList.add(styles.commandsListItem);
 
@@ -27,16 +29,14 @@ export default class CommandsListItem extends EditorDevToolsViewComponent {
 
     const permissionLabel = document.createElement("p");
     permissionLabel.classList.add(styles.permissionLabel);
-    permissionLabel.innerText = this.editorDevToolsService.commonService.i18n.s(
-      "editorDevToolsView.cmdList.permissionLabel"
-    );
+    permissionLabel.innerText = i18n.editorDevToolsView.cmdList.permissionLabel;
     permission.appendChild(permissionLabel);
 
     const permissionContrib = document.createElement("p");
     permissionContrib.classList.add(styles.permissionContrib);
     permissionContrib.innerText = this.permissionRequired
       ? this.permissionRequired
-      : this.editorDevToolsService.commonService.i18n.s("editorDevToolsView.cmdList.nonePermission");
+      : i18n.editorDevToolsView.cmdList.nonePermission;
 
     permission.appendChild(permissionContrib);
 

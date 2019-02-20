@@ -1,5 +1,24 @@
 {
-  "editorView.Title": "Telurio Bootstrap Editor",
-  "extView.Title": "Telurio Bootstrap - Extensions Marketplace",
-  "extView.SearchBarText": "Search Extensions..."
+  "language": {
+    "code": "en",
+    "name": "English"
+  },
+  "contents": {
+    "editorView": {
+      "title": "Telurio Editor"
+    },
+
+    "editorDevToolsView": {
+      "title": "Telurio Editor Developer Tools",
+      "cmdList": {
+        "permissionLabel": "Required permission:",
+        "nonePermission": "None"
+      }
+    },
+
+    "marketplaceView": {
+      "title": "Telurio - Extensions Marketplace",
+      "searchBarText": "Search Extensions..."
+    }
+  }
 }

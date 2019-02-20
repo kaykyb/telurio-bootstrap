@@ -1,9 +1,5 @@
-export default class I18nArgs {
-  public locale: string;
-  public strJson: string;
+import I18nLanguageFile from "@src/common/node/services/i18n/i18nLanguageFile";
 
-  constructor(locale: string, strJson: string) {
-    this.locale = locale;
-    this.strJson = strJson;
-  }
+export default class I18nArgs {
+  constructor(public i18nLanguageFile: I18nLanguageFile) {}
 }

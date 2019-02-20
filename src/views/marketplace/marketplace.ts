@@ -2,7 +2,6 @@ import { BrowserWindow } from "electron";
 import * as path from "path";
 
 import I18nService from "@src/common/node/services/i18n/i18nService";
-import Editor from "../editor/editor";
 import CommonViewMain from "../common/commonViewMain";
 import CommonEvent from "@src/common/common/commonEvent";
 
@@ -15,11 +14,11 @@ export default class Marketplace {
   private commonMain?: CommonViewMain;
   private browserWindow?: BrowserWindow;
 
-  constructor(i18nService: I18nService, i18nJson: string, private parentWindow: BrowserWindow) {
-    this.createWindow(i18nService, i18nJson);
+  constructor(i18nService: I18nService, private parentWindow: BrowserWindow) {
+    this.createWindow(i18nService);
   }
 
-  private createWindow(i18nService: I18nService, i18nJson: string) {
+  private createWindow(i18nService: I18nService) {
     this.browserWindow = new BrowserWindow({
       height: WINDOW_HEIGHT,
       width: WINDOW_WIDTH,
@@ -45,8 +44,7 @@ export default class Marketplace {
       this.onClose.propagate({});
     });
 
-    this.commonMain = new CommonViewMain(this.browserWindow, i18nService, i18nJson);
-    this.commonMain.onWindowReady.addListener(this.onWindowReady.bind(this));
+    this.commonMain = new CommonViewMain(this.browserWindow, i18nService);
   }
 
   private onWindowReady() {

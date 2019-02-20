@@ -6,7 +6,7 @@ import CommonViewBrowserService from "@src/views/common/services/commonViewBrows
 function start() {
   const coreService = new CommonViewBrowserService();
 
-  document.title = coreService.i18n.s("extView.Title");
+  document.title = coreService.i18n.contents.marketplaceView.title;
 
   const root = document.getElementById("app-root");
 
@@ -19,6 +19,8 @@ function start() {
     const mainView = new MainView(coreService);
     root.appendChild(mainView.render());
   }
+
+  coreService.show();
 }
 
 start();

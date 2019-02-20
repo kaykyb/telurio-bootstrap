@@ -1,5 +1,24 @@
 {
-  "editorView.Title": "Editor do Telurio Bootstrap",
-  "extView.Title": "Telurio Bootstrap - Loja de Extensões",
-  "extView.SearchBarText": "Pesquisar Extensões..."
+  "language": {
+    "code": "pt-BR",
+    "name": "Português do Brasil"
+  },
+  "contents": {
+    "editorView": {
+      "title": "Editor do Telúrio"
+    },
+
+    "editorDevToolsView": {
+      "title": "Ferramentas de Desenvolvedor do Editor do Telúrio",
+      "cmdList": {
+        "permissionLabel": "Permissão necessária:",
+        "nonePermission": "Nenhuma"
+      }
+    },
+
+    "marketplaceView": {
+      "title": "Telúrio - Loja de Extensões",
+      "searchBarText": "Pesquisar extensões..."
+    }
+  }
 }

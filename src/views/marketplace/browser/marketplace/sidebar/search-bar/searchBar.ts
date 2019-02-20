@@ -11,7 +11,7 @@ export default class SearchBar extends ViewComponent {
 
     const input = document.createElement("input");
     input.classList.add(styles.input);
-    input.placeholder = this.commonService.i18n.s("extView.SearchBarText");
+    input.placeholder = this.commonService.i18n.contents.marketplaceView.searchBarText;
 
     const icon = document.createElement("i");
     icon.classList.add(materialIcons.materialIcons, styles.icon);
