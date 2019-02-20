@@ -12,7 +12,9 @@
     "trailing-comma": false,
     "arrow-parens": false,
     "ordered-imports": false,
-    "linebreak-style": [true, "LF"]
+    "linebreak-style": [true, "LF"],
+    "promise-function-async": true,
+    "await-promise": true
   },
   "jsRules": {
     "max-line-length": {
