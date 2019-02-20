@@ -13,7 +13,7 @@ import Titlebar from "@src/views/common/component/titlebar/titlebar";
   const coreService = new CommonViewBrowserService();
   const editorDevToolsService = new EditorDevToolsBrowserService(coreService);
 
-  document.title = coreService.i18n.s("editorDevToolsView.Title");
+  document.title = coreService.i18n.contents.editorDevToolsView.title;
 
   const titlebar = new Titlebar(coreService, true);
   root.appendChild(titlebar.render());
