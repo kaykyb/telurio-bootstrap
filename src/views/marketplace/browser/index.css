@@ -12,7 +12,6 @@ html :global {
   height: 100%;
   font-family: "Inter UI", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 12px;
-  content: "WOW";
   overflow: hidden;
 }
 
@@ -25,32 +24,4 @@ body :global {
   width: 100vw;
   display: flex;
   flex-direction: row;
-}
-
-/* Turn on custom 8px wide scrollbar */
-::-webkit-scrollbar :global {
-  width: 10px; /* 1px wider than Lion. */
-  height: 10px;
-  /* This is more usable for users trying to click it. */
-  background-color: rgba(0, 0, 0, 0);
-  -webkit-border-radius: 100px;
-}
-/* hover effect for both scrollbar area, and scrollbar 'thumb' */
-::-webkit-scrollbar:hover :global {
-  background-color: rgba(0, 0, 0, 0.09);
-}
-
-/* The scrollbar 'thumb' ...that marque oval shape in a scrollbar */
-::-webkit-scrollbar-thumb:vertical :global {
-  /* This is the EXACT color of Mac OS scrollbars. 
-     Yes, I pulled out digital color meter */
-  background: rgba(0, 0, 0, 0.5);
-  -webkit-border-radius: 100px;
-  background-clip: padding-box;
-  border: 2px solid rgba(0, 0, 0, 0);
-  min-height: 10px; /*Prevent it from getting too small */
-}
-::-webkit-scrollbar-thumb:vertical:active :global {
-  background: rgba(0, 0, 0, 0.61); /* Some darker color when you click it */
-  -webkit-border-radius: 100px;
 }

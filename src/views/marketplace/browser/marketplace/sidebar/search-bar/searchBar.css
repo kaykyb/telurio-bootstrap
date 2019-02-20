@@ -16,7 +16,7 @@
   border: none;
   background: none;
   flex: 1;
-  font-family: "Inter UI";
+  font-family: "Inter UI", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-size: 12px;
   outline: none;
 }
