@@ -14,6 +14,8 @@ import Marketplace from "../marketplace/marketplace";
 import CommonViewMain from "../common/commonViewMain";
 import { EDITOR_IPC_CHANNELS } from "./common/ipcChannels";
 import ExtensionManager from "../common/extensionManager";
+import EditorDevTools from "../editorDevTools/editorDevTools";
+import { EditorExtensionBridgeCommand } from "./browser/service/editorExtensionBridge";
 
 const WINDOW_HEIGHT = 600;
 const WINDOW_WIDTH = 800;
@@ -21,17 +23,20 @@ const WINDOW_WIDTH = 800;
 export default class Editor {
   public browserWindow?: BrowserWindow;
   private commonMain?: CommonViewMain;
-  private marketplace?: Marketplace;
 
-  constructor(private i18nService: I18nService, private i18nJson: string) {
+  private marketplace?: Marketplace;
+  private editorDevTools?: EditorDevTools;
+
+  constructor(private i18nService: I18nService) {
     this.removeListeners = this.removeListeners.bind(this);
     this.handleGetWorkspaceConfigs = this.handleGetWorkspaceConfigs.bind(this);
     this.handleShowMarketplace = this.handleShowMarketplace.bind(this);
+    this.handleShowEditorDevTools = this.handleShowEditorDevTools.bind(this);
 
-    this.createWindow(i18nService, i18nJson);
+    this.createWindow(i18nService);
   }
 
-  private createWindow(i18nService: I18nService, i18nJson: string) {
+  private createWindow(i18nService: I18nService) {
     this.browserWindow = new BrowserWindow({
       height: WINDOW_HEIGHT,
       width: WINDOW_WIDTH,
@@ -46,18 +51,6 @@ export default class Editor {
       }
     });
 
-    const windowMenu = new Menu();
-    windowMenu.insert(
-      0,
-      new MenuItem({
-        label: "Marketplace",
-
-        click: () => this.showMarketplace()
-      })
-    );
-
-    this.browserWindow.setMenu(windowMenu);
-
     this.startIpc();
 
     this.browserWindow.loadFile(path.join(__dirname, "browser", "index.html"));
@@ -67,12 +60,13 @@ export default class Editor {
       this.browserWindow = undefined;
     });
 
-    this.commonMain = new CommonViewMain(this.browserWindow, i18nService, i18nJson);
+    this.commonMain = new CommonViewMain(this.browserWindow, i18nService);
     // this.commonMain.onWindowReady.addListener(this.onWindowReady.bind(this));
   }
 
   private startIpc() {
     ipcMain.addListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
+    ipcMain.addListener(EDITOR_IPC_CHANNELS.OPEN_EDITOR_DEVTOOLS, this.handleShowEditorDevTools);
     ipcMain.addListener(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE, this.handleShowMarketplace);
 
     if (this.browserWindow) {
@@ -82,6 +76,7 @@ export default class Editor {
 
   private removeListeners() {
     ipcMain.removeListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
+    ipcMain.removeListener(EDITOR_IPC_CHANNELS.OPEN_EDITOR_DEVTOOLS, this.handleShowEditorDevTools);
     ipcMain.removeListener(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE, this.handleShowMarketplace);
 
     if (this.browserWindow) {
@@ -98,6 +93,12 @@ export default class Editor {
   private handleShowMarketplace(event: Electron.Event) {
     if (this.isCurrentWindow(event.sender)) {
       this.showMarketplace();
+    }
+  }
+
+  private handleShowEditorDevTools(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender)) {
+      this.showEditorDevTools();
     }
   }
 
@@ -127,11 +128,32 @@ export default class Editor {
   // Methods
   private showMarketplace() {
     if (!this.marketplace && this.browserWindow) {
-      this.marketplace = new Marketplace(this.i18nService, this.i18nJson, this.browserWindow);
+      this.marketplace = new Marketplace(this.i18nService, this.browserWindow);
 
       this.marketplace.onClose.addListener(() => {
         this.marketplace = undefined;
       });
+    }
+  }
+
+  private showEditorDevTools() {
+    if (!this.editorDevTools && this.browserWindow) {
+      ipcMain.once(
+        EDITOR_IPC_CHANNELS.GET_EXT_COMMANDS_RETURN,
+        (event: Electron.Event, commands: { [key: string]: EditorExtensionBridgeCommand }) => {
+          if (this.isCurrentWindow(event.sender)) {
+            if (!this.editorDevTools && this.browserWindow) {
+              this.editorDevTools = new EditorDevTools(this.i18nService, this.browserWindow, commands);
+
+              this.editorDevTools.onClose.addListener(() => {
+                this.editorDevTools = undefined;
+              });
+            }
+          }
+        }
+      );
+
+      this.browserWindow.webContents.send(EDITOR_IPC_CHANNELS.GET_EXT_COMMANDS);
     }
   }
 
