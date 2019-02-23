@@ -15,7 +15,7 @@ import CommonViewMain from "../common/commonViewMain";
 import { EDITOR_IPC_CHANNELS } from "./common/ipcChannels";
 import ExtensionManager from "../common/extensionManager";
 import EditorDevTools from "../editorDevTools/editorDevTools";
-import { EditorExtensionBridgeCommand } from "./browser/service/editorExtensionBridge";
+import EditorExtensionBridgeCommand from "../../common/common/extensions/editorExtensionBridgeCommand";
 
 const WINDOW_HEIGHT = 600;
 const WINDOW_WIDTH = 800;
@@ -32,6 +32,7 @@ export default class Editor {
     this.handleGetWorkspaceConfigs = this.handleGetWorkspaceConfigs.bind(this);
     this.handleShowMarketplace = this.handleShowMarketplace.bind(this);
     this.handleShowEditorDevTools = this.handleShowEditorDevTools.bind(this);
+    this.handleUpdateExtCommands = this.handleUpdateExtCommands.bind(this);
 
     this.createWindow(i18nService);
   }
@@ -68,6 +69,7 @@ export default class Editor {
     ipcMain.addListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
     ipcMain.addListener(EDITOR_IPC_CHANNELS.OPEN_EDITOR_DEVTOOLS, this.handleShowEditorDevTools);
     ipcMain.addListener(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE, this.handleShowMarketplace);
+    ipcMain.addListener(EDITOR_IPC_CHANNELS.UPDATE_EXT_COMMANDS, this.handleUpdateExtCommands);
 
     if (this.browserWindow) {
       this.browserWindow.addListener("closed", this.removeListeners);
@@ -78,9 +80,19 @@ export default class Editor {
     ipcMain.removeListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
     ipcMain.removeListener(EDITOR_IPC_CHANNELS.OPEN_EDITOR_DEVTOOLS, this.handleShowEditorDevTools);
     ipcMain.removeListener(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE, this.handleShowMarketplace);
+    ipcMain.removeListener(EDITOR_IPC_CHANNELS.UPDATE_EXT_COMMANDS, this.handleUpdateExtCommands);
 
     if (this.browserWindow) {
       this.browserWindow.removeListener("closed", this.removeListeners);
+    }
+  }
+
+  private handleUpdateExtCommands(
+    event: Electron.Event,
+    cmds: { [key: string]: EditorExtensionBridgeCommand<any> }
+  ) {
+    if (this.isCurrentWindow(event.sender) && this.editorDevTools) {
+      this.editorDevTools.updateExtCommands(cmds);
     }
   }
 
@@ -140,7 +152,7 @@ export default class Editor {
     if (!this.editorDevTools && this.browserWindow) {
       ipcMain.once(
         EDITOR_IPC_CHANNELS.GET_EXT_COMMANDS_RETURN,
-        (event: Electron.Event, commands: { [key: string]: EditorExtensionBridgeCommand }) => {
+        (event: Electron.Event, commands: { [key: string]: EditorExtensionBridgeCommand<any> }) => {
           if (this.isCurrentWindow(event.sender)) {
             if (!this.editorDevTools && this.browserWindow) {
               this.editorDevTools = new EditorDevTools(this.i18nService, this.browserWindow, commands);

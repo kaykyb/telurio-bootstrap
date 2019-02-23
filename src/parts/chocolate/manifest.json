@@ -1,0 +1,33 @@
+{
+  "entry": "main/browser/bundle.compiled.js",
+  "name": "chocolate",
+  "label": [
+    {
+      "lang": "en",
+      "content": "Chocolate"
+    }
+  ],
+  "version": "0.1.0",
+  "author": "Kayky B.",
+  "permissions": ["cake.mathCommands"],
+  "contributions": {
+    "commands": [
+      {
+        "name": "test",
+        "permissionRequired": "testCommands"
+      }
+    ],
+    "permissions": [
+      {
+        "name": "testCommands",
+        "label": [
+          {
+            "lang": "en",
+            "content": "Basic commands of the extension."
+          }
+        ],
+        "risk": 0
+      }
+    ]
+  }
+}

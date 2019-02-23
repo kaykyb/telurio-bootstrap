@@ -8,7 +8,9 @@ import CommonPanelRow from "@src/views/editor/common/classes/panelRow";
 export default class EditorBrowserService {
   public extensionBridge: EditorExtensionBridge = new EditorExtensionBridge();
 
-  constructor(public commonService: CommonViewBrowserService) {}
+  constructor(public commonService: CommonViewBrowserService) {
+    this.initIpc();
+  }
 
   public getLayoutConfigs(): CommonLayoutConfig {
     if (this.commonService.ipcService.ipc) {
@@ -21,6 +23,26 @@ export default class EditorBrowserService {
   public showMarketplace() {
     if (this.commonService.ipcService.ipc) {
       return this.commonService.ipcService.ipc.send(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE);
+    }
+  }
+
+  public showEditorDevTools() {
+    if (this.commonService.ipcService.ipc) {
+      return this.commonService.ipcService.ipc.send(EDITOR_IPC_CHANNELS.OPEN_EDITOR_DEVTOOLS);
+    }
+  }
+
+  private initIpc() {
+    if (this.commonService.ipcService.ipc) {
+      const ipc = this.commonService.ipcService.ipc;
+
+      ipc.on(EDITOR_IPC_CHANNELS.GET_EXT_COMMANDS, (e: any) => {
+        e.sender.send(EDITOR_IPC_CHANNELS.GET_EXT_COMMANDS_RETURN, this.extensionBridge.commands);
+      });
+
+      this.extensionBridge.onCommandRegister.addListener(() => {
+        ipc.send(EDITOR_IPC_CHANNELS.UPDATE_EXT_COMMANDS, this.extensionBridge.commands);
+      });
     }
   }
 }

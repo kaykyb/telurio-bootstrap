@@ -4,7 +4,7 @@ import * as path from "path";
 import I18nService from "@src/common/node/services/i18n/i18nService";
 import CommonViewMain from "../common/commonViewMain";
 import CommonEvent from "@src/common/common/commonEvent";
-import { EditorExtensionBridgeCommand } from "../editor/browser/service/editorExtensionBridge";
+import EditorExtensionBridgeCommand from "../../common/common/extensions/editorExtensionBridgeCommand";
 import { EDITOR_DEV_TOOLS_IPC_CHANNELS } from "./common/editorDevToolsIpcChannels";
 
 const WINDOW_HEIGHT = 500;
@@ -19,7 +19,7 @@ export default class EditorDevTools {
   constructor(
     i18nService: I18nService,
     private editorWindow: BrowserWindow,
-    private editorCommands: { [key: string]: EditorExtensionBridgeCommand }
+    private editorCommands: { [key: string]: EditorExtensionBridgeCommand<any> }
   ) {
     // bind ipc event handlers
     this.handleSendCommands = this.handleSendCommands.bind(this);
@@ -27,6 +27,12 @@ export default class EditorDevTools {
 
     // starts
     this.createWindow(i18nService);
+  }
+
+  public updateExtCommands(cmds: { [key: string]: EditorExtensionBridgeCommand<any> }) {
+    if (this.browserWindow) {
+      this.browserWindow.webContents.send(EDITOR_DEV_TOOLS_IPC_CHANNELS.UPDATE_EXT_COMMANDS, cmds);
+    }
   }
 
   private createWindow(i18nService: I18nService) {
@@ -89,7 +95,10 @@ export default class EditorDevTools {
   //#region IPC Event Handlers
   private handleSendCommands(event: Electron.Event) {
     if (this.isCurrentWindow(event.sender)) {
-      this.browserWindow!.webContents.send(EDITOR_DEV_TOOLS_IPC_CHANNELS.GET_EXT_COMMANDS_RETURN, this.editorCommands);
+      this.browserWindow!.webContents.send(
+        EDITOR_DEV_TOOLS_IPC_CHANNELS.GET_EXT_COMMANDS_RETURN,
+        this.editorCommands
+      );
     }
   }
   //#endregion

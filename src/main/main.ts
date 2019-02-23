@@ -15,6 +15,7 @@ let i18n: I18nService;
 const editors: Editor[] = [];
 
 function startEditor() {
+  console.log(app.getPath("userData"));
   i18n = new I18nService(app.getLocale(), true);
 
   const editor = new Editor(i18n);

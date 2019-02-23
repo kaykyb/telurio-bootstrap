@@ -6,5 +6,6 @@ export const EDITOR_IPC_CHANNELS = {
 
   EXEC_EXT_COMMAND: "editor.exeExtCommand",
   GET_EXT_COMMANDS: "editor.getExtCommands",
-  GET_EXT_COMMANDS_RETURN: "editor.getExtCommands.return"
+  GET_EXT_COMMANDS_RETURN: "editor.getExtCommands.return",
+  UPDATE_EXT_COMMANDS: "editor.updateExtCommands"
 };

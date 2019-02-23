@@ -1,16 +1,28 @@
-export class EditorExtensionBridgeCommand {
-  constructor(public action: (args: any[], cb?: (v: any) => any) => any, public permissionRequired?: string) {}
-}
+import EditorExtensionBridgeCommand from "../../../../common/common/extensions/editorExtensionBridgeCommand";
+import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
+import CommonEvent from "@src/common/common/commonEvent";
 
-// tslint:disable-next-line: max-classes-per-file
 export default class EditorExtensionBridge {
-  private commands: { [key: string]: EditorExtensionBridgeCommand } = {};
+  public onCommandRegister = new CommonEvent<EditorExtensionBridgeCommand<any>>();
 
-  public registerCommand(cmd: string, action: (args: any[], cb?: (v: any) => any) => any, permissionRequired?: string) {
-    this.commands[cmd] = new EditorExtensionBridgeCommand(action, permissionRequired);
+  public commands: { [key: string]: EditorExtensionBridgeCommand<any> } = {};
+
+  public registerCommand(
+    cmd: string,
+    permissionRequired: string,
+    owner: ExtensionManifest
+  ): EditorExtensionBridgeCommand<any> {
+    const eCmd = new EditorExtensionBridgeCommand(cmd, owner, permissionRequired);
+    this.commands[cmd] = eCmd;
+    this.onCommandRegister.propagate(eCmd);
+    return eCmd;
   }
 
-  public getCommand(cmd: string): EditorExtensionBridgeCommand {
+  public removeCommand(cmd: string) {
+    delete this.commands[cmd];
+  }
+
+  public getCommand(cmd: string): EditorExtensionBridgeCommand<any> {
     return this.commands[cmd];
   }
 }

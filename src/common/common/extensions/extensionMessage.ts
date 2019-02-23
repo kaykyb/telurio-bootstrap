@@ -1,3 +1,6 @@
+import ExtensionCommandActivationArgs from "./extensionCommandActivationArgs";
+
 export default class ExtensionMessage {
-  constructor(public type: "cmd", public data: any) {}
+  constructor(type: "cmd", data: ExtensionCommandActivationArgs);
+  constructor(public type: string, public data: any) {}
 }

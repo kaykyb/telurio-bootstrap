@@ -1,6 +1,6 @@
 {
-  "entry": "main.js",
-  "name": "ext-test",
+  "entry": "main/browser/bundle.compiled.js",
+  "name": "cake",
   "label": [
     {
       "lang": "en",
@@ -9,21 +9,21 @@
   ],
   "version": "0.1.0",
   "author": "Kayky B.",
-  "permissions": ["core.panels"],
+  "permissions": [],
   "contributions": {
     "commands": [
       {
-        "name": "test",
-        "permissionRequired": "testCommands"
+        "name": "doMath",
+        "permissionRequired": "mathCommands"
       }
     ],
     "permissions": [
       {
-        "name": "testCommands",
+        "name": "mathCommands",
         "label": [
           {
             "lang": "en",
-            "content": "Basic commands of the extension."
+            "content": "Math Commands."
           }
         ],
         "risk": 0

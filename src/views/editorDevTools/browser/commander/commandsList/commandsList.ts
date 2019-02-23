@@ -1,6 +1,6 @@
 import styles from "./commandsList.css";
 
-import { EditorExtensionBridgeCommand } from "@src/views/editor/browser/service/editorExtensionBridge";
+import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import EditorDevToolsViewComponent from "@src/views/editorDevTools/browser/editorDevToolsViewComponent";
 import EditorDevToolsBrowserService from "@src/views/editorDevTools/browser/service/editorDevToolsService";
 import CommandsListItem from "./commandsListItem/commandsListItem";
@@ -10,7 +10,7 @@ export default class CommandsList extends EditorDevToolsViewComponent {
 
   constructor(
     public readonly editorDevToolsService: EditorDevToolsBrowserService,
-    private commands: { [key: string]: EditorExtensionBridgeCommand }
+    private commands: { [key: string]: EditorExtensionBridgeCommand<any> }
   ) {
     super(editorDevToolsService);
   }
