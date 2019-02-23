@@ -1,14 +1,15 @@
 {
   "name": "telurio-bootstrap",
+  "productName": "Telurio Bootstrap",
   "version": "0.1.0",
   "description": "A fundação para os editores com base no Telurio",
-  "main": "dist/node/main.js",
+  "main": "./dist/main/main",
   "scripts": {
     "copy-assets": "node scripts/copy-assets.js",
     "clean-dist": "node scripts/clean-dist.js",
     "clean-tsc-build": "node scripts/clean-tsc-build.js",
     "start": "npm run build && npm run start:no-build",
-    "start:no-build": "electron ./dist/main/main.js",
+    "start:no-build": "electron .",
     "build": "npm run clean-dist && npm run copy-assets && webpack && tsc",
     "build:dev-webpack": "webpack",
     "test": "mocha"
