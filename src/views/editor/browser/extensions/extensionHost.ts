@@ -57,7 +57,7 @@ export default class ExtensionHost {
   }
 
   private handleCommandActivation(args: EditorExtensionBridgeCommandArgs<any[]>): any {
-    if (args.cmd.startsWith(this.ext.name + ".")) {
+    if (args.cmd.startsWith(this.ext.name)) {
       const realCmd = args.cmd.slice(this.ext.name.length + 1, args.cmd.length);
 
       if (this.sandbox && this.sandbox.contentWindow) {
