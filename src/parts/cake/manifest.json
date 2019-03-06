@@ -9,7 +9,7 @@
   ],
   "version": "0.1.0",
   "author": "Kayky B.",
-  "permissions": [],
+  "permissions": ["core.settings"],
   "contributions": {
     "commands": [
       {
@@ -27,6 +27,13 @@
           }
         ],
         "risk": 0
+      }
+    ],
+    "settings": [
+      {
+        "name": "stringToPrint",
+        "type": "string",
+        "defaultValue": "Super!"
       }
     ]
   }

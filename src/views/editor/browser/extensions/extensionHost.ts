@@ -57,7 +57,7 @@ export default class ExtensionHost {
   }
 
   private handleCommandActivation(args: EditorExtensionBridgeCommandArgs<any[]>): any {
-    if (args.cmd.startsWith(this.ext.name)) {
+    if (args.cmd.startsWith(this.ext.name + ".")) {
       const realCmd = args.cmd.slice(this.ext.name.length + 1, args.cmd.length);
 
       if (this.sandbox && this.sandbox.contentWindow) {
@@ -96,18 +96,18 @@ export default class ExtensionHost {
     const cmd = this.editorService.extensionBridge.getCommand(args.cmd);
 
     if (args.cbCmdId) {
-      const cbCmdId = this.ext.name + "!returnCallback." + args.cbCmdId;
+      const cbCmdId = this.ext.name + "." + "!returnCallback." + args.cbCmdId;
       const cbCmd = this.editorService.extensionBridge.registerCommand(cbCmdId, cbCmdId, this.ext);
 
       cmd.owner.permissions.push(cbCmdId);
 
-      if (cmd.execute(args.args, this.ext, cbCmdId)) {
-        cbCmd.addListener((ev: EditorExtensionBridgeCommandArgs<any>) => {
-          cmd.owner.permissions.splice(cmd.owner.permissions.indexOf(cbCmdId), 1);
-          this.editorService.extensionBridge.removeCommand(cbCmdId);
-          this.handleCommandActivation(ev);
-        });
-      } else {
+      cbCmd.addListener((ev: EditorExtensionBridgeCommandArgs<any>) => {
+        cmd.owner.permissions.splice(cmd.owner.permissions.indexOf(cbCmdId), 1);
+        this.editorService.extensionBridge.removeCommand(cbCmdId);
+        this.handleCommandActivation(ev);
+      });
+
+      if (!cmd.execute(args.args, this.ext, cbCmdId)) {
         this.editorService.extensionBridge.removeCommand(cbCmdId);
       }
     } else {

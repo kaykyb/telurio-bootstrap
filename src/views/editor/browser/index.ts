@@ -9,8 +9,8 @@ import Titlebar from "@src/views/common/component/titlebar/titlebar";
 import ExtensionManager from "./extensions/extensionManager";
 import IconButton from "@src/views/common/component/titlebar/icon-button/iconButton";
 
-const coreService = new CommonViewBrowserService();
-const editorService = new EditorBrowserService(coreService);
+const commonService = new CommonViewBrowserService();
+const editorService = new EditorBrowserService(commonService);
 
 // script ----------------------------
 const root = document.getElementById("app-root") as HTMLElement;
@@ -21,7 +21,7 @@ let extManager: ExtensionManager;
 let titlebar: Titlebar;
 
 function start(config: CommonLayoutConfig) {
-  document.title = coreService.i18n.contents.editorView.title;
+  document.title = commonService.i18n.contents.editorView.title;
 
   const leftSideElements = document.createElement("div");
 
@@ -39,13 +39,13 @@ function start(config: CommonLayoutConfig) {
   });
   leftSideElements.appendChild(devToolsBtn.render());
 
-  titlebar = new Titlebar(coreService, true, undefined, leftSideElements);
+  titlebar = new Titlebar(commonService, true, undefined, leftSideElements);
   root.appendChild(titlebar.render());
 
   panelManager = new PanelManager(root, config);
   extManager = new ExtensionManager(editorService);
 
-  coreService.show();
+  commonService.show();
 }
 
 start(editorService.getLayoutConfigs());

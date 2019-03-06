@@ -8,3 +8,7 @@ const bridge = new TelurioBridge();
 bridge.execCommand("cake.doMath", { numberOne: 2, numberTwo: 17 }, (cmd: ExtensionCommandActivationArgs) => {
   console.log("Received! " + cmd.args);
 });
+
+bridge.execCommand("cake.doMath", { numberOne: 2, numberTwo: 28 }, (cmd: ExtensionCommandActivationArgs) => {
+  console.log("Received! " + cmd.args);
+});

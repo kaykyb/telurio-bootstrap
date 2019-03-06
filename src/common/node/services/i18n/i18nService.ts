@@ -33,7 +33,7 @@ export default class I18nService {
       this.loadStrings(true, keepRaw);
       return;
     } else {
-      // error
+      // app is corrupted
     }
 
     if (json !== "") {

@@ -4,11 +4,14 @@ import CommonLayoutConfig from "@src/views/editor/common/classes/commonLayoutCon
 import CommonViewBrowserService from "@src/views/common/services/commonViewBrowserService";
 import { EDITOR_IPC_CHANNELS } from "@src/views/editor/common/ipcChannels";
 import CommonPanelRow from "@src/views/editor/common/classes/panelRow";
+import CoreExtensibilityService from "./coreExtensibilityService";
 
 export default class EditorBrowserService {
   public extensionBridge: EditorExtensionBridge = new EditorExtensionBridge();
+  private coreService: CoreExtensibilityService;
 
-  constructor(public commonService: CommonViewBrowserService) {
+  constructor(public readonly commonService: CommonViewBrowserService) {
+    this.coreService = new CoreExtensibilityService(this.extensionBridge, commonService);
     this.initIpc();
   }
 

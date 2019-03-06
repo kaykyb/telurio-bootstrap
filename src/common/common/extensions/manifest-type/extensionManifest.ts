@@ -9,7 +9,6 @@ export default class ExtensionManifest {
     public version: string,
     public author: string,
     public permissions: string[],
-    public contributions?: ExtensionContributions,
-    public settingsFile?: string
+    public contributions?: ExtensionContributions
   ) {}
 }

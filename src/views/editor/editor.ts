@@ -16,6 +16,7 @@ import { EDITOR_IPC_CHANNELS } from "./common/ipcChannels";
 import ExtensionManager from "../common/extensionManager";
 import EditorDevTools from "../editorDevTools/editorDevTools";
 import EditorExtensionBridgeCommand from "../../common/common/extensions/editorExtensionBridgeCommand";
+import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
 
 const WINDOW_HEIGHT = 600;
 const WINDOW_WIDTH = 800;
@@ -27,7 +28,10 @@ export default class Editor {
   private marketplace?: Marketplace;
   private editorDevTools?: EditorDevTools;
 
-  constructor(private i18nService: I18nService) {
+  constructor(
+    private readonly i18nService: I18nService,
+    private readonly userSettingsService: UserSettingsService
+  ) {
     this.removeListeners = this.removeListeners.bind(this);
     this.handleGetWorkspaceConfigs = this.handleGetWorkspaceConfigs.bind(this);
     this.handleShowMarketplace = this.handleShowMarketplace.bind(this);
@@ -61,8 +65,7 @@ export default class Editor {
       this.browserWindow = undefined;
     });
 
-    this.commonMain = new CommonViewMain(this.browserWindow, i18nService);
-    // this.commonMain.onWindowReady.addListener(this.onWindowReady.bind(this));
+    this.commonMain = new CommonViewMain(this.browserWindow, i18nService, this.userSettingsService);
   }
 
   private startIpc() {
@@ -114,12 +117,6 @@ export default class Editor {
     }
   }
 
-  private onWindowReady() {
-    if (this.browserWindow) {
-      this.browserWindow.show();
-    }
-  }
-
   private getConfigs(): CommonLayoutConfig {
     return new CommonLayoutConfig(
       new CommonPanelRow(600, [
@@ -140,7 +137,7 @@ export default class Editor {
   // Methods
   private showMarketplace() {
     if (!this.marketplace && this.browserWindow) {
-      this.marketplace = new Marketplace(this.i18nService, this.browserWindow);
+      this.marketplace = new Marketplace(this.i18nService, this.browserWindow, this.userSettingsService);
 
       this.marketplace.onClose.addListener(() => {
         this.marketplace = undefined;
@@ -155,7 +152,12 @@ export default class Editor {
         (event: Electron.Event, commands: { [key: string]: EditorExtensionBridgeCommand<any> }) => {
           if (this.isCurrentWindow(event.sender)) {
             if (!this.editorDevTools && this.browserWindow) {
-              this.editorDevTools = new EditorDevTools(this.i18nService, this.browserWindow, commands);
+              this.editorDevTools = new EditorDevTools(
+                this.i18nService,
+                this.browserWindow,
+                commands,
+                this.userSettingsService
+              );
 
               this.editorDevTools.onClose.addListener(() => {
                 this.editorDevTools = undefined;

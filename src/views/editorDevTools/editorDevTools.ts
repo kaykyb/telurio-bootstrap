@@ -6,6 +6,7 @@ import CommonViewMain from "../common/commonViewMain";
 import CommonEvent from "@src/common/common/commonEvent";
 import EditorExtensionBridgeCommand from "../../common/common/extensions/editorExtensionBridgeCommand";
 import { EDITOR_DEV_TOOLS_IPC_CHANNELS } from "./common/editorDevToolsIpcChannels";
+import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
 
 const WINDOW_HEIGHT = 500;
 const WINDOW_WIDTH = 800;
@@ -19,7 +20,8 @@ export default class EditorDevTools {
   constructor(
     i18nService: I18nService,
     private editorWindow: BrowserWindow,
-    private editorCommands: { [key: string]: EditorExtensionBridgeCommand<any> }
+    private editorCommands: { [key: string]: EditorExtensionBridgeCommand<any> },
+    private userSettingsService: UserSettingsService
   ) {
     // bind ipc event handlers
     this.handleSendCommands = this.handleSendCommands.bind(this);
@@ -63,7 +65,7 @@ export default class EditorDevTools {
       this.onClose.propagate({});
     });
 
-    this.commonMain = new CommonViewMain(this.browserWindow, i18nService);
+    this.commonMain = new CommonViewMain(this.browserWindow, i18nService, this.userSettingsService);
   }
 
   private startIpc() {

@@ -74,7 +74,7 @@ export default class TelurioBridge {
   }
 
   private handleCommandActivation(cmd: ExtensionCommandActivationArgs) {
-    const cmdListeners = this.commandListeners.filter(x => (x.cmd = cmd.cmd));
+    const cmdListeners = this.commandListeners.filter(x => x.cmd === cmd.cmd);
     cmdListeners.forEach(c => {
       c.listener(cmd);
     });

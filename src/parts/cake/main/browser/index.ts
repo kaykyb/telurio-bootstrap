@@ -6,18 +6,6 @@ console.log("[ext-test] A extensão ext-test foi iniciada com sucesso.");
 
 const bridge = new TelurioBridge();
 
-// bridge.onCommandActivation.addListener((cmd: ExtensionCommandActivationArgs) => {
-//   console.log(`CMD ACTIVATADION:`, cmd);
-//   switch (cmd.cmd) {
-//     case "doMath":
-//       handleDoMath(cmd);
-//       break;
-
-//     default:
-//       break;
-//   }
-// });
-
 bridge.addCommandListener("doMath", handleDoMath);
 
 function handleDoMath(cmd: ExtensionCommandActivationArgs) {
@@ -26,3 +14,7 @@ function handleDoMath(cmd: ExtensionCommandActivationArgs) {
     bridge.execCommand(cmd.cbCmdId, sum);
   }
 }
+
+bridge.execCommand("core.getSetting", "stringToPrint", cmd => {
+  console.log("cake.stringToPrint --> ", cmd.args);
+});
