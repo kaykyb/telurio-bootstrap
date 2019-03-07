@@ -8,7 +8,7 @@ import CoreExtensibilityService from "./coreExtensibilityService";
 
 export default class EditorBrowserService {
   public extensionBridge: EditorExtensionBridge = new EditorExtensionBridge();
-  private coreService: CoreExtensibilityService;
+  public coreService: CoreExtensibilityService;
 
   constructor(public readonly commonService: CommonViewBrowserService) {
     this.coreService = new CoreExtensibilityService(this.extensionBridge, commonService);

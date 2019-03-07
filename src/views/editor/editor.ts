@@ -123,12 +123,21 @@ export default class Editor {
         new CommonPanelColumn(800, [
           new CommonPanelRow(400, [
             new CommonPanelColumn(300, [
-              new CommonPanelRow(400, undefined, [new Tab("a", "Painel A", true), new Tab("b", "Painel B")]),
-              new CommonPanelRow(200, undefined, [new Tab("c", "Painel C"), new Tab("d", "Painel D", true)])
+              new CommonPanelRow(400, undefined, [
+                new Tab("a", "Painel A", "0", true),
+                new Tab("b", "Painel B")
+              ]),
+              new CommonPanelRow(200, undefined, [
+                new Tab("c", "Painel C"),
+                new Tab("d", "Painel D", "0", true)
+              ])
             ]),
-            new CommonPanelColumn(500, undefined, [new Tab("e", "Painel E", true), new Tab("f", "Painel F")])
+            new CommonPanelColumn(500, undefined, [
+              new Tab("e", "Painel E", "0", true),
+              new Tab("f", "Painel F")
+            ])
           ]),
-          new CommonPanelRow(200, undefined, [new Tab("g", "Painel G", true), new Tab("h", "Painel H")])
+          new CommonPanelRow(200, undefined, [new Tab("g", "Painel G", "0", true), new Tab("h", "Painel H")])
         ])
       ])
     );
