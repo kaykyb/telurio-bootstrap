@@ -1,6 +1,6 @@
 import styles from "./mainView.css";
 
-import Titlebar from "@src/views/common/browser/component/titlebar/titlebar";
+import Titlebar from "@src/views/common/browser/components/titlebar/titlebar";
 import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
 import ViewComponent from "@src/views/common/browser/viewComponent";
 

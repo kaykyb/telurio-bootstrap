@@ -4,7 +4,7 @@ import EditorDevToolsBrowserService from "./service/editorDevToolsService";
 import styles from "./index.css";
 
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
-import Titlebar from "@src/views/common/browser/component/titlebar/titlebar";
+import Titlebar from "@src/views/common/browser/components/titlebar/titlebar";
 
 (() => {
   const root = document.getElementById("app-root") as HTMLElement;

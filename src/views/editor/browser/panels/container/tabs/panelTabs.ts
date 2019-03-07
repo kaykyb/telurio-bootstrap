@@ -4,7 +4,7 @@ import PanelTab from "./tab/panelTab";
 import TrackableEvent from "@src/common/common/trackableEvent";
 import ObservableArray, { ObservableArrayEvent } from "@src/common/common/observableArray";
 import CommonEvent from "@src/common/common/commonEvent";
-import ScrollableElement from "@src/views/common/browser/component/scrollable-element/scrollableElement";
+import ScrollableElement from "@src/views/common/browser/components/scrollable-element/scrollableElement";
 import Tab from "@src/views/editor/common/classes/tab";
 
 export default class PanelTabs {
