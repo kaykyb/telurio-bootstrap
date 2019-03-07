@@ -1,8 +1,9 @@
 import { BrowserWindow } from "electron";
 import * as path from "path";
 
+import CommonViewMain from "../common/node/commonViewMain";
+
 import I18nService from "@src/common/node/services/i18n/i18nService";
-import CommonViewMain from "../common/commonViewMain";
 import CommonEvent from "@src/common/common/commonEvent";
 import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
 

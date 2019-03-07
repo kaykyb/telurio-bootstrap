@@ -1,7 +1,8 @@
-import Titlebar from "../../../../common/component/titlebar/titlebar";
 import styles from "./mainView.css";
-import { IPC_CHANNELS } from "../../../../../common/common/ipcChannels";
-import ViewComponent from "../../../../common/viewComponent";
+
+import Titlebar from "@src/views/common/browser/component/titlebar/titlebar";
+import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
+import ViewComponent from "@src/views/common/browser/viewComponent";
 
 export default class MainView extends ViewComponent {
   private domElement?: HTMLDivElement;

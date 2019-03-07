@@ -1,4 +1,4 @@
-import CommonViewBrowserService from "@src/views/common/services/commonViewBrowserService";
+import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 import { EDITOR_DEV_TOOLS_IPC_CHANNELS } from "../../common/editorDevToolsIpcChannels";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import CommonEvent from "@src/common/common/commonEvent";

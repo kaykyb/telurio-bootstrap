@@ -23,6 +23,6 @@
 }
 
 .close {
-  mask: url("../../../../../../common/assets/icons/close.svg") no-repeat 50% 50%;
-  -webkit-mask: url("../../../../../../common/assets/icons/close.svg") no-repeat 50% 50%;
+  mask: url("../../../../../../../common/assets/icons/close.svg") no-repeat 50% 50%;
+  -webkit-mask: url("../../../../../../../common/assets/icons/close.svg") no-repeat 50% 50%;
 }

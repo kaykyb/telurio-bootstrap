@@ -1,12 +1,11 @@
-import PanelTab from "./tab/panelTab";
-import Tab from "../../../../common/classes/tab";
-
-import TrackableEvent from "../../../../../../common/common/trackableEvent";
-import ObservableArray, { ObservableArrayEvent } from "../../../../../../common/common/observableArray";
-
 import * as styles from "./panelTabs.css";
-import CommonEvent from "../../../../../../common/common/commonEvent";
-import ScrollableElement from "../../../../../common/component/scrollable-element/scrollableElement";
+import PanelTab from "./tab/panelTab";
+
+import TrackableEvent from "@src/common/common/trackableEvent";
+import ObservableArray, { ObservableArrayEvent } from "@src/common/common/observableArray";
+import CommonEvent from "@src/common/common/commonEvent";
+import ScrollableElement from "@src/views/common/browser/component/scrollable-element/scrollableElement";
+import Tab from "@src/views/editor/common/classes/tab";
 
 export default class PanelTabs {
   public onTabDragOut = new TrackableEvent<Tab, PanelTabs>();

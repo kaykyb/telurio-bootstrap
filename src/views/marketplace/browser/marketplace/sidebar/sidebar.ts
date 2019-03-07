@@ -1,6 +1,6 @@
 import styles from "./sidebar.css";
 import SearchBar from "./search-bar/searchBar";
-import ViewComponent from "@src/views/common/viewComponent";
+import ViewComponent from "@src/views/common/browser/viewComponent";
 
 export default class Sidebar extends ViewComponent {
   private domElement!: HTMLDivElement;

@@ -1,7 +1,7 @@
-/** All folders with this name will be compiled by Webpack */
-const AUTO_COMPILE_FOLDER_NAME = "+(parts|views)/**/browser";
+// All folders with this name will be compiled by Webpack
+const AUTO_COMPILE_FOLDER_NAME = "+(parts|views)/**/!(common)/browser";
 
-/** Source files root */
+// Source files root
 const srcRoot = "src";
 
 /** Dist root */
@@ -9,15 +9,12 @@ const distRoot = "dist";
 
 // ----------------------------------------------------------
 
-// webpack plugins
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-
 // packages
 const path = require("path");
 const glob = require("glob");
 
-//const srcPath = path.join(__dirname, srcRoot);
-//const distPath = path.join(__dirname, distRoot);
+// const srcPath = path.join(__dirname, srcRoot);
+// const distPath = path.join(__dirname, distRoot);
 
 console.log("\n\x1b[46m\x1b[30m\x1b[1m WEBPACK \x1b[0m Procurando arquivos para compilar...");
 

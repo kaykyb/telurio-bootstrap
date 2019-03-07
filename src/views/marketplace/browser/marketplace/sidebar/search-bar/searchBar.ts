@@ -1,6 +1,7 @@
 import styles from "./searchBar.css";
-import materialIcons from "@src/views/common/fonts/material-icons/material-icons.css";
-import ViewComponent from "@src/views/common/viewComponent";
+
+import materialIcons from "@src/views/common/browser/fonts/material-icons/material-icons.css";
+import ViewComponent from "@src/views/common/browser/viewComponent";
 
 export default class SearchBar extends ViewComponent {
   private domElement?: HTMLDivElement;

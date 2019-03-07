@@ -5,7 +5,7 @@ import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
 import I18nService from "@src/common/node/services/i18n/i18nService";
 import I18nArgs from "@src/common/common/ipcEvents/i18nArgs";
 import CommonEvent from "@src/common/common/commonEvent";
-import CommonViewInitArgs from "./commonViewInitArgs";
+import CommonViewInitArgs from "../common/commonViewInitArgs";
 import ExtensionManager from "./extensionManager";
 import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
 import UserSettingsArgs from "@src/common/common/ipcEvents/userSettingsArgs";
@@ -85,7 +85,7 @@ export default class CommonViewMain {
   private handleLoadExtensions(event: Electron.Event) {
     if (this.isCurrentWindow(event.sender) && this.extensionsManager) {
       // Array<{ exts: ExtensionManifest[]; sourceDir: string }>
-      const srcDir = path.join(__dirname, "..", "..", "parts");
+      const srcDir = path.join(__dirname, "..", "..", "..", "parts");
       event.returnValue = [
         { exts: this.extensionsManager.loadExtensionsDir(srcDir), sourceDir: "file:///" + srcDir }
       ];

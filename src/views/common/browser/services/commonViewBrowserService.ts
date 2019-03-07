@@ -1,6 +1,4 @@
-import CommonViewInitArgs from "../commonViewInitArgs";
-
-import BrowserI18nService from "@src/common/browser/browseri18nService";
+import CommonViewInitArgs from "@src/views/common/common/commonViewInitArgs";
 import IpcService from "@src/common/browser/ipcService";
 import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
 import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";

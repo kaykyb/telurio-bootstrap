@@ -1,11 +1,12 @@
 import { BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 
-import I18nService from "@src/common/node/services/i18n/i18nService";
-import CommonViewMain from "../common/commonViewMain";
-import CommonEvent from "@src/common/common/commonEvent";
-import EditorExtensionBridgeCommand from "../../common/common/extensions/editorExtensionBridgeCommand";
+import CommonViewMain from "../common/node/commonViewMain";
 import { EDITOR_DEV_TOOLS_IPC_CHANNELS } from "./common/editorDevToolsIpcChannels";
+
+import I18nService from "@src/common/node/services/i18n/i18nService";
+import CommonEvent from "@src/common/common/commonEvent";
+import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
 
 const WINDOW_HEIGHT = 500;

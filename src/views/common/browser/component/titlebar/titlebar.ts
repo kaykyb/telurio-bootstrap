@@ -4,7 +4,7 @@ import IconButton from "./icon-button/iconButton";
 
 import CommonEvent from "@src/common/common/commonEvent";
 import { IS_DEV } from "@src/env";
-import CommonViewBrowserService from "@src/views/common/services/commonViewBrowserService";
+import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
 
 export default class Titlebar {

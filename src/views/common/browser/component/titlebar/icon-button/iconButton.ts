@@ -1,6 +1,6 @@
 import styles from "./iconButton.css";
 import CommonEvent from "@src/common/common/commonEvent";
-import { materialIcons } from "@src/views/common/fonts/material-icons/material-icons.css";
+import { materialIcons } from "@src/views/common/browser/fonts/material-icons/material-icons.css";
 
 export default class IconButton {
   public onClick = new CommonEvent();

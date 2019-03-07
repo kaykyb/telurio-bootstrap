@@ -1,7 +1,7 @@
 import EditorExtensionBridge from "./editorExtensionBridge";
 
 import CommonLayoutConfig from "@src/views/editor/common/classes/commonLayoutConfig";
-import CommonViewBrowserService from "@src/views/common/services/commonViewBrowserService";
+import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 import { EDITOR_IPC_CHANNELS } from "@src/views/editor/common/ipcChannels";
 import CommonPanelRow from "@src/views/editor/common/classes/panelRow";
 import CoreExtensibilityService from "./coreExtensibilityService";

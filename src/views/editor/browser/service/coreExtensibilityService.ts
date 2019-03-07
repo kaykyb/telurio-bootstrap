@@ -2,7 +2,7 @@ import EditorExtensionBridge from "./editorExtensionBridge";
 import { CORE_EXTENSION_MANIFEST } from "@src/common/common/extensions/coreExtensionManifest";
 import EditorExtensionBridgeCommandArgs from "@src/common/common/extensions/editorExtensionBridgeCommandArgs";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
-import CommonViewBrowserService from "@src/views/common/services/commonViewBrowserService";
+import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 
 export default class CoreExtensibilityService {
   constructor(

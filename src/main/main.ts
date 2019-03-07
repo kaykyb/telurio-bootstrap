@@ -1,6 +1,6 @@
 import "module-alias/register"; // register path aliases
 
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, session } from "electron";
 import * as path from "path";
 import Editor from "@src/views/editor/editor";
 import Marketplace from "@src/views/marketplace/marketplace";
@@ -17,6 +17,17 @@ let i18n: I18nService;
 const editors: Editor[] = [];
 
 function startEditor() {
+  // if (session.defaultSession) {
+  //   session.defaultSession.webRequest.onHeadersReceived((details: any, callback: any) => {
+  //     callback({
+  //       responseHeaders: {
+  //         ...details.responseHeaders,
+  //         "Content-Security-Policy": ["default-src 'self'"]
+  //       }
+  //     });
+  //   });
+  // }
+
   const settingsService = new UserSettingsService(app.getPath("userData"));
 
   i18n = new I18nService(app.getLocale(), true);
