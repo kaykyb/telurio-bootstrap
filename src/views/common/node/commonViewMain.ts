@@ -28,6 +28,15 @@ export default class CommonViewMain {
     this.handleSettingChange = this.handleSettingChange.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClosing = this.handleClosing.bind(this);
+    this.handleMinimizeRequest = this.handleMinimizeRequest.bind(this);
+    this.handleMaximizeOrRestoreRequest = this.handleMaximizeOrRestoreRequest.bind(this);
+    this.handleWindowMaximize = this.handleWindowMaximize.bind(this);
+    this.handleWindowMinimize = this.handleWindowMinimize.bind(this);
+    this.handleWindowRestore = this.handleWindowRestore.bind(this);
+    this.handleIsMaximized = this.handleIsMaximized.bind(this);
+    this.handleGetClosable = this.handleGetClosable.bind(this);
+    this.handleGetMaximizable = this.handleGetMaximizable.bind(this);
+    this.handleGetMinimizable = this.handleGetMinimizable.bind(this);
 
     this.startIpc();
   }
@@ -41,9 +50,18 @@ export default class CommonViewMain {
     ipcMain.removeListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
     ipcMain.removeListener(IPC_CHANNELS.READY_TO_SHOW, this.handleShow);
     ipcMain.removeListener(IPC_CHANNELS.SET_SETTING, this.handleSetSetting);
+    ipcMain.removeListener(IPC_CHANNELS.MINIMIZE, this.handleMinimizeRequest);
+    ipcMain.removeListener(IPC_CHANNELS.MAXIMIZE_OR_RESTORE, this.handleMaximizeOrRestoreRequest);
+    ipcMain.removeListener(IPC_CHANNELS.IS_MAXIMIZED, this.handleIsMaximized);
+    ipcMain.removeListener(IPC_CHANNELS.IS_WINDOW_CLOSABLE, this.handleGetClosable);
+    ipcMain.removeListener(IPC_CHANNELS.IS_WINDOW_MAXIMIZABLE, this.handleGetMaximizable);
+    ipcMain.removeListener(IPC_CHANNELS.IS_WINDOW_MINIMIZABLE, this.handleGetMinimizable);
 
     if (this.browserWindow) {
       this.browserWindow.removeListener("closed", this.handleClosing);
+      this.browserWindow.removeListener("minimize", this.handleWindowMinimize);
+      this.browserWindow.removeListener("restore", this.handleWindowRestore);
+      this.browserWindow.removeListener("maximize", this.handleWindowMaximize);
     }
   }
 
@@ -56,10 +74,55 @@ export default class CommonViewMain {
     ipcMain.addListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
     ipcMain.addListener(IPC_CHANNELS.READY_TO_SHOW, this.handleShow);
     ipcMain.addListener(IPC_CHANNELS.SET_SETTING, this.handleSetSetting);
+    ipcMain.addListener(IPC_CHANNELS.MINIMIZE, this.handleMinimizeRequest);
+    ipcMain.addListener(IPC_CHANNELS.MAXIMIZE_OR_RESTORE, this.handleMaximizeOrRestoreRequest);
+    ipcMain.addListener(IPC_CHANNELS.IS_MAXIMIZED, this.handleIsMaximized);
+    ipcMain.addListener(IPC_CHANNELS.IS_WINDOW_CLOSABLE, this.handleGetClosable);
+    ipcMain.addListener(IPC_CHANNELS.IS_WINDOW_MAXIMIZABLE, this.handleGetMaximizable);
+    ipcMain.addListener(IPC_CHANNELS.IS_WINDOW_MINIMIZABLE, this.handleGetMinimizable);
 
     if (this.browserWindow) {
       this.browserWindow.addListener("closed", this.handleClosing);
+      this.browserWindow.addListener("minimize", this.handleWindowMinimize);
+      this.browserWindow.addListener("unmaximize", this.handleWindowRestore);
+      this.browserWindow.addListener("maximize", this.handleWindowMaximize);
     }
+  }
+
+  private handleGetMaximizable(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender)) {
+      event.returnValue = this.browserWindow.isMaximizable();
+    }
+  }
+
+  private handleGetMinimizable(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender)) {
+      event.returnValue = this.browserWindow.isMinimizable();
+    }
+  }
+
+  private handleGetClosable(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender)) {
+      event.returnValue = this.browserWindow.isClosable();
+    }
+  }
+
+  private handleIsMaximized(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender)) {
+      event.returnValue = this.browserWindow.isMaximized();
+    }
+  }
+
+  private handleWindowMinimize() {
+    this.browserWindow.webContents.send(IPC_CHANNELS.MINIMIZED);
+  }
+
+  private handleWindowRestore() {
+    this.browserWindow.webContents.send(IPC_CHANNELS.RESTORED);
+  }
+
+  private handleWindowMaximize() {
+    this.browserWindow.webContents.send(IPC_CHANNELS.MAXIMIZED);
   }
 
   private handleSettingChange(setting: { key: string; value: any }) {
@@ -119,6 +182,22 @@ export default class CommonViewMain {
           this.browserWindow.webContents.toggleDevTools();
         }
       }
+    }
+  }
+
+  private handleMaximizeOrRestoreRequest(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender)) {
+      if (this.browserWindow!.isMaximized()) {
+        this.browserWindow!.restore();
+      } else {
+        this.browserWindow!.maximize();
+      }
+    }
+  }
+
+  private handleMinimizeRequest(event: Electron.Event) {
+    if (this.isCurrentWindow(event.sender)) {
+      this.browserWindow.minimize();
     }
   }
 

@@ -3,10 +3,14 @@ import IpcService from "@src/common/browser/ipcService";
 import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
 import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
 import I18nLanguageFile from "@src/common/node/services/i18n/i18nLanguageFile";
-import SettingMetadata from "@src/common/node/services/settings/settingMetadata";
 import ISettingStore from "@src/common/node/services/settings/settingStore";
+import CommonEvent from "@src/common/common/commonEvent";
 
 export default class CommonViewBrowserService {
+  public onMinimize = new CommonEvent();
+  public onMaximize = new CommonEvent();
+  public onRestore = new CommonEvent();
+
   public i18n!: I18nLanguageFile;
 
   public ipcService: IpcService;
@@ -16,6 +20,10 @@ export default class CommonViewBrowserService {
   constructor() {
     this.handleSettingsUpdate = this.handleSettingsUpdate.bind(this);
 
+    this.handleWindowMaximized = this.handleWindowMaximized.bind(this);
+    this.handleWindowMinimized = this.handleWindowMinimized.bind(this);
+    this.handleWindowRestored = this.handleWindowRestored.bind(this);
+
     this.ipcService = new IpcService();
 
     this.addIpcListeners();
@@ -23,15 +31,57 @@ export default class CommonViewBrowserService {
     if (this.ipcService.ipc) {
       const initArgs: CommonViewInitArgs = this.ipcService.ipc.sendSync(IPC_CHANNELS.BROWSER_READY);
 
-      // this.i18n = new BrowserI18nService(initArgs.i18nArgs.i18nLanguageFile);
-
       this.i18n = initArgs.i18nArgs.i18nLanguageFile;
       this.userSettings = initArgs.userSettingsArg.userSettings;
 
       return;
     }
 
-    // this.i18n = new BrowserI18nService(new I18nLanguageFile({ code: "null", name: "null" }));
+    // this.i18n = ...
+  }
+
+  public getWindowIsCloseable(): boolean {
+    if (this.ipcService.ipc) {
+      return this.ipcService.ipc.sendSync(IPC_CHANNELS.IS_WINDOW_CLOSABLE);
+    }
+
+    return false;
+  }
+
+  public getWindowIsMaximizable(): boolean {
+    if (this.ipcService.ipc) {
+      return this.ipcService.ipc.sendSync(IPC_CHANNELS.IS_WINDOW_MAXIMIZABLE);
+    }
+
+    return false;
+  }
+
+  public getWindowIsMinimizable(): boolean {
+    if (this.ipcService.ipc) {
+      return this.ipcService.ipc.sendSync(IPC_CHANNELS.IS_WINDOW_MINIMIZABLE);
+    }
+
+    return false;
+  }
+
+  public getIsMaximized(): boolean {
+    if (this.ipcService.ipc) {
+      return this.ipcService.ipc.sendSync(IPC_CHANNELS.IS_MAXIMIZED);
+    }
+
+    return false;
+  }
+
+  public maximizeOrRestore() {
+    if (this.ipcService.ipc) {
+      this.ipcService.ipc.send(IPC_CHANNELS.MAXIMIZE_OR_RESTORE);
+    }
+  }
+
+  public minimize() {
+    if (this.ipcService.ipc) {
+      this.ipcService.ipc.send(IPC_CHANNELS.MINIMIZE);
+    }
   }
 
   public getExtensions(): Array<{
@@ -69,13 +119,33 @@ export default class CommonViewBrowserService {
   private removeIpcListeners() {
     if (this.ipcService.ipc) {
       this.ipcService.ipc.removeListener(IPC_CHANNELS.SETTINGS_UPDATE, this.handleSettingsUpdate);
+
+      this.ipcService.ipc.removeListener(IPC_CHANNELS.MAXIMIZED, this.handleWindowMaximized);
+      this.ipcService.ipc.removeListener(IPC_CHANNELS.MINIMIZED, this.handleWindowMinimized);
+      this.ipcService.ipc.removeListener(IPC_CHANNELS.RESTORED, this.handleWindowRestored);
     }
   }
 
   private addIpcListeners() {
     if (this.ipcService.ipc) {
       this.ipcService.ipc.addListener(IPC_CHANNELS.SETTINGS_UPDATE, this.handleSettingsUpdate);
+
+      this.ipcService.ipc.addListener(IPC_CHANNELS.MAXIMIZED, this.handleWindowMaximized);
+      this.ipcService.ipc.addListener(IPC_CHANNELS.MINIMIZED, this.handleWindowMinimized);
+      this.ipcService.ipc.addListener(IPC_CHANNELS.RESTORED, this.handleWindowRestored);
     }
+  }
+
+  private handleWindowMaximized() {
+    this.onMaximize.propagate({});
+  }
+
+  private handleWindowMinimized() {
+    this.onMinimize.propagate({});
+  }
+
+  private handleWindowRestored() {
+    this.onRestore.propagate({});
   }
 
   private handleSettingsUpdate(setting: { key: string; value: any }) {

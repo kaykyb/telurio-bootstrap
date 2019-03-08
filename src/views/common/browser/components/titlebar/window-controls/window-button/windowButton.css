@@ -1,13 +1,17 @@
 .button {
   height: 30px;
-  width: 47px;
+  width: 46px;
   border: none;
   padding: 0;
   background: none;
 }
 
-.button:hover {
+.button.closeButton:hover {
   background: red;
+}
+
+.button:hover {
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .button:hover .icon.close {
@@ -15,8 +19,8 @@
 }
 
 .icon {
-  height: 29px;
-  width: 47px;
+  height: 100%;
+  width: 100%;
   border: none;
   padding: 0;
   background: black;
@@ -25,4 +29,27 @@
 .close {
   mask: url("../../../../../../../common/assets/icons/close.svg") no-repeat 50% 50%;
   -webkit-mask: url("../../../../../../../common/assets/icons/close.svg") no-repeat 50% 50%;
+  mask-size: 10px;
+  -webkit-mask-size: 10px;
+}
+
+.minimize {
+  mask: url("../../../../../../../common/assets/icons/minimize.svg") no-repeat 50% 50%;
+  -webkit-mask: url("../../../../../../../common/assets/icons/minimize.svg") no-repeat 50% 50%;
+  mask-size: 10px;
+  -webkit-mask-size: 10px;
+}
+
+.restore {
+  mask: url("../../../../../../../common/assets/icons/restore.svg") no-repeat 50% 50%;
+  -webkit-mask: url("../../../../../../../common/assets/icons/restore.svg") no-repeat 50% 50%;
+  mask-size: 10px;
+  -webkit-mask-size: 10px;
+}
+
+.maximize {
+  mask: url("../../../../../../../common/assets/icons/maximize.svg") no-repeat 50% 50%;
+  -webkit-mask: url("../../../../../../../common/assets/icons/maximize.svg") no-repeat 50% 50%;
+  mask-size: 10px;
+  -webkit-mask-size: 10px;
 }

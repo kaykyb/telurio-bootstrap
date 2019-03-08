@@ -4,10 +4,10 @@ import CommonEvent from "@src/common/common/commonEvent";
 
 export default class WindowButton {
   public onClick = new CommonEvent();
-  private button: "close" | "minimize" | "maximize" | "reset";
+  private button: "close" | "minimize" | "maximize" | "restore";
   private domElement?: HTMLButtonElement;
 
-  constructor(button: "close" | "minimize" | "maximize" | "reset") {
+  constructor(button: "close" | "minimize" | "maximize" | "restore") {
     this.button = button;
   }
 
@@ -22,7 +22,20 @@ export default class WindowButton {
 
     switch (this.button) {
       case "close":
+        this.domElement.classList.add(styles.closeButton);
         icon.classList.add(styles.close);
+        break;
+
+      case "minimize":
+        icon.classList.add(styles.minimize);
+        break;
+
+      case "maximize":
+        icon.classList.add(styles.maximize);
+        break;
+
+      case "restore":
+        icon.classList.add(styles.restore);
         break;
 
       default:
@@ -32,5 +45,17 @@ export default class WindowButton {
     this.domElement.onclick = () => this.onClick.propagate({});
 
     return this.domElement;
+  }
+
+  public hide() {
+    if (this.domElement) {
+      this.domElement.style.display = "none";
+    }
+  }
+
+  public show() {
+    if (this.domElement) {
+      this.domElement.style.display = "inline-block";
+    }
   }
 }

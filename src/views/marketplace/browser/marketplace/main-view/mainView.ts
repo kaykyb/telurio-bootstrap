@@ -12,7 +12,7 @@ export default class MainView extends ViewComponent {
     this.domElement = document.createElement("div");
     this.domElement.classList.add(styles.root);
 
-    this.titlebar = new Titlebar(this.commonService, true);
+    this.titlebar = new Titlebar(this.commonService);
     this.titlebar.onClose.addListener(() => {
       if (this.commonService.ipcService.ipc) {
         this.commonService.ipcService.ipc.send(IPC_CHANNELS.CLOSE_REQUEST);

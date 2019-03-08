@@ -10,8 +10,6 @@ import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
 export default class Titlebar {
   public onClose = new CommonEvent();
 
-  public closable: boolean;
-
   private domElement?: HTMLDivElement;
   private windowControls?: WindowControls;
 
@@ -20,11 +18,9 @@ export default class Titlebar {
 
   constructor(
     private commonBrowserService: CommonViewBrowserService,
-    closable: boolean,
     rightSideElements?: HTMLElement,
     leftSideElements?: HTMLElement
   ) {
-    this.closable = closable;
     this.rightSideElements = rightSideElements;
     this.leftSideElements = leftSideElements;
   }
@@ -69,10 +65,40 @@ export default class Titlebar {
     const windowControlsContainer = document.createElement("div");
     windowControlsContainer.classList.add(styles.controlsContainer);
 
-    this.windowControls = new WindowControls(this.closable);
+    this.windowControls = new WindowControls(
+      this.commonBrowserService.getWindowIsCloseable(),
+      this.commonBrowserService.getWindowIsMinimizable(),
+      this.commonBrowserService.getWindowIsMaximizable(),
+      this.commonBrowserService.getIsMaximized()
+    );
+
     this.windowControls.onCloseClick.addListener(() => {
       if (this.commonBrowserService.ipcService.ipc) {
         this.commonBrowserService.ipcService.ipc.send(IPC_CHANNELS.CLOSE_REQUEST);
+      }
+    });
+
+    this.windowControls.onMaximizeClick.addListener(() => {
+      this.commonBrowserService.maximizeOrRestore();
+    });
+
+    this.windowControls.onRestoreClick.addListener(() => {
+      this.commonBrowserService.maximizeOrRestore();
+    });
+
+    this.windowControls.onMinimizeClick.addListener(() => {
+      this.commonBrowserService.minimize();
+    });
+
+    this.commonBrowserService.onMaximize.addListener(() => {
+      if (this.windowControls) {
+        this.windowControls.wasMaximized();
+      }
+    });
+
+    this.commonBrowserService.onRestore.addListener(() => {
+      if (this.windowControls) {
+        this.windowControls.wasRestored();
       }
     });
 

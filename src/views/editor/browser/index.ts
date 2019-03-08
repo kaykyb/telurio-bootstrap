@@ -39,7 +39,7 @@ function start(config: CommonLayoutConfig) {
   });
   leftSideElements.appendChild(devToolsBtn.render());
 
-  titlebar = new Titlebar(commonService, true, undefined, leftSideElements);
+  titlebar = new Titlebar(commonService, undefined, leftSideElements);
   root.appendChild(titlebar.render());
 
   panelManager = new PanelManager(root, config);
