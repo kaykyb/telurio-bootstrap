@@ -7,6 +7,8 @@ export default class CelResizer {
 
   private ownerType: "row" | "col";
 
+  private windowHider?: HTMLDivElement;
+
   constructor(ownerType: "row" | "col") {
     this.ownerType = ownerType;
 
@@ -31,6 +33,10 @@ export default class CelResizer {
 
     window.addEventListener("mousemove", this.handleMouseMove);
     window.addEventListener("mouseup", this.handleMouseUp);
+
+    this.windowHider = document.createElement("div");
+    this.windowHider.classList.add(styles.hider, this.ownerType === "row" ? styles.row : styles.col);
+    document.body.appendChild(this.windowHider);
   }
 
   private handleMouseMove(ev: MouseEvent) {
@@ -41,6 +47,11 @@ export default class CelResizer {
   }
 
   private handleMouseUp(ev: MouseEvent) {
+    if (this.windowHider) {
+      this.windowHider.remove();
+      this.windowHider = undefined;
+    }
+
     window.removeEventListener("mousemove", this.handleMouseMove);
     window.removeEventListener("mouseup", this.handleMouseUp);
 

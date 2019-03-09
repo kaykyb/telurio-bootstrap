@@ -5,16 +5,33 @@
   z-index: 201;
 }
 
+.row {
+  cursor: ns-resize;
+}
+
+.col {
+  cursor: ew-resize;
+}
+
 .resizer.row {
   height: 4px;
-  cursor: ns-resize;
   left: 0;
   border-bottom: 1px solid #e5e5e5;
 }
 
 .resizer.col {
   width: 4px;
-  cursor: ew-resize;
   top: 32px;
   border-right: 1px solid #e5e5e5;
+}
+
+.hider {
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 10000;
 }
