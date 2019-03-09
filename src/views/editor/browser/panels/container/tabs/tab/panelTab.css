@@ -7,7 +7,7 @@
 }
 
 .tab {
-  height: 32px;
+  height: 31px;
   line-height: 32px;
   padding: 0 8px;
   flex-shrink: 0;
@@ -17,6 +17,7 @@
 }
 
 .active {
+  height: 32px;
   border-bottom: 1px solid blue;
   color: blue;
   opacity: 1;

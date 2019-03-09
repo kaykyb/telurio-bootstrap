@@ -1,6 +1,6 @@
 import "module-alias/register"; // register path aliases
 
-import { app, BrowserWindow, ipcMain, session } from "electron";
+import { app, BrowserWindow, ipcMain, protocol } from "electron";
 import * as path from "path";
 import Editor from "@src/views/editor/editor";
 import Marketplace from "@src/views/marketplace/marketplace";
@@ -17,6 +17,19 @@ let i18n: I18nService;
 const editors: Editor[] = [];
 
 function startEditor() {
+  protocol.registerFileProtocol("telurio-ext", (request, callback) => {
+    const url = request.url.substr(14);
+    const extRoot = path.join(__dirname, "..", "parts", "/");
+    const filePath = path.join(extRoot, url);
+
+    if (!filePath.startsWith(extRoot)) {
+      callback();
+      return;
+    }
+
+    callback(filePath);
+  });
+
   // if (session.defaultSession) {
   //   session.defaultSession.webRequest.onHeadersReceived((details: any, callback: any) => {
   //     callback({

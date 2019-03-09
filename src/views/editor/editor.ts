@@ -63,7 +63,7 @@ export default class Editor {
     this.startIpc();
 
     this.browserWindow.loadFile(path.join(__dirname, "browser", "index.html"));
-    // this.browserWindow.webContents.openDevTools();
+    this.browserWindow.webContents.openDevTools();
 
     this.browserWindow.on("closed", () => {
       this.browserWindow = undefined;
@@ -133,20 +133,23 @@ export default class Editor {
           new CommonPanelRow(400, [
             new CommonPanelColumn(300, [
               new CommonPanelRow(400, undefined, [
-                new Tab("a", "Painel A", "0", true),
-                new Tab("b", "Painel B")
+                new Tab("cake", "a", "Painel A", "0", true),
+                new Tab("cake", "b", "Painel B")
               ]),
               new CommonPanelRow(200, undefined, [
-                new Tab("c", "Painel C"),
-                new Tab("d", "Painel D", "0", true)
+                new Tab("cake", "c", "Painel C"),
+                new Tab("cake", "d", "Painel D", "0", true)
               ])
             ]),
             new CommonPanelColumn(500, undefined, [
-              new Tab("e", "Painel E", "0", true),
-              new Tab("f", "Painel F")
+              new Tab("cake", "e", "Painel E", "0", true),
+              new Tab("cake", "f", "Painel F")
             ])
           ]),
-          new CommonPanelRow(200, undefined, [new Tab("g", "Painel G", "0", true), new Tab("h", "Painel H")])
+          new CommonPanelRow(200, undefined, [
+            new Tab("cake", "g", "Painel G", "0", true),
+            new Tab("cake", "h", "Painel H")
+          ])
         ])
       ])
     );

@@ -9,6 +9,8 @@ import CommonViewInitArgs from "../common/commonViewInitArgs";
 import ExtensionManager from "./extensionManager";
 import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
 import UserSettingsArgs from "@src/common/common/ipcEvents/userSettingsArgs";
+import LoadableExtension from "@src/common/common/extensions/loadableExtension";
+import NodeUtil from "@src/common/node/util";
 
 export default class CommonViewMain {
   public onWindowReady = new CommonEvent();
@@ -147,11 +149,10 @@ export default class CommonViewMain {
 
   private handleLoadExtensions(event: Electron.Event) {
     if (this.isCurrentWindow(event.sender) && this.extensionsManager) {
-      // Array<{ exts: ExtensionManifest[]; sourceDir: string }>
       const srcDir = path.join(__dirname, "..", "..", "..", "parts");
-      event.returnValue = [
-        { exts: this.extensionsManager.loadExtensionsDir(srcDir), sourceDir: "file:///" + srcDir }
-      ];
+      event.returnValue = this.extensionsManager
+        .loadExtensionsDir(srcDir)
+        .map<LoadableExtension>(v => new LoadableExtension(v, "telurio-ext://", srcDir));
     }
   }
 

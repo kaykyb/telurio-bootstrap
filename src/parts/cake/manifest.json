@@ -9,7 +9,7 @@
   ],
   "version": "0.1.0",
   "author": "Kayky B.",
-  "permissions": ["core.settings"],
+  "permissions": ["core.settings", "core.panels"],
   "contributions": {
     "commands": [
       {

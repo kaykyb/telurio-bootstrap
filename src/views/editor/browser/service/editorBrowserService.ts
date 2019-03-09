@@ -5,10 +5,15 @@ import CommonViewBrowserService from "@src/views/common/browser/services/commonV
 import { EDITOR_IPC_CHANNELS } from "@src/views/editor/common/ipcChannels";
 import CommonPanelRow from "@src/views/editor/common/classes/panelRow";
 import CoreExtensibilityService from "./coreExtensibilityService";
+import PanelView from "../panels/container/frame/views/view/panelView";
+import PanelTab from "../panels/container/tabs/tab/panelTab";
 
 export default class EditorBrowserService {
   public extensionBridge: EditorExtensionBridge = new EditorExtensionBridge();
   public coreService: CoreExtensibilityService;
+
+  public panelViewsIndex: PanelView[] = [];
+  public panelTabsIndex: PanelTab[] = [];
 
   constructor(public readonly commonService: CommonViewBrowserService) {
     this.coreService = new CoreExtensibilityService(this.extensionBridge, commonService);

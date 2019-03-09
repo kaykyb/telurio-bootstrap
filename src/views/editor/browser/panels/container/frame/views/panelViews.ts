@@ -1,6 +1,11 @@
+import ResizeObserver from "resize-observer-polyfill";
+
+import styles from "./panelViews.css";
+
 import ObservableArray, { ObservableArrayEvent } from "@src/common/common/observableArray";
 import Tab from "@src/views/editor/common/classes/tab";
 import PanelView from "./view/panelView";
+import EditorBrowserService from "@src/views/editor/browser/service/editorBrowserService";
 
 export default class PanelViews {
   private domElement!: HTMLDivElement;
@@ -23,7 +28,7 @@ export default class PanelViews {
     this._tabs = v;
   }
 
-  constructor(tabs: ObservableArray<Tab>) {
+  constructor(private readonly editorService: EditorBrowserService, tabs: ObservableArray<Tab>) {
     this._tabs = tabs;
     this.bindMethods();
     this.addListenersToTabArray(this._tabs);
@@ -31,6 +36,7 @@ export default class PanelViews {
 
   public render(): HTMLElement {
     this.domElement = document.createElement("div");
+    this.domElement.classList.add(styles.container);
 
     const frag = document.createDocumentFragment();
 
@@ -56,11 +62,16 @@ export default class PanelViews {
   }
 
   private addPanelView(tab: Tab, parent?: HTMLElement | DocumentFragment) {
-    const panelView = new PanelView(tab);
+    let panelView: PanelView;
+
+    const previousView = this.editorService.panelViewsIndex.find(x => x.tab.panelId === tab.panelId);
+    if (previousView && previousView.iframe) {
+      panelView = new PanelView(this.editorService, tab, previousView.iframe);
+    } else {
+      panelView = new PanelView(this.editorService, tab);
+    }
 
     this.panelViews.push(panelView);
-
-    // tslint:disable-next-line:no-console
 
     if (parent) {
       parent.appendChild(panelView.render());
@@ -90,7 +101,10 @@ export default class PanelViews {
   private handleTabsArrayBeforeDelete(e: ObservableArrayEvent) {
     if (e.targetIndex !== undefined) {
       const element = this.panelViews[e.targetIndex];
-      element.domElement.remove();
+      // element.domElement.remove();
+
+      // remove from the tabs register - workaround to chrome iframe bug
+      this.editorService.panelViewsIndex.splice(this.editorService.panelViewsIndex.indexOf(element), 1);
 
       this.panelViews.splice(e.targetIndex, 1);
     }

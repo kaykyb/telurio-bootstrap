@@ -16,6 +16,8 @@
 } */
 
 .frame {
+  max-width: 100%;
+  max-height: calc(100% - 32px);
   flex: 1;
   position: relative;
 }

@@ -8,12 +8,17 @@ import CommonPanelRow from "@src/views/editor/common/classes/panelRow";
 
 import CommonLayoutConfig from "@src/views/editor/common/classes/commonLayoutConfig";
 import ObservableArray from "@src/common/common/observableArray";
+import EditorBrowserService from "../service/editorBrowserService";
 
 export default class PanelManager {
   public config!: PanelRow;
   private root: HTMLElement;
 
-  constructor(root: HTMLElement, initialConfig: CommonLayoutConfig) {
+  constructor(
+    root: HTMLElement,
+    initialConfig: CommonLayoutConfig,
+    private editorService: EditorBrowserService
+  ) {
     this.root = root;
     this.transformCommonConfig(initialConfig);
     this.render();
@@ -24,7 +29,12 @@ export default class PanelManager {
     this.config.fill = true;
   }
 
-  private insertCol(col: PanelColumn, insertIn: DocumentFragment, parentRow?: PanelRow, nextCol?: PanelColumn) {
+  private insertCol(
+    col: PanelColumn,
+    insertIn: DocumentFragment,
+    parentRow?: PanelRow,
+    nextCol?: PanelColumn
+  ) {
     insertIn.appendChild(col.render(parentRow, nextCol));
   }
 
@@ -37,9 +47,14 @@ export default class PanelManager {
     let col: PanelColumn;
 
     if (cCol.panels) {
-      col = new PanelColumn(cCol.width, undefined, ObservableArray.fromArray(cCol.panels));
+      col = new PanelColumn(
+        this.editorService,
+        cCol.width,
+        undefined,
+        ObservableArray.fromArray(cCol.panels)
+      );
     } else {
-      col = new PanelColumn(cCol.width, undefined, undefined);
+      col = new PanelColumn(this.editorService, cCol.width, undefined, undefined);
     }
 
     if (cCol.rows) {
@@ -56,9 +71,9 @@ export default class PanelManager {
   private transformCommonRow(cRow: CommonPanelRow): PanelRow {
     let row: PanelRow;
     if (cRow.panels) {
-      row = new PanelRow(cRow.height, undefined, ObservableArray.fromArray(cRow.panels));
+      row = new PanelRow(this.editorService, cRow.height, undefined, ObservableArray.fromArray(cRow.panels));
     } else {
-      row = new PanelRow(cRow.height, undefined, undefined);
+      row = new PanelRow(this.editorService, cRow.height, undefined, undefined);
     }
 
     if (cRow.columns) {

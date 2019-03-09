@@ -42,7 +42,7 @@ function start(config: CommonLayoutConfig) {
   titlebar = new Titlebar(commonService, undefined, leftSideElements);
   root.appendChild(titlebar.render());
 
-  panelManager = new PanelManager(root, config);
+  panelManager = new PanelManager(root, config, editorService);
   extManager = new ExtensionManager(editorService);
 
   commonService.show();

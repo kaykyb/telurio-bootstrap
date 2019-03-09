@@ -6,6 +6,7 @@ import ObservableArray, { ObservableArrayEvent } from "@src/common/common/observ
 import CommonEvent from "@src/common/common/commonEvent";
 import ScrollableElement from "@src/views/common/browser/components/scrollable-element/scrollableElement";
 import Tab from "@src/views/editor/common/classes/tab";
+import EditorBrowserService from "../../../service/editorBrowserService";
 
 export default class PanelTabs {
   public onTabDragOut = new TrackableEvent<Tab, PanelTabs>();
@@ -33,7 +34,7 @@ export default class PanelTabs {
     this._tabs = v;
   }
 
-  constructor(tabs: ObservableArray<Tab>) {
+  constructor(private readonly editorService: EditorBrowserService, tabs: ObservableArray<Tab>) {
     this._tabs = tabs;
     this.bindMethods();
     this.addListenersToTabArray(this._tabs);
@@ -111,7 +112,7 @@ export default class PanelTabs {
   }
 
   private addPanelTab(tab: Tab, parent?: HTMLElement | DocumentFragment) {
-    const panelTab = new PanelTab(tab);
+    const panelTab = new PanelTab(this.editorService, tab);
 
     panelTab.onTabDragOut.addListener(this.handlePanelTabDragOut);
     panelTab.onTabDrop.addListener(this.handlePanelTabDrop);
@@ -167,6 +168,9 @@ export default class PanelTabs {
       element.onTabDrop.removeListener(this.handlePanelTabDrop, true);
 
       element.domElement.remove();
+
+      // remove from the tabs register - workaround to chrome < 72 iframe bug
+      this.editorService.panelTabsIndex.splice(this.editorService.panelTabsIndex.indexOf(element), 1);
 
       this.panelTabs.splice(e.targetIndex, 1);
     }

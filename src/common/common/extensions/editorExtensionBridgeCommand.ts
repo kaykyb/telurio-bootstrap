@@ -1,5 +1,7 @@
 import EditorExtensionBridgeCommandArgs from "./editorExtensionBridgeCommandArgs";
 import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
+import LoadableExtension from "./loadableExtension";
+import LogUtility from "../util/logUtility";
 
 /**
  * Editor extension command.
@@ -49,17 +51,22 @@ export default class EditorExtensionBridgeCommand<T> {
    * @returns Returns true if the command was propagated sucessfully or false if the provided sender doesn't have
    * enough permissions to run this commmand.
    */
-  public execute(args: T, sender: ExtensionManifest, cbCmdId?: string): boolean {
-    if (!sender || !this.permissionRequired || sender.permissions.indexOf(this.permissionRequired) >= 0) {
+  public execute(args: T, sender: LoadableExtension, cbCmdId?: string): boolean {
+    if (
+      !sender ||
+      !this.permissionRequired ||
+      sender.extension.permissions.indexOf(this.permissionRequired) >= 0
+    ) {
       this.propagate(new EditorExtensionBridgeCommandArgs<T>(this.cmd, args, sender, cbCmdId));
       return true;
     }
 
-    // tslint:disable-next-line: no-console
-    console.error(
-      `INSUFICIENT_PERMISSIONS: ${sender.name} doesn't have the required permission ${
-        this.permissionRequired
-      } to execute ${this.cmd}`
+    LogUtility.err(
+      "InsuficientPermissions",
+      "Security",
+      `${sender.extension.name} doesn't have the required permission ${this.permissionRequired} to execute ${
+        this.cmd
+      }`
     );
 
     return false;

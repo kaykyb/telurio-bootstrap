@@ -10,6 +10,7 @@ import TrackableEvent from "@src/common/common/trackableEvent";
 import DropArea from "./frame/drop-areas/drop-area/dropArea";
 import CommonEvent from "@src/common/common/commonEvent";
 import PanelTab from "./tabs/tab/panelTab";
+import EditorBrowserService from "../../service/editorBrowserService";
 
 export default class PanelContainer {
   public onEmpty = new CommonEvent();
@@ -41,7 +42,7 @@ export default class PanelContainer {
     }
   }
 
-  constructor(panels: ObservableArray<Tab>) {
+  constructor(panels: ObservableArray<Tab>, private readonly editorService: EditorBrowserService) {
     this.panels = panels;
 
     this.handlePanelTabsDragOut = this.handlePanelTabsDragOut.bind(this);
@@ -55,7 +56,7 @@ export default class PanelContainer {
 
     // this.tabs = this.getTabs();
 
-    this.tabsPanel = new PanelTabs(this.panels);
+    this.tabsPanel = new PanelTabs(this.editorService, this.panels);
     this.tabsPanel.onTabDragOut.addListener(this.handlePanelTabsDragOut);
     this.tabsPanel.onTabDrop.addListener(this.handlePanelTabsDrop);
     this.tabsPanel.onTabClick.addListener(this.handlePanelTabsTabClick);
@@ -66,7 +67,7 @@ export default class PanelContainer {
 
     this.domElement.appendChild(tabsPanelContainer);
 
-    this.panelFrame = new PanelFrame(this.panels);
+    this.panelFrame = new PanelFrame(this.editorService, this.panels);
     this.domElement.appendChild(this.panelFrame.render());
 
     this.panelFrame.onTabDrop.addListener((t, s) => {
@@ -107,6 +108,12 @@ export default class PanelContainer {
   private handlePanelTabsDrop(tab: Tab, sender: PanelTabs) {
     this.panels.push(tab);
     this.activePanel = tab.panelId;
+
+    const panelTab = this.editorService.panelTabsIndex.find(x => x.tab.panelId === tab.panelId);
+
+    if (panelTab) {
+      panelTab.onTabDragOut.propagate(tab, panelTab);
+    }
   }
 
   // private getTabs(): ObservableArray<Tab> {

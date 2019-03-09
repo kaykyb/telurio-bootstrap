@@ -5,6 +5,7 @@ import * as styles from "./panelTab.css";
 import TrackableEvent from "@src/common/common/trackableEvent";
 import TabUtils from "@src/views/editor/browser/panels/container/common/tabUtils";
 import CommonEvent from "@src/common/common/commonEvent";
+import EditorBrowserService from "@src/views/editor/browser/service/editorBrowserService";
 
 export default class PanelTab {
   public onTabDragOut = new TrackableEvent<Tab, PanelTab>();
@@ -31,7 +32,10 @@ export default class PanelTab {
     this._isActive = v;
   }
 
-  constructor(tab: Tab) {
+  constructor(private readonly editorService: EditorBrowserService, tab: Tab) {
+    // workaround to the chrome < 72 iframe drop bug
+    editorService.panelTabsIndex.push(this);
+
     this.tab = tab;
   }
 
@@ -85,10 +89,11 @@ export default class PanelTab {
     }
   }
 
+  // this is bugged on chrome < 72 (electron < 5)
   private handleDragEnd(ev: DragEvent) {
-    if (ev.dataTransfer && ev.dataTransfer.dropEffect !== "none") {
-      this.onTabDragOut.propagate(this.tab, this);
-    }
+    // if (ev.dataTransfer && ev.dataTransfer.dropEffect !== "none") {
+    //   this.onTabDragOut.propagate(this.tab, this);
+    // }
   }
 
   private handleDrop(ev: DragEvent) {

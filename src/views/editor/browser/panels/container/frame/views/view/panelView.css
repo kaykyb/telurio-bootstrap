@@ -7,4 +7,15 @@
 }
 
 .view {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.view iframe {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  border: none;
+  display: block;
 }

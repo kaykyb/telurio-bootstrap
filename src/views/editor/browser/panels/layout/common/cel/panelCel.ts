@@ -4,8 +4,11 @@ import * as styles from "./panelCel.css";
 import Tab from "@src/views/editor/common/classes/tab";
 import DropArea from "@src/views/editor/browser/panels/container/frame/drop-areas/drop-area/dropArea";
 import ObservableArray from "@src/common/common/observableArray";
+import EditorBrowserService from "@src/views/editor/browser/service/editorBrowserService";
+import CommonEvent from "@src/common/common/commonEvent";
 
 export default abstract class PanelCel {
+  public onResize = new CommonEvent<{ height: number; width: number }>();
   public startResizing?: () => void;
   public endResizing?: () => void;
   public panels?: ObservableArray<Tab>;
@@ -16,7 +19,7 @@ export default abstract class PanelCel {
   // tslint:disable-next-line:variable-name
   private _fill: boolean = false;
 
-  constructor(panels?: ObservableArray<Tab>) {
+  constructor(private readonly editorService: EditorBrowserService, panels?: ObservableArray<Tab>) {
     this.panels = panels;
   }
 
@@ -64,7 +67,7 @@ export default abstract class PanelCel {
 
   protected appendPanelContainer() {
     if (this.panels) {
-      this.panelContainer = new PanelContainer(this.panels);
+      this.panelContainer = new PanelContainer(this.panels, this.editorService);
       this.panelContainer.onTabDrop.addListener(this.handlePanelTabDrop);
       this.domElement!.append(this.panelContainer.render());
     }

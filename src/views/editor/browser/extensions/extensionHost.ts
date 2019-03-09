@@ -3,16 +3,14 @@ import ExtensionManifest from "@src/common/common/extensions/manifest-type/exten
 import EditorExtensionBridgeCommandArgs from "../../../../common/common/extensions/editorExtensionBridgeCommandArgs";
 import ExtensionMessage from "@src/common/common/extensions/extensionMessage";
 import ExtensionCommandActivationArgs from "@src/common/common/extensions/extensionCommandActivationArgs";
+import LoadableExtension from "@src/common/common/extensions/loadableExtension";
+import LogUtility from "@src/common/common/util/logUtility";
 
 export default class ExtensionHost {
   private sandbox?: HTMLIFrameElement;
   private isOnSecureContext = true;
 
-  constructor(
-    public extDir: string,
-    public ext: ExtensionManifest,
-    public editorService: EditorBrowserService
-  ) {
+  constructor(public ext: LoadableExtension, public editorService: EditorBrowserService) {
     this.handleCommandActivation = this.handleCommandActivation.bind(this);
     this.addSandboxEventListeners = this.addSandboxEventListeners.bind(this);
     this.handleWindowMessage = this.handleWindowMessage.bind(this);
@@ -27,14 +25,21 @@ export default class ExtensionHost {
 
     this.registerExtCommands();
 
-    const html =
-      "<html><body><script src=" +
-      this.extDir +
-      "/" +
-      this.ext.name +
-      "/" +
-      this.ext.entry +
-      "></script></body></html>";
+    // Entry script url
+    const relativeEntry = this.ext.extension.name + "/" + this.ext.extension.entry;
+    const absoluteEntry = new URL(this.ext.sourceUri + relativeEntry).href;
+
+    // Security: Check if URL is inside the extension root path
+    if (!absoluteEntry.startsWith(this.ext.sourceUri + this.ext.extension.name + "/")) {
+      LogUtility.err(
+        "EH1",
+        "Security",
+        `The extension ${this.ext} tried to access ${absoluteEntry}, which it doesn't have permission to.`
+      );
+      throw new Error("EH1");
+    }
+
+    const html = '<html><body><script src="' + absoluteEntry + '"></script></body></html>';
 
     this.sandbox.srcdoc = html;
     this.sandbox.addEventListener("load", this.addSandboxEventListeners);
@@ -43,12 +48,12 @@ export default class ExtensionHost {
   }
 
   private registerExtCommands() {
-    if (this.ext.contributions && this.ext.contributions.commands) {
-      this.ext.contributions.commands.forEach(c => {
+    if (this.ext.extension.contributions && this.ext.extension.contributions.commands) {
+      this.ext.extension.contributions.commands.forEach(c => {
         const cmd = this.editorService.extensionBridge.registerCommand(
-          this.ext.name + "." + c.name,
-          this.ext.name + "." + c.permissionRequired,
-          this.ext
+          this.ext.extension.name + "." + c.name,
+          this.ext.extension.name + "." + c.permissionRequired,
+          this.ext.extension
         );
 
         cmd.addListener(this.handleCommandActivation);
@@ -57,8 +62,8 @@ export default class ExtensionHost {
   }
 
   private handleCommandActivation(args: EditorExtensionBridgeCommandArgs<any[]>): any {
-    if (args.cmd.startsWith(this.ext.name + ".")) {
-      const realCmd = args.cmd.slice(this.ext.name.length + 1, args.cmd.length);
+    if (args.cmd.startsWith(this.ext.extension.name + ".")) {
+      const realCmd = args.cmd.slice(this.ext.extension.name.length + 1, args.cmd.length);
 
       if (this.sandbox && this.sandbox.contentWindow) {
         this.sandbox.contentWindow!.postMessage(
@@ -70,7 +75,7 @@ export default class ExtensionHost {
   }
 
   private addSandboxEventListeners() {
-    // TODO
+    // TODO: Add security events
   }
 
   private addWindowMessageEventsListener() {
@@ -96,8 +101,8 @@ export default class ExtensionHost {
     const cmd = this.editorService.extensionBridge.getCommand(args.cmd);
 
     if (args.cbCmdId) {
-      const cbCmdId = this.ext.name + "." + "!returnCallback." + args.cbCmdId;
-      const cbCmd = this.editorService.extensionBridge.registerCommand(cbCmdId, cbCmdId, this.ext);
+      const cbCmdId = this.ext.extension.name + "." + "!returnCallback." + args.cbCmdId;
+      const cbCmd = this.editorService.extensionBridge.registerCommand(cbCmdId, cbCmdId, this.ext.extension);
 
       cmd.owner.permissions.push(cbCmdId);
 

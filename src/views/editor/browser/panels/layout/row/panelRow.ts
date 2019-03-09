@@ -10,6 +10,7 @@ import Tab from "@src/views/editor/common/classes/tab";
 import DropArea from "@src/views/editor/browser/panels/container/frame/drop-areas/drop-area/dropArea";
 import CommonEvent from "@src/common/common/commonEvent";
 import ObservableArray from "@src/common/common/observableArray";
+import EditorBrowserService from "../../../service/editorBrowserService";
 
 export default class PanelRow extends PanelCel {
   public onEmpty = new CommonEvent<PanelRow>();
@@ -24,8 +25,13 @@ export default class PanelRow extends PanelCel {
 
   private parentColumn?: PanelColumn;
 
-  constructor(height: number, columns?: PanelColumn[], panels?: ObservableArray<Tab>) {
-    super(panels);
+  constructor(
+    private editorBrowserService: EditorBrowserService,
+    height: number,
+    columns?: PanelColumn[],
+    panels?: ObservableArray<Tab>
+  ) {
+    super(editorBrowserService, panels);
     this.height = height;
     this.columns = columns;
 
@@ -63,6 +69,7 @@ export default class PanelRow extends PanelCel {
   public resize(delta: number) {
     this.height += delta;
     this.domElement!.style.height = this.height + "px";
+    // this.onResize.propagate({ width: 0, height: this.height });
   }
 
   public prepareForResize() {
@@ -82,8 +89,8 @@ export default class PanelRow extends PanelCel {
     const newColTabArray = new ObservableArray<Tab>();
     newColTabArray.push(tab);
 
-    const selfCopy = new PanelColumn(width * 0.75, undefined, this.panels);
-    const newCol = new PanelColumn(width * 0.25, undefined, newColTabArray);
+    const selfCopy = new PanelColumn(this.editorBrowserService, width * 0.75, undefined, this.panels);
+    const newCol = new PanelColumn(this.editorBrowserService, width * 0.25, undefined, newColTabArray);
 
     this.removePanels();
 
@@ -103,7 +110,7 @@ export default class PanelRow extends PanelCel {
       const newRowTabArray = new ObservableArray<Tab>();
       newRowTabArray.push(tab);
 
-      const newRow = new PanelRow(height * 0.25, undefined, newRowTabArray);
+      const newRow = new PanelRow(this.editorBrowserService, height * 0.25, undefined, newRowTabArray);
 
       // not a good solution.
       if (sender.pos === "bottom" && !this.nextRow) {
@@ -134,6 +141,7 @@ export default class PanelRow extends PanelCel {
 
   private assignColEvents(col: PanelColumn) {
     col.startResizing = this.handleColStartResize.bind(this);
+    col.onResize.addListener(this.handleColStartResize.bind(this));
     col.endResizing = this.handleColEndResize.bind(this);
     col.onHorizontalTabDrop.addListener(this.handleColOnHorizontalTabDrop.bind(this));
     col.onEmpty.addListener(this.removeCol.bind(this));
@@ -163,7 +171,12 @@ export default class PanelRow extends PanelCel {
     }
   }
 
-  private insertCol(col: PanelColumn, insertIn: DocumentFragment, parentRow?: PanelRow, nextCol?: PanelColumn) {
+  private insertCol(
+    col: PanelColumn,
+    insertIn: DocumentFragment,
+    parentRow?: PanelRow,
+    nextCol?: PanelColumn
+  ) {
     this.assignColEvents(col);
     insertIn.appendChild(col.render(parentRow, nextCol));
   }

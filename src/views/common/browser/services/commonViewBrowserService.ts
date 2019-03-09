@@ -5,6 +5,7 @@ import ExtensionManifest from "@src/common/common/extensions/manifest-type/exten
 import I18nLanguageFile from "@src/common/node/services/i18n/i18nLanguageFile";
 import ISettingStore from "@src/common/node/services/settings/settingStore";
 import CommonEvent from "@src/common/common/commonEvent";
+import LoadableExtension from "@src/common/common/extensions/loadableExtension";
 
 export default class CommonViewBrowserService {
   public onMinimize = new CommonEvent();
@@ -16,6 +17,8 @@ export default class CommonViewBrowserService {
   public ipcService: IpcService;
 
   private userSettings!: ISettingStore;
+
+  private extensions?: LoadableExtension[];
 
   constructor() {
     this.handleSettingsUpdate = this.handleSettingsUpdate.bind(this);
@@ -84,12 +87,14 @@ export default class CommonViewBrowserService {
     }
   }
 
-  public getExtensions(): Array<{
-    exts: ExtensionManifest[];
-    sourceDir: string;
-  }> {
+  public getExtensions(): LoadableExtension[] {
+    if (this.extensions) {
+      return this.extensions;
+    }
+
     if (this.ipcService.ipc) {
-      return this.ipcService.ipc.sendSync(IPC_CHANNELS.GET_EXTENSIONS);
+      this.extensions = this.ipcService.ipc.sendSync(IPC_CHANNELS.GET_EXTENSIONS);
+      return this.extensions!;
     }
 
     return [];

@@ -1,4 +1,5 @@
 import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
+import LoadableExtension from "./loadableExtension";
 
 /**
  * Editor extension command activation arguments.
@@ -16,7 +17,7 @@ export default class EditorExtensionBridgeCommandArgs<T> {
   constructor(
     public cmd: string,
     public args: T,
-    public sender: ExtensionManifest,
+    public sender: LoadableExtension,
     public cbCmdId?: string
   ) {}
 }
