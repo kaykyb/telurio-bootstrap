@@ -63,7 +63,7 @@ export default class Editor {
     this.startIpc();
 
     this.browserWindow.loadFile(path.join(__dirname, "browser", "index.html"));
-    this.browserWindow.webContents.openDevTools();
+    // this.browserWindow.webContents.openDevTools();
 
     this.browserWindow.on("closed", () => {
       this.browserWindow = undefined;

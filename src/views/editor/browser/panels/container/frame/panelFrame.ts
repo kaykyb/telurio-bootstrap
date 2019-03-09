@@ -19,18 +19,29 @@ export default class PanelFrame {
   private tabs: ObservableArray<Tab>;
   private panelViews?: PanelViews;
 
+  private dropAreas?: InnerPanelDropAreas;
+
   constructor(private readonly editorService: EditorBrowserService, tabs: ObservableArray<Tab>) {
     this.tabs = tabs;
+
+    this.handleDragEnd = this.handleDragEnd.bind(this);
+    this.handleDragStart = this.handleDragStart.bind(this);
   }
 
   public render(): HTMLDivElement {
     this.domElement = document.createElement("div");
     this.domElement.classList.add(styles.frame);
 
-    const dropAreas = new InnerPanelDropAreas();
-    this.domElement.appendChild(dropAreas.render());
+    this.dropAreas = new InnerPanelDropAreas();
+    this.domElement.appendChild(this.dropAreas.render());
 
-    dropAreas.onTabDrop.addListener((tab, sender) => {
+    window.addEventListener("dragstart", this.handleDragStart);
+    window.addEventListener("dragenter", this.handleDragStart);
+    window.addEventListener("dragleave", this.handleDragStart);
+    window.addEventListener("dragend", this.handleDragEnd);
+    window.addEventListener("drop", this.handleDragEnd);
+
+    this.dropAreas.onTabDrop.addListener((tab, sender) => {
       this.onTabDrop.propagate(tab, sender);
     });
 
@@ -43,6 +54,20 @@ export default class PanelFrame {
   public setActiveTab(t: string) {
     if (this.panelViews) {
       this.panelViews.setActiveTab(t);
+    }
+  }
+
+  private handleDragStart(ev: DragEvent) {
+    if (ev.dataTransfer && ev.dataTransfer.getData("editor/tab") !== "") {
+      if (this.dropAreas) {
+        this.dropAreas.enableDropAreas();
+      }
+    }
+  }
+
+  private handleDragEnd(ev: DragEvent) {
+    if (this.dropAreas) {
+      this.dropAreas.disableDropAreas();
     }
   }
 }

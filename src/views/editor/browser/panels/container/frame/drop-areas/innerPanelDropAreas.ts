@@ -5,8 +5,11 @@ import TrackableEvent from "@src/common/common/trackableEvent";
 export default class InnerPanelDropAreas {
   public onTabDrop = new TrackableEvent<Tab, DropArea>();
 
+  private domElement?: HTMLDivElement;
+
   public render(): HTMLDivElement {
-    const div = document.createElement("div");
+    this.domElement = document.createElement("div");
+    this.disableDropAreas();
     const frag = document.createDocumentFragment();
 
     const rDA = this.getDropArea("right");
@@ -21,9 +24,21 @@ export default class InnerPanelDropAreas {
     const bDA = this.getDropArea("bottom");
     frag.appendChild(bDA.render());
 
-    div.appendChild(frag);
+    this.domElement.appendChild(frag);
 
-    return div;
+    return this.domElement;
+  }
+
+  public enableDropAreas() {
+    if (this.domElement) {
+      this.domElement.style.pointerEvents = "initial";
+    }
+  }
+
+  public disableDropAreas() {
+    if (this.domElement) {
+      this.domElement.style.pointerEvents = "none";
+    }
   }
 
   private getDropArea(pos: "right" | "left" | "top" | "bottom"): DropArea {
