@@ -72,6 +72,12 @@ export default class PanelContainer {
 
     this.panelFrame.onTabDrop.addListener((t, s) => {
       this.onTabDrop.propagate(t, s);
+
+      const panelTab = this.editorService.panelTabsIndex.find(x => x.tab.panelId === t.panelId);
+
+      if (panelTab) {
+        panelTab.onTabDragOut.propagate(t, panelTab);
+      }
     });
 
     this.panels.forEach(v => {
