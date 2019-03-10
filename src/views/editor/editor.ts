@@ -13,6 +13,7 @@ import EditorDevTools from "../editorDevTools/editorDevTools";
 import I18nService from "@src/common/node/services/i18n/i18nService";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
+import InternalSettingsService from "@src/common/node/services/settings/internal/internalSettingsService";
 
 // the sizes to use to create the window
 const WINDOW_HEIGHT = 600;
@@ -31,7 +32,8 @@ export default class Editor {
 
   constructor(
     private readonly i18nService: I18nService,
-    private readonly userSettingsService: UserSettingsService
+    private readonly userSettingsService: UserSettingsService,
+    private readonly internalSettingsService: InternalSettingsService
   ) {
     this.bindMethods();
     this.createWindow(i18nService);
@@ -69,7 +71,12 @@ export default class Editor {
       this.browserWindow = undefined;
     });
 
-    this.commonMain = new CommonViewMain(this.browserWindow, i18nService, this.userSettingsService);
+    this.commonMain = new CommonViewMain(
+      this.browserWindow,
+      i18nService,
+      this.userSettingsService,
+      this.internalSettingsService
+    );
   }
 
   private startIpc() {
@@ -158,7 +165,12 @@ export default class Editor {
   // Methods
   private showMarketplace() {
     if (!this.marketplace && this.browserWindow) {
-      this.marketplace = new Marketplace(this.i18nService, this.browserWindow, this.userSettingsService);
+      this.marketplace = new Marketplace(
+        this.i18nService,
+        this.browserWindow,
+        this.userSettingsService,
+        this.internalSettingsService
+      );
 
       this.marketplace.onClose.addListener(() => {
         this.marketplace = undefined;
@@ -177,7 +189,8 @@ export default class Editor {
                 this.i18nService,
                 this.browserWindow,
                 commands,
-                this.userSettingsService
+                this.userSettingsService,
+                this.internalSettingsService
               );
 
               this.editorDevTools.onClose.addListener(() => {

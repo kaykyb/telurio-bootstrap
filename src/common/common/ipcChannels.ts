@@ -27,6 +27,9 @@ export const IPC_CHANNELS = {
   /** Argumentos de inicialização da UI do Editor. */
   INITIALIZATION_ARGUMENTS: "initializationArgs",
 
-  SETTINGS_UPDATE: "settingsUpdate",
-  SET_SETTING: "setSetting"
+  SET_USER_SETTING: "setUserSetting",
+  USER_SETTINGS_UPDATE: "userSettingsUpdate",
+
+  INTERNAL_SETTINGS_UPDATE: "internalSettingsUpdate",
+  SET_INTERNAL_SETTING: "setInternalSetting"
 };

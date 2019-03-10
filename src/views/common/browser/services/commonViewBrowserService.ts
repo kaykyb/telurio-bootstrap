@@ -6,6 +6,7 @@ import I18nLanguageFile from "@src/common/node/services/i18n/i18nLanguageFile";
 import ISettingStore from "@src/common/node/services/settings/settingStore";
 import CommonEvent from "@src/common/common/commonEvent";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
+import ConfigurationManager from "./subservices/configurationManager";
 
 export default class CommonViewBrowserService {
   public onMinimize = new CommonEvent();
@@ -16,12 +17,13 @@ export default class CommonViewBrowserService {
 
   public ipcService: IpcService;
 
-  private userSettings!: ISettingStore;
+  private userSettings!: ConfigurationManager;
+  private internalSettings!: ConfigurationManager;
 
   private extensions?: LoadableExtension[];
 
   constructor() {
-    this.handleSettingsUpdate = this.handleSettingsUpdate.bind(this);
+    this.handleUserSettingsUpdate = this.handleUserSettingsUpdate.bind(this);
 
     this.handleWindowMaximized = this.handleWindowMaximized.bind(this);
     this.handleWindowMinimized = this.handleWindowMinimized.bind(this);
@@ -35,7 +37,8 @@ export default class CommonViewBrowserService {
       const initArgs: CommonViewInitArgs = this.ipcService.ipc.sendSync(IPC_CHANNELS.BROWSER_READY);
 
       this.i18n = initArgs.i18nArgs.i18nLanguageFile;
-      this.userSettings = initArgs.userSettingsArg.userSettings;
+      this.userSettings = new ConfigurationManager(initArgs.userSettingsArg.userSettings);
+      this.internalSettings = new ConfigurationManager(initArgs.internalSettingsArgs.internalSettings);
 
       return;
     }
@@ -106,24 +109,13 @@ export default class CommonViewBrowserService {
     }
   }
 
-  public containsSetting(key: string) {
-    return this.userSettings.hasOwnProperty(key);
-  }
-
-  public getSetting(key: string): any {
-    return this.userSettings[key];
-  }
-
-  public setSetting(key: string, value: any) {
-    this.userSettings[key] = value;
-    if (this.ipcService.ipc) {
-      this.ipcService.ipc.send(IPC_CHANNELS.SET_SETTING, { key, value });
-    }
-  }
-
   private removeIpcListeners() {
     if (this.ipcService.ipc) {
-      this.ipcService.ipc.removeListener(IPC_CHANNELS.SETTINGS_UPDATE, this.handleSettingsUpdate);
+      this.ipcService.ipc.removeListener(IPC_CHANNELS.USER_SETTINGS_UPDATE, this.handleUserSettingsUpdate);
+      this.ipcService.ipc.removeListener(
+        IPC_CHANNELS.INTERNAL_SETTINGS_UPDATE,
+        this.handleInteralSettingsUpdate
+      );
 
       this.ipcService.ipc.removeListener(IPC_CHANNELS.MAXIMIZED, this.handleWindowMaximized);
       this.ipcService.ipc.removeListener(IPC_CHANNELS.MINIMIZED, this.handleWindowMinimized);
@@ -133,7 +125,11 @@ export default class CommonViewBrowserService {
 
   private addIpcListeners() {
     if (this.ipcService.ipc) {
-      this.ipcService.ipc.addListener(IPC_CHANNELS.SETTINGS_UPDATE, this.handleSettingsUpdate);
+      this.ipcService.ipc.addListener(IPC_CHANNELS.USER_SETTINGS_UPDATE, this.handleUserSettingsUpdate);
+      this.ipcService.ipc.addListener(
+        IPC_CHANNELS.INTERNAL_SETTINGS_UPDATE,
+        this.handleInteralSettingsUpdate
+      );
 
       this.ipcService.ipc.addListener(IPC_CHANNELS.MAXIMIZED, this.handleWindowMaximized);
       this.ipcService.ipc.addListener(IPC_CHANNELS.MINIMIZED, this.handleWindowMinimized);
@@ -153,7 +149,11 @@ export default class CommonViewBrowserService {
     this.onRestore.propagate({});
   }
 
-  private handleSettingsUpdate(setting: { key: string; value: any }) {
-    this.userSettings[setting.key] = setting.value;
+  private handleUserSettingsUpdate(setting: { key: string; value: any }) {
+    this.userSettings.updateSetting(setting.key, setting.value);
+  }
+
+  private handleInteralSettingsUpdate(setting: { key: string; value: any }) {
+    this.internalSettings.updateSetting(setting.key, setting.value);
   }
 }

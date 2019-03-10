@@ -6,6 +6,7 @@ import CommonViewMain from "../common/node/commonViewMain";
 import I18nService from "@src/common/node/services/i18n/i18nService";
 import CommonEvent from "@src/common/common/commonEvent";
 import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
+import InternalSettingsService from "@src/common/node/services/settings/internal/internalSettingsService";
 
 const WINDOW_HEIGHT = 500;
 const WINDOW_WIDTH = 800;
@@ -19,7 +20,8 @@ export default class Marketplace {
   constructor(
     i18nService: I18nService,
     private parentWindow: BrowserWindow,
-    private userSettingsService: UserSettingsService
+    private userSettingsService: UserSettingsService,
+    private readonly internalSettingsService: InternalSettingsService
   ) {
     this.createWindow(i18nService);
   }
@@ -50,7 +52,12 @@ export default class Marketplace {
       this.onClose.propagate({});
     });
 
-    this.commonMain = new CommonViewMain(this.browserWindow, i18nService, this.userSettingsService);
+    this.commonMain = new CommonViewMain(
+      this.browserWindow,
+      i18nService,
+      this.userSettingsService,
+      this.internalSettingsService
+    );
   }
 
   private onWindowReady() {

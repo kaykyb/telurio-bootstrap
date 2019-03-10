@@ -11,6 +11,8 @@ import UserSettingsService from "@src/common/node/services/settings/user/userSet
 import UserSettingsArgs from "@src/common/common/ipcEvents/userSettingsArgs";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
 import NodeUtil from "@src/common/node/util";
+import InternalSettingsService from "@src/common/node/services/settings/internal/internalSettingsService";
+import InternalSettingsArgs from "@src/common/common/ipcEvents/internalSettingsArgs";
 
 export default class CommonViewMain {
   public onWindowReady = new CommonEvent();
@@ -18,16 +20,18 @@ export default class CommonViewMain {
   private extensionsManager: ExtensionManager = new ExtensionManager();
 
   constructor(
-    private browserWindow: BrowserWindow,
-    private i18nService: I18nService,
-    private userSettingsService: UserSettingsService
+    private readonly browserWindow: BrowserWindow,
+    private readonly i18nService: I18nService,
+    private readonly userSettingsService: UserSettingsService,
+    private readonly internalSettingsService: InternalSettingsService
   ) {
+    // binds
     this.handleBrowserReady = this.handleBrowserReady.bind(this);
     this.handleCloseRequest = this.handleCloseRequest.bind(this);
     this.handleShowDevTools = this.handleShowDevTools.bind(this);
     this.handleLoadExtensions = this.handleLoadExtensions.bind(this);
-    this.handleSetSetting = this.handleSetSetting.bind(this);
-    this.handleSettingChange = this.handleSettingChange.bind(this);
+    this.handleSetUserSetting = this.handleSetUserSetting.bind(this);
+    this.handleUserSettingChange = this.handleUserSettingChange.bind(this);
     this.handleShow = this.handleShow.bind(this);
     this.handleClosing = this.handleClosing.bind(this);
     this.handleMinimizeRequest = this.handleMinimizeRequest.bind(this);
@@ -44,14 +48,16 @@ export default class CommonViewMain {
   }
 
   public removeListeners() {
-    this.userSettingsService.onSettingChange.removeListener(this.handleSettingChange);
+    this.userSettingsService.onSettingChange.removeListener(this.handleUserSettingChange);
+    this.internalSettingsService.onSettingChange.removeListener(this.handleInternalSettingChange);
 
     ipcMain.removeListener(IPC_CHANNELS.BROWSER_READY, this.handleBrowserReady);
     ipcMain.removeListener(IPC_CHANNELS.CLOSE_REQUEST, this.handleCloseRequest);
     ipcMain.removeListener(IPC_CHANNELS.SHOW_DEV_TOOLS, this.handleShowDevTools);
     ipcMain.removeListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
     ipcMain.removeListener(IPC_CHANNELS.READY_TO_SHOW, this.handleShow);
-    ipcMain.removeListener(IPC_CHANNELS.SET_SETTING, this.handleSetSetting);
+    ipcMain.removeListener(IPC_CHANNELS.SET_USER_SETTING, this.handleSetUserSetting);
+    ipcMain.removeListener(IPC_CHANNELS.SET_INTERNAL_SETTING, this.handleSetInternalSetting);
     ipcMain.removeListener(IPC_CHANNELS.MINIMIZE, this.handleMinimizeRequest);
     ipcMain.removeListener(IPC_CHANNELS.MAXIMIZE_OR_RESTORE, this.handleMaximizeOrRestoreRequest);
     ipcMain.removeListener(IPC_CHANNELS.IS_MAXIMIZED, this.handleIsMaximized);
@@ -68,14 +74,16 @@ export default class CommonViewMain {
   }
 
   private startIpc() {
-    this.userSettingsService.onSettingChange.addListener(this.handleSettingChange);
+    this.userSettingsService.onSettingChange.addListener(this.handleUserSettingChange);
+    this.internalSettingsService.onSettingChange.addListener(this.handleInternalSettingChange);
 
     ipcMain.addListener(IPC_CHANNELS.BROWSER_READY, this.handleBrowserReady);
     ipcMain.addListener(IPC_CHANNELS.CLOSE_REQUEST, this.handleCloseRequest);
     ipcMain.addListener(IPC_CHANNELS.SHOW_DEV_TOOLS, this.handleShowDevTools);
     ipcMain.addListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
     ipcMain.addListener(IPC_CHANNELS.READY_TO_SHOW, this.handleShow);
-    ipcMain.addListener(IPC_CHANNELS.SET_SETTING, this.handleSetSetting);
+    ipcMain.addListener(IPC_CHANNELS.SET_USER_SETTING, this.handleSetUserSetting);
+    ipcMain.addListener(IPC_CHANNELS.SET_INTERNAL_SETTING, this.handleSetInternalSetting);
     ipcMain.addListener(IPC_CHANNELS.MINIMIZE, this.handleMinimizeRequest);
     ipcMain.addListener(IPC_CHANNELS.MAXIMIZE_OR_RESTORE, this.handleMaximizeOrRestoreRequest);
     ipcMain.addListener(IPC_CHANNELS.IS_MAXIMIZED, this.handleIsMaximized);
@@ -127,13 +135,23 @@ export default class CommonViewMain {
     this.browserWindow.webContents.send(IPC_CHANNELS.MAXIMIZED);
   }
 
-  private handleSettingChange(setting: { key: string; value: any }) {
-    this.browserWindow.webContents.send(IPC_CHANNELS.SETTINGS_UPDATE, setting);
+  private handleUserSettingChange(setting: { key: string; value: any }) {
+    this.browserWindow.webContents.send(IPC_CHANNELS.USER_SETTINGS_UPDATE, setting);
   }
 
-  private handleSetSetting(event: Electron.Event, setting: { key: string; value: any }) {
+  private handleSetUserSetting(event: Electron.Event, setting: { key: string; value: any }) {
     if (this.isCurrentWindow(event.sender)) {
       this.userSettingsService.setSettingAndSave(setting.key, setting.value);
+    }
+  }
+
+  private handleInternalSettingChange(setting: { key: string; value: any }) {
+    this.browserWindow.webContents.send(IPC_CHANNELS.INTERNAL_SETTINGS_UPDATE, setting);
+  }
+
+  private handleSetInternalSetting(event: Electron.Event, setting: { key: string; value: any }) {
+    if (this.isCurrentWindow(event.sender)) {
+      this.internalSettingsService.setSettingAndSave(setting.key, setting.value);
     }
   }
 
@@ -205,7 +223,9 @@ export default class CommonViewMain {
   private getCommonConfigs(): CommonViewInitArgs {
     const i18nArgs = new I18nArgs(this.i18nService.language!);
     const userSettingsArgs = new UserSettingsArgs(this.userSettingsService.settings);
-    return new CommonViewInitArgs(i18nArgs, userSettingsArgs);
+    const internalSettingsArgs = new InternalSettingsArgs(this.internalSettingsService.settings);
+
+    return new CommonViewInitArgs(i18nArgs, userSettingsArgs, internalSettingsArgs);
   }
 
   private isCurrentWindow(webContents: any): boolean {
