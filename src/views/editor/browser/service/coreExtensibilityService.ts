@@ -59,7 +59,7 @@ export default class CoreExtensibilityService {
     const settingMetadata = event.sender.extension.contributions.settings.find(x => x.name === event.args);
 
     if (settingMetadata) {
-      const setting = this.commonService.getSetting(settingName) || settingMetadata.defaultValue;
+      const setting = this.commonService.userSettings.getSetting(settingName) || settingMetadata.defaultValue;
 
       this.extensionBridge.getCommand(event.cbCmdId).execute(setting, CORE_EXTENSION_MANIFEST);
       return;

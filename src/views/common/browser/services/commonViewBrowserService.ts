@@ -17,8 +17,8 @@ export default class CommonViewBrowserService {
 
   public ipcService: IpcService;
 
-  private userSettings!: ConfigurationManager;
-  private internalSettings!: ConfigurationManager;
+  public userSettings!: ConfigurationManager;
+  public internalSettings!: ConfigurationManager;
 
   private extensions?: LoadableExtension[];
 
