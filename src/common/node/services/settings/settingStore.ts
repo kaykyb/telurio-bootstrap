@@ -1,3 +1,3 @@
 export default interface ISettingStore {
-  [key: string]: string;
+  [key: string]: any;
 }

@@ -2,6 +2,7 @@ import * as fs from "fs-extra";
 import * as path from "path";
 import ISettingStore from "../settingStore";
 import CommonEvent from "@src/common/common/commonEvent";
+import { ENV } from "@src/env";
 
 export default class UserSettingsService {
   public onSettingChange = new CommonEvent<{ key: string; value: any }>();
@@ -19,12 +20,12 @@ export default class UserSettingsService {
   }
 
   private save() {
-    const settingsFile = path.join(this.appDataPath, "User", "settings.json");
+    const settingsFile = path.join(this.appDataPath, ENV.USER_SETTINGS_APPDATA_PATH);
     fs.writeFile(settingsFile, JSON.stringify(this.settings), "utf8");
   }
 
   private loadSettings(): void {
-    const settingsFile = path.join(this.appDataPath, "User", "settings.json");
+    const settingsFile = path.join(this.appDataPath, ENV.USER_SETTINGS_APPDATA_PATH);
 
     if (!fs.existsSync(settingsFile)) {
       // create settings

@@ -3,7 +3,7 @@ import WindowControls from "./window-controls/windowControls";
 import IconButton from "./icon-button/iconButton";
 
 import CommonEvent from "@src/common/common/commonEvent";
-import { IS_DEV } from "@src/env";
+import { ENV } from "@src/env";
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
 
@@ -50,7 +50,7 @@ export default class Titlebar {
     leftSideControlsContainer.classList.add(styles.controlsContainer);
 
     // adds code button to devtools
-    if (IS_DEV) {
+    if (ENV.IS_DEV) {
       const devBtn = new IconButton("code");
       leftSideControlsContainer.appendChild(devBtn.render());
 
