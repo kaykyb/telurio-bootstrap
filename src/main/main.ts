@@ -18,8 +18,8 @@ let i18n: I18nService;
 const editors: Editor[] = [];
 
 function startEditor() {
-  protocol.registerFileProtocol("telurio-ext", (request, callback) => {
-    const url = request.url.substr(14);
+  protocol.registerFileProtocol("telurio-internal-ext", (request, callback) => {
+    const url = request.url.substr(23);
     const extRoot = path.join(__dirname, "..", "parts", "/");
     const filePath = path.join(extRoot, url);
 

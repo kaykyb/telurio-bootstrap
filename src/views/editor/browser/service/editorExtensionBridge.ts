@@ -3,12 +3,13 @@ import ExtensionManifest from "@src/common/common/extensions/manifest-type/exten
 import CommonEvent from "@src/common/common/commonEvent";
 import Panel from "../../common/classes/panel";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
+import ICommandIndex from "@src/common/common/extensions/commandIndex";
 
 export default class EditorExtensionBridge {
   public onCommandRegister = new CommonEvent<EditorExtensionBridgeCommand<any>>();
   public onPanelRegister = new CommonEvent<Panel>();
 
-  public commands: { [key: string]: EditorExtensionBridgeCommand<any> } = {};
+  public commands: ICommandIndex = {};
 
   public panels: Panel[] = [];
 

@@ -2,33 +2,23 @@ import CommonViewBrowserService from "@src/views/common/browser/services/commonV
 import { EDITOR_DEV_TOOLS_IPC_CHANNELS } from "../../common/editorDevToolsIpcChannels";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import CommonEvent from "@src/common/common/commonEvent";
+import IpcBrowserService from "@src/common/browser/services/ipc/ipcBrowserService";
+import IEditorIpcArgs from "@src/views/editor/common/ipc/EditorIpcServiceArgs";
+import ICommandIndex from "@src/common/common/extensions/commandIndex";
+import IEditorDevToolsIpcArgs from "../../common/ipc/editorDevToolsIpcArgs";
+import IEditorDevToolsIpcReturns from "../../common/ipc/editorDevToolsIpcReturns";
 
 export default class EditorDevToolsBrowserService {
-  public onExtCommandsUpdate = new CommonEvent<{ [key: string]: EditorExtensionBridgeCommand<any> }>();
+  public onExtCommandsUpdate = new CommonEvent<ICommandIndex>();
+
+  private ipcService = new IpcBrowserService<IEditorDevToolsIpcArgs, IEditorDevToolsIpcReturns>(
+    "EDITOR_DEVTOOLS"
+  );
 
   constructor(public commonService: CommonViewBrowserService) {}
 
-  public async getEditorCommands(): Promise<{ [key: string]: EditorExtensionBridgeCommand<any> }> {
-    return new Promise<{ [key: string]: EditorExtensionBridgeCommand<any> }>(resolve => {
-      if (this.commonService.ipcService.ipc) {
-        const ipc = this.commonService.ipcService.ipc;
-
-        ipc.once(
-          EDITOR_DEV_TOOLS_IPC_CHANNELS.GET_EXT_COMMANDS_RETURN,
-          (event: Electron.Event, cmd: { [key: string]: EditorExtensionBridgeCommand<any> }) => {
-            resolve(cmd);
-          }
-        );
-
-        ipc.on(
-          EDITOR_DEV_TOOLS_IPC_CHANNELS.UPDATE_EXT_COMMANDS,
-          (event: Electron.Event, cmds: { [key: string]: EditorExtensionBridgeCommand<any> }) => {
-            this.onExtCommandsUpdate.propagate(cmds);
-          }
-        );
-
-        ipc.send(EDITOR_DEV_TOOLS_IPC_CHANNELS.GET_EXT_COMMANDS);
-      }
-    });
+  public async getEditorCommands(): Promise<ICommandIndex> {
+    this.ipcService.addListener("UPDATE_EXT_COMMANDS", cmds => this.onExtCommandsUpdate.propagate(cmds));
+    return this.ipcService.sendAndReturn("GET_EXT_COMMANDS");
   }
 }

@@ -4,13 +4,14 @@ import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorEx
 import EditorDevToolsViewComponent from "@src/views/editorDevTools/browser/editorDevToolsViewComponent";
 import EditorDevToolsBrowserService from "@src/views/editorDevTools/browser/service/editorDevToolsService";
 import CommandsListItem from "./commandsListItem/commandsListItem";
+import ICommandIndex from "@src/common/common/extensions/commandIndex";
 
 export default class CommandsList extends EditorDevToolsViewComponent {
   private domElement?: HTMLDivElement;
 
   constructor(
     public readonly editorDevToolsService: EditorDevToolsBrowserService,
-    private commands: { [key: string]: EditorExtensionBridgeCommand<any> }
+    private commands: ICommandIndex
   ) {
     super(editorDevToolsService);
   }

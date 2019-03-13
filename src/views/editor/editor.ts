@@ -14,6 +14,10 @@ import I18nService from "@src/common/node/services/i18n/i18nService";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
 import InternalSettingsService from "@src/common/node/services/settings/internal/internalSettingsService";
+import { IpcNodeService } from "@src/common/node/services/ipc/ipcNodeService";
+import IEditorIpcArgs from "./common/ipc/EditorIpcServiceArgs";
+import IEditorIpcReturns from "./common/ipc/EditorIpcServiceReturns";
+import ICommandIndex from "@src/common/common/extensions/commandIndex";
 
 // the sizes to use to create the window
 const WINDOW_HEIGHT = 600;
@@ -29,6 +33,8 @@ export default class Editor {
   // editor window dialogs
   private marketplace?: Marketplace;
   private editorDevTools?: EditorDevTools;
+
+  private ipcService!: IpcNodeService<IEditorIpcArgs, IEditorIpcReturns>;
 
   constructor(
     private readonly i18nService: I18nService,
@@ -62,13 +68,16 @@ export default class Editor {
       }
     });
 
+    this.ipcService = new IpcNodeService<IEditorIpcArgs, IEditorIpcReturns>(this.browserWindow, "EDITOR");
+
     this.startIpc();
 
     this.browserWindow.loadFile(path.join(__dirname, "browser", "index.html"));
-    // this.browserWindow.webContents.openDevTools();
+    this.browserWindow.webContents.openDevTools();
 
     this.browserWindow.on("closed", () => {
       this.browserWindow = undefined;
+      this.commonMain = undefined;
     });
 
     this.commonMain = new CommonViewMain(
@@ -77,24 +86,28 @@ export default class Editor {
       this.userSettingsService,
       this.internalSettingsService
     );
+
+    this.commonMain.onCloseRequest.addListener(() => {
+      if (this.commonMain && this.browserWindow) {
+        this.commonMain.removeListeners();
+        this.browserWindow.close();
+      }
+    });
   }
 
   private startIpc() {
-    ipcMain.addListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
-    ipcMain.addListener(EDITOR_IPC_CHANNELS.OPEN_EDITOR_DEVTOOLS, this.handleShowEditorDevTools);
-    ipcMain.addListener(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE, this.handleShowMarketplace);
-    ipcMain.addListener(EDITOR_IPC_CHANNELS.UPDATE_EXT_COMMANDS, this.handleUpdateExtCommands);
-
     if (this.browserWindow) {
       this.browserWindow.addListener("closed", this.removeListeners);
     }
+
+    this.ipcService.addListener("GET_WORKSPACE_CONFIGS", this.handleGetWorkspaceConfigs);
+    this.ipcService.addListener("OPEN_EDITOR_DEVTOOLS", this.handleShowEditorDevTools);
+    this.ipcService.addListener("OPEN_MARKETPLACE", this.handleShowMarketplace);
+    this.ipcService.addListener("UPDATE_EXT_COMMANDS", this.handleUpdateExtCommands);
   }
 
   private removeListeners() {
-    ipcMain.removeListener(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS, this.handleGetWorkspaceConfigs);
-    ipcMain.removeListener(EDITOR_IPC_CHANNELS.OPEN_EDITOR_DEVTOOLS, this.handleShowEditorDevTools);
-    ipcMain.removeListener(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE, this.handleShowMarketplace);
-    ipcMain.removeListener(EDITOR_IPC_CHANNELS.UPDATE_EXT_COMMANDS, this.handleUpdateExtCommands);
+    this.ipcService.removeAllListeners();
 
     if (this.browserWindow) {
       this.browserWindow.removeListener("closed", this.removeListeners);
@@ -106,31 +119,22 @@ export default class Editor {
    * @param event The Electron IPC Event
    * @param cmds The new Commands Array
    */
-  private handleUpdateExtCommands(
-    event: Electron.Event,
-    cmds: { [key: string]: EditorExtensionBridgeCommand<any> }
-  ) {
-    if (this.editorDevTools && this.isCurrentWindow(event.sender)) {
-      this.editorDevTools.updateExtCommands(cmds);
+  private handleUpdateExtCommands(args: ICommandIndex) {
+    if (this.editorDevTools) {
+      this.editorDevTools.updateExtCommands(args);
     }
   }
 
-  private handleGetWorkspaceConfigs(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      event.returnValue = this.getConfigs();
-    }
+  private handleGetWorkspaceConfigs(args: undefined, resolve: (returnValue: CommonLayoutConfig) => void) {
+    resolve(this.getConfigs());
   }
 
-  private handleShowMarketplace(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      this.showMarketplace();
-    }
+  private handleShowMarketplace() {
+    this.showMarketplace();
   }
 
-  private handleShowEditorDevTools(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      this.showEditorDevTools();
-    }
+  private handleShowEditorDevTools() {
+    this.showEditorDevTools();
   }
 
   private getConfigs(): CommonLayoutConfig {
@@ -178,44 +182,26 @@ export default class Editor {
     }
   }
 
-  private showEditorDevTools() {
-    if (!this.editorDevTools && this.browserWindow) {
-      ipcMain.once(
-        EDITOR_IPC_CHANNELS.GET_EXT_COMMANDS_RETURN,
-        (event: Electron.Event, commands: { [key: string]: EditorExtensionBridgeCommand<any> }) => {
-          if (this.isCurrentWindow(event.sender)) {
-            if (!this.editorDevTools && this.browserWindow) {
-              this.editorDevTools = new EditorDevTools(
-                this.i18nService,
-                this.browserWindow,
-                commands,
-                this.userSettingsService,
-                this.internalSettingsService
-              );
+  private async showEditorDevTools() {
+    if (this.editorDevTools) {
+      return; // already open
+    }
 
-              this.editorDevTools.onClose.addListener(() => {
-                this.editorDevTools = undefined;
-              });
-            }
-          }
-        }
+    const cmds = await this.ipcService.sendAndReturn("GET_EXT_COMMANDS");
+
+    // maybe the user closed the window in te meantime
+    if (this.browserWindow) {
+      this.editorDevTools = new EditorDevTools(
+        this.i18nService,
+        this.browserWindow,
+        cmds,
+        this.userSettingsService,
+        this.internalSettingsService
       );
 
-      this.browserWindow.webContents.send(EDITOR_IPC_CHANNELS.GET_EXT_COMMANDS);
+      this.editorDevTools.onClose.addListener(() => {
+        this.editorDevTools = undefined;
+      });
     }
-  }
-
-  /**
-   * Check if a window is this.browserWindow.
-   * @param webContents Electron webContents to compare to this.browserWindow.webContents
-   */
-  private isCurrentWindow(webContents: any): boolean {
-    if (this.browserWindow && this.browserWindow.webContents) {
-      if (this.browserWindow.webContents === webContents) {
-        return true;
-      }
-    }
-
-    return false;
   }
 }

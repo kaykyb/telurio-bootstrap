@@ -1,7 +1,6 @@
 import { BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 
-import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
 import I18nService from "@src/common/node/services/i18n/i18nService";
 import I18nArgs from "@src/common/common/ipcEvents/i18nArgs";
 import CommonEvent from "@src/common/common/commonEvent";
@@ -10,14 +9,20 @@ import ExtensionManager from "./extensionManager";
 import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
 import UserSettingsArgs from "@src/common/common/ipcEvents/userSettingsArgs";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
-import NodeUtil from "@src/common/node/util";
 import InternalSettingsService from "@src/common/node/services/settings/internal/internalSettingsService";
 import InternalSettingsArgs from "@src/common/common/ipcEvents/internalSettingsArgs";
+import { IpcNodeService } from "@src/common/node/services/ipc/ipcNodeService";
+import ICommonViewIpcReturns from "../common/ipc/CommonViewIpcReturns";
+import ICommonViewIpcArgs from "../common/ipc/CommonViewIpcArgs";
+import SettingKey from "@src/common/node/services/settings/settingKey";
+import { ENV } from "@src/env";
 
 export default class CommonViewMain {
   public onWindowReady = new CommonEvent();
+  public onCloseRequest = new CommonEvent();
 
   private extensionsManager: ExtensionManager = new ExtensionManager();
+  private ipcService: IpcNodeService<ICommonViewIpcArgs, ICommonViewIpcReturns>;
 
   constructor(
     private readonly browserWindow: BrowserWindow,
@@ -25,6 +30,11 @@ export default class CommonViewMain {
     private readonly userSettingsService: UserSettingsService,
     private readonly internalSettingsService: InternalSettingsService
   ) {
+    this.ipcService = new IpcNodeService<ICommonViewIpcArgs, ICommonViewIpcReturns>(
+      browserWindow,
+      ENV.IPC_COMMON_PREFIX
+    );
+
     // binds
     this.handleBrowserReady = this.handleBrowserReady.bind(this);
     this.handleCloseRequest = this.handleCloseRequest.bind(this);
@@ -51,19 +61,7 @@ export default class CommonViewMain {
     this.userSettingsService.onSettingChange.removeListener(this.handleUserSettingChange);
     this.internalSettingsService.onSettingChange.removeListener(this.handleInternalSettingChange);
 
-    ipcMain.removeListener(IPC_CHANNELS.BROWSER_READY, this.handleBrowserReady);
-    ipcMain.removeListener(IPC_CHANNELS.CLOSE_REQUEST, this.handleCloseRequest);
-    ipcMain.removeListener(IPC_CHANNELS.SHOW_DEV_TOOLS, this.handleShowDevTools);
-    ipcMain.removeListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
-    ipcMain.removeListener(IPC_CHANNELS.READY_TO_SHOW, this.handleShow);
-    ipcMain.removeListener(IPC_CHANNELS.SET_USER_SETTING, this.handleSetUserSetting);
-    ipcMain.removeListener(IPC_CHANNELS.SET_INTERNAL_SETTING, this.handleSetInternalSetting);
-    ipcMain.removeListener(IPC_CHANNELS.MINIMIZE, this.handleMinimizeRequest);
-    ipcMain.removeListener(IPC_CHANNELS.MAXIMIZE_OR_RESTORE, this.handleMaximizeOrRestoreRequest);
-    ipcMain.removeListener(IPC_CHANNELS.IS_MAXIMIZED, this.handleIsMaximized);
-    ipcMain.removeListener(IPC_CHANNELS.IS_WINDOW_CLOSABLE, this.handleGetClosable);
-    ipcMain.removeListener(IPC_CHANNELS.IS_WINDOW_MAXIMIZABLE, this.handleGetMaximizable);
-    ipcMain.removeListener(IPC_CHANNELS.IS_WINDOW_MINIMIZABLE, this.handleGetMinimizable);
+    this.ipcService.removeAllListeners();
 
     if (this.browserWindow) {
       this.browserWindow.removeListener("closed", this.handleClosing);
@@ -74,22 +72,33 @@ export default class CommonViewMain {
   }
 
   private startIpc() {
+    const ipc = this.ipcService;
+
     this.userSettingsService.onSettingChange.addListener(this.handleUserSettingChange);
     this.internalSettingsService.onSettingChange.addListener(this.handleInternalSettingChange);
 
-    ipcMain.addListener(IPC_CHANNELS.BROWSER_READY, this.handleBrowserReady);
-    ipcMain.addListener(IPC_CHANNELS.CLOSE_REQUEST, this.handleCloseRequest);
-    ipcMain.addListener(IPC_CHANNELS.SHOW_DEV_TOOLS, this.handleShowDevTools);
-    ipcMain.addListener(IPC_CHANNELS.GET_EXTENSIONS, this.handleLoadExtensions);
-    ipcMain.addListener(IPC_CHANNELS.READY_TO_SHOW, this.handleShow);
-    ipcMain.addListener(IPC_CHANNELS.SET_USER_SETTING, this.handleSetUserSetting);
-    ipcMain.addListener(IPC_CHANNELS.SET_INTERNAL_SETTING, this.handleSetInternalSetting);
-    ipcMain.addListener(IPC_CHANNELS.MINIMIZE, this.handleMinimizeRequest);
-    ipcMain.addListener(IPC_CHANNELS.MAXIMIZE_OR_RESTORE, this.handleMaximizeOrRestoreRequest);
-    ipcMain.addListener(IPC_CHANNELS.IS_MAXIMIZED, this.handleIsMaximized);
-    ipcMain.addListener(IPC_CHANNELS.IS_WINDOW_CLOSABLE, this.handleGetClosable);
-    ipcMain.addListener(IPC_CHANNELS.IS_WINDOW_MAXIMIZABLE, this.handleGetMaximizable);
-    ipcMain.addListener(IPC_CHANNELS.IS_WINDOW_MINIMIZABLE, this.handleGetMinimizable);
+    // Initialization Events
+    ipc.addListener("BROWSER_READY", this.handleBrowserReady);
+    ipc.addListener("READY_TO_SHOW", this.handleShow);
+
+    // Window Commands
+    ipc.addListener("TOGGLE_DEV_TOOLS", this.handleShowDevTools);
+    ipc.addListener("CLOSE", this.handleCloseRequest);
+    ipc.addListener("MAXIMIZE_OR_RESTORE", this.handleMaximizeOrRestoreRequest);
+    ipc.addListener("MINIMIZE", this.handleMinimizeRequest);
+
+    // Window Binary Questions
+    ipc.addListener("IS_MAXIMIZED", this.handleIsMaximized);
+    ipc.addListener("IS_WINDOW_CLOSABLE", this.handleGetClosable);
+    ipc.addListener("IS_WINDOW_MAXIMIZABLE", this.handleGetMaximizable);
+    ipc.addListener("IS_WINDOW_MINIMIZABLE", this.handleGetMinimizable);
+
+    // Environment Non-binary Questions
+    ipc.addListener("GET_EXTENSIONS", this.handleLoadExtensions);
+
+    // Environement Non-binary Requests
+    ipc.addListener("SET_USER_SETTING", this.handleSetUserSetting);
+    ipc.addListener("SET_INTERNAL_SETTING", this.handleSetInternalSetting);
 
     if (this.browserWindow) {
       this.browserWindow.addListener("closed", this.handleClosing);
@@ -99,142 +108,99 @@ export default class CommonViewMain {
     }
   }
 
-  private handleGetMaximizable(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      event.returnValue = this.browserWindow.isMaximizable();
-    }
+  private handleGetMaximizable(args: undefined, callback: (returnValue: boolean) => void) {
+    callback(this.browserWindow.isMaximizable());
   }
 
-  private handleGetMinimizable(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      event.returnValue = this.browserWindow.isMinimizable();
-    }
+  private handleGetMinimizable(args: undefined, callback: (returnValue: boolean) => void) {
+    callback(this.browserWindow.isMinimizable());
   }
 
-  private handleGetClosable(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      event.returnValue = this.browserWindow.isClosable();
-    }
+  private handleGetClosable(args: undefined, callback: (returnValue: boolean) => void) {
+    callback(this.browserWindow.isClosable());
   }
 
-  private handleIsMaximized(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      event.returnValue = this.browserWindow.isMaximized();
-    }
+  private handleIsMaximized(args: undefined, callback: (returnValue: boolean) => void) {
+    callback(this.browserWindow.isMaximized());
   }
 
   private handleWindowMinimize() {
-    this.browserWindow.webContents.send(IPC_CHANNELS.MINIMIZED);
+    this.ipcService.send("MINIMIZED");
   }
 
   private handleWindowRestore() {
-    this.browserWindow.webContents.send(IPC_CHANNELS.RESTORED);
+    this.ipcService.send("RESTORED");
   }
 
   private handleWindowMaximize() {
-    this.browserWindow.webContents.send(IPC_CHANNELS.MAXIMIZED);
+    this.ipcService.send("MAXIMIZED");
   }
 
-  private handleUserSettingChange(setting: { key: string; value: any }) {
-    this.browserWindow.webContents.send(IPC_CHANNELS.USER_SETTINGS_UPDATE, setting);
+  private handleUserSettingChange(setting: SettingKey<any>) {
+    this.ipcService.send("USER_SETTING_UPDATE", setting);
   }
 
-  private handleSetUserSetting(event: Electron.Event, setting: { key: string; value: any }) {
-    if (this.isCurrentWindow(event.sender)) {
-      this.userSettingsService.setSettingAndSave(setting.key, setting.value);
-    }
+  private handleSetUserSetting(setting: SettingKey<any>) {
+    this.userSettingsService.setSettingAndSave(setting.key, setting.value);
   }
 
-  private handleInternalSettingChange(setting: { key: string; value: any }) {
-    this.browserWindow.webContents.send(IPC_CHANNELS.INTERNAL_SETTINGS_UPDATE, setting);
+  private handleInternalSettingChange(setting: SettingKey<any>) {
+    this.ipcService.send("INTERNAL_SETTING_UPDATE", setting);
   }
 
-  private handleSetInternalSetting(event: Electron.Event, setting: { key: string; value: any }) {
-    if (this.isCurrentWindow(event.sender)) {
-      this.internalSettingsService.setSettingAndSave(setting.key, setting.value);
-    }
+  private handleSetInternalSetting(setting: SettingKey<any>) {
+    this.internalSettingsService.setSettingAndSave(setting.key, setting.value);
   }
 
-  private handleShow(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      this.browserWindow.show();
-    }
+  private handleShow() {
+    this.browserWindow.show();
   }
 
   private handleClosing() {
-    this.removeListeners();
+    // this.onCloseRequest.propagate({});
   }
 
-  private handleLoadExtensions(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender) && this.extensionsManager) {
-      const srcDir = path.join(__dirname, "..", "..", "..", "parts");
-      event.returnValue = this.extensionsManager
-        .loadExtensionsDir(srcDir)
-        .map<LoadableExtension>(v => new LoadableExtension(v, "telurio-ext://", srcDir));
+  private handleLoadExtensions(args: undefined, callback: (returnValue: LoadableExtension[]) => void) {
+    if (this.extensionsManager) {
+      const internalExtDir = path.join(__dirname, "..", "..", "..", "parts");
+      const exts = this.extensionsManager
+        .loadExtensionsDir(internalExtDir)
+        .map<LoadableExtension>(v => new LoadableExtension(v, ENV.INTERNAL_EXT_PROTOCOL, internalExtDir));
+
+      callback(exts);
     }
   }
 
-  private handleBrowserReady(event: Electron.Event) {
-    if (this.browserWindow && this.browserWindow.webContents) {
-      if (this.browserWindow.webContents === event.sender) {
-        // send common configs
-        event.returnValue = this.getCommonConfigs();
-        this.onWindowReady.propagate({});
-      }
-    }
+  private handleBrowserReady(args: undefined, callback: (returnValue: CommonViewInitArgs) => void) {
+    callback(this.getInitArgs());
+    this.onWindowReady.propagate({});
   }
 
-  private handleCloseRequest(event: Electron.Event) {
-    if (this.browserWindow && this.browserWindow.webContents) {
-      if (this.browserWindow.webContents === event.sender) {
-        if (this.browserWindow) {
-          this.browserWindow.close();
-        }
-      }
-    }
+  private handleCloseRequest() {
+    this.onCloseRequest.propagate({});
   }
 
-  private handleShowDevTools(event: Electron.Event) {
-    if (this.browserWindow && this.browserWindow.webContents) {
-      if (this.browserWindow.webContents === event.sender) {
-        if (this.browserWindow) {
-          this.browserWindow.webContents.toggleDevTools();
-        }
-      }
-    }
+  private handleShowDevTools() {
+    this.browserWindow.webContents.toggleDevTools();
   }
 
-  private handleMaximizeOrRestoreRequest(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      if (this.browserWindow!.isMaximized()) {
-        this.browserWindow!.restore();
-      } else {
-        this.browserWindow!.maximize();
-      }
+  private handleMaximizeOrRestoreRequest() {
+    if (this.browserWindow!.isMaximized()) {
+      this.browserWindow!.restore();
+      return;
     }
+    this.browserWindow!.maximize();
   }
 
-  private handleMinimizeRequest(event: Electron.Event) {
-    if (this.isCurrentWindow(event.sender)) {
-      this.browserWindow.minimize();
-    }
+  private handleMinimizeRequest() {
+    this.browserWindow.minimize();
   }
 
-  private getCommonConfigs(): CommonViewInitArgs {
+  private getInitArgs(): CommonViewInitArgs {
     const i18nArgs = new I18nArgs(this.i18nService.language!);
     const userSettingsArgs = new UserSettingsArgs(this.userSettingsService.settings);
     const internalSettingsArgs = new InternalSettingsArgs(this.internalSettingsService.settings);
 
     return new CommonViewInitArgs(i18nArgs, userSettingsArgs, internalSettingsArgs);
-  }
-
-  private isCurrentWindow(webContents: any): boolean {
-    if (this.browserWindow && this.browserWindow.webContents) {
-      if (this.browserWindow.webContents === webContents) {
-        return true;
-      }
-    }
-
-    return false;
   }
 }

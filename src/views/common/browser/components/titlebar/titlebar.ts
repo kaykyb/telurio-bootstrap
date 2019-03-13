@@ -25,7 +25,7 @@ export default class Titlebar {
     this.leftSideElements = leftSideElements;
   }
 
-  public render(): HTMLDivElement {
+  public async render(): Promise<HTMLDivElement> {
     this.domElement = document.createElement("div");
     this.domElement.classList.add(styles.titlebar);
 
@@ -55,9 +55,7 @@ export default class Titlebar {
       leftSideControlsContainer.appendChild(devBtn.render());
 
       devBtn.onClick.addListener(() => {
-        if (this.commonBrowserService.ipcService.ipc) {
-          this.commonBrowserService.ipcService.ipc.send(IPC_CHANNELS.SHOW_DEV_TOOLS);
-        }
+        this.commonBrowserService.showDevTools();
       });
     }
 
@@ -66,16 +64,14 @@ export default class Titlebar {
     windowControlsContainer.classList.add(styles.controlsContainer);
 
     this.windowControls = new WindowControls(
-      this.commonBrowserService.getWindowIsCloseable(),
-      this.commonBrowserService.getWindowIsMinimizable(),
-      this.commonBrowserService.getWindowIsMaximizable(),
-      this.commonBrowserService.getIsMaximized()
+      await this.commonBrowserService.getWindowIsCloseable(),
+      await this.commonBrowserService.getWindowIsMinimizable(),
+      await this.commonBrowserService.getWindowIsMaximizable(),
+      await this.commonBrowserService.getIsMaximized()
     );
 
     this.windowControls.onCloseClick.addListener(() => {
-      if (this.commonBrowserService.ipcService.ipc) {
-        this.commonBrowserService.ipcService.ipc.send(IPC_CHANNELS.CLOSE_REQUEST);
-      }
+      this.commonBrowserService.close();
     });
 
     this.windowControls.onMaximizeClick.addListener(() => {

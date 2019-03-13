@@ -6,20 +6,24 @@ import styles from "./index.css";
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 import Titlebar from "@src/views/common/browser/components/titlebar/titlebar";
 
-(() => {
+async function start() {
   const root = document.getElementById("app-root") as HTMLElement;
   root.classList.add(styles.root);
 
-  const coreService = new CommonViewBrowserService();
-  const editorDevToolsService = new EditorDevToolsBrowserService(coreService);
+  const commonService = new CommonViewBrowserService();
+  await commonService.start();
 
-  document.title = coreService.i18n.contents.editorDevToolsView.title;
+  const editorDevToolsService = new EditorDevToolsBrowserService(commonService);
 
-  const titlebar = new Titlebar(coreService);
-  root.appendChild(titlebar.render());
+  document.title = commonService.i18n.contents.editorDevToolsView.title;
+
+  const titlebar = new Titlebar(commonService);
+  root.appendChild(await titlebar.render());
 
   const commander = new Commander(editorDevToolsService);
   root.appendChild(commander.render());
 
-  coreService.show();
-})();
+  commonService.show();
+}
+
+start();

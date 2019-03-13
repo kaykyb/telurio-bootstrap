@@ -2,11 +2,14 @@ import EditorExtensionBridge from "./editorExtensionBridge";
 
 import CommonLayoutConfig from "@src/views/editor/common/classes/commonLayoutConfig";
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
-import { EDITOR_IPC_CHANNELS } from "@src/views/editor/common/ipcChannels";
-import CommonPanelRow from "@src/views/editor/common/classes/panelRow";
 import CoreExtensibilityService from "./coreExtensibilityService";
 import PanelView from "../panels/container/frame/views/view/panelView";
 import PanelTab from "../panels/container/tabs/tab/panelTab";
+import IEditorIpcReturns from "../../common/ipc/EditorIpcServiceReturns";
+import IEditorIpcArgs from "../../common/ipc/EditorIpcServiceArgs";
+import IpcBrowserService from "@src/common/browser/services/ipc/ipcBrowserService";
+import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
+import ICommandIndex from "@src/common/common/extensions/commandIndex";
 
 export default class EditorBrowserService {
   public extensionBridge: EditorExtensionBridge = new EditorExtensionBridge();
@@ -15,42 +18,36 @@ export default class EditorBrowserService {
   public panelViewsIndex: PanelView[] = [];
   public panelTabsIndex: PanelTab[] = [];
 
+  private ipcService = new IpcBrowserService<IEditorIpcArgs, IEditorIpcReturns>("EDITOR");
+
   constructor(public readonly commonService: CommonViewBrowserService) {
+    this.handleGetExtCommands = this.handleGetExtCommands.bind(this);
+
     this.coreService = new CoreExtensibilityService(this.extensionBridge, commonService);
     this.initIpc();
   }
 
-  public getLayoutConfigs(): CommonLayoutConfig {
-    if (this.commonService.ipcService.ipc) {
-      return this.commonService.ipcService.ipc.sendSync(EDITOR_IPC_CHANNELS.GET_WORKSPACE_CONFIGS);
-    }
-
-    return new CommonLayoutConfig(new CommonPanelRow(0));
+  public async getLayoutConfigs(): Promise<CommonLayoutConfig> {
+    return this.ipcService.sendAndReturn("GET_WORKSPACE_CONFIGS");
   }
 
   public showMarketplace() {
-    if (this.commonService.ipcService.ipc) {
-      return this.commonService.ipcService.ipc.send(EDITOR_IPC_CHANNELS.OPEN_MARKETPLACE);
-    }
+    this.ipcService.send("OPEN_MARKETPLACE");
   }
 
   public showEditorDevTools() {
-    if (this.commonService.ipcService.ipc) {
-      return this.commonService.ipcService.ipc.send(EDITOR_IPC_CHANNELS.OPEN_EDITOR_DEVTOOLS);
-    }
+    this.ipcService.send("OPEN_EDITOR_DEVTOOLS");
   }
 
   private initIpc() {
-    if (this.commonService.ipcService.ipc) {
-      const ipc = this.commonService.ipcService.ipc;
+    this.ipcService.addListener("GET_EXT_COMMANDS", this.handleGetExtCommands);
 
-      ipc.on(EDITOR_IPC_CHANNELS.GET_EXT_COMMANDS, (e: any) => {
-        e.sender.send(EDITOR_IPC_CHANNELS.GET_EXT_COMMANDS_RETURN, this.extensionBridge.commands);
-      });
+    this.extensionBridge.onCommandRegister.addListener(() => {
+      this.ipcService.send("UPDATE_EXT_COMMANDS", this.extensionBridge.commands);
+    });
+  }
 
-      this.extensionBridge.onCommandRegister.addListener(() => {
-        ipc.send(EDITOR_IPC_CHANNELS.UPDATE_EXT_COMMANDS, this.extensionBridge.commands);
-      });
-    }
+  private handleGetExtCommands(args: undefined, resolve: (returnValue: ICommandIndex) => any) {
+    resolve(this.extensionBridge.commands);
   }
 }

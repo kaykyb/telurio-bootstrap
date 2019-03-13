@@ -1,12 +1,13 @@
 import CommonViewInitArgs from "@src/views/common/common/commonViewInitArgs";
-import IpcService from "@src/common/browser/ipcService";
-import { IPC_CHANNELS } from "@src/common/common/ipcChannels";
-import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
+import IpcBrowserService from "@src/common/browser/services/ipc/ipcBrowserService";
 import I18nLanguageFile from "@src/common/node/services/i18n/i18nLanguageFile";
-import ISettingStore from "@src/common/node/services/settings/settingStore";
 import CommonEvent from "@src/common/common/commonEvent";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
 import ConfigurationManager from "./subservices/configurationManager";
+import ICommonViewIpcReturns from "../../common/ipc/CommonViewIpcReturns";
+import ICommonViewIpcArgs from "../../common/ipc/CommonViewIpcArgs";
+import { ENV } from "@src/env";
+import SettingKey from "@src/common/node/services/settings/settingKey";
 
 export default class CommonViewBrowserService {
   public onMinimize = new CommonEvent();
@@ -15,126 +16,92 @@ export default class CommonViewBrowserService {
 
   public i18n!: I18nLanguageFile;
 
-  public ipcService: IpcService;
-
   public userSettings!: ConfigurationManager;
   public internalSettings!: ConfigurationManager;
 
   private extensions?: LoadableExtension[];
+  private ipcService: IpcBrowserService<ICommonViewIpcArgs, ICommonViewIpcReturns>;
 
   constructor() {
-    this.handleUserSettingsUpdate = this.handleUserSettingsUpdate.bind(this);
+    this.ipcService = new IpcBrowserService<ICommonViewIpcArgs, ICommonViewIpcReturns>(ENV.IPC_COMMON_PREFIX);
 
+    this.handleUserSettingsUpdate = this.handleUserSettingsUpdate.bind(this);
     this.handleWindowMaximized = this.handleWindowMaximized.bind(this);
     this.handleWindowMinimized = this.handleWindowMinimized.bind(this);
     this.handleWindowRestored = this.handleWindowRestored.bind(this);
 
-    this.ipcService = new IpcService();
-
     this.addIpcListeners();
-
-    if (this.ipcService.ipc) {
-      const initArgs: CommonViewInitArgs = this.ipcService.ipc.sendSync(IPC_CHANNELS.BROWSER_READY);
-
-      this.i18n = initArgs.i18nArgs.i18nLanguageFile;
-      this.userSettings = new ConfigurationManager(initArgs.userSettingsArg.userSettings);
-      this.internalSettings = new ConfigurationManager(initArgs.internalSettingsArgs.internalSettings);
-
-      return;
-    }
-
-    // this.i18n = ...
   }
 
-  public getWindowIsCloseable(): boolean {
-    if (this.ipcService.ipc) {
-      return this.ipcService.ipc.sendSync(IPC_CHANNELS.IS_WINDOW_CLOSABLE);
-    }
+  public async start() {
+    const initArgs = await this.ipcService.sendAndReturn("BROWSER_READY");
 
-    return false;
+    this.i18n = initArgs.i18nArgs.i18nLanguageFile;
+    this.userSettings = new ConfigurationManager(initArgs.userSettingsArg.userSettings);
+    this.internalSettings = new ConfigurationManager(initArgs.internalSettingsArgs.internalSettings);
   }
 
-  public getWindowIsMaximizable(): boolean {
-    if (this.ipcService.ipc) {
-      return this.ipcService.ipc.sendSync(IPC_CHANNELS.IS_WINDOW_MAXIMIZABLE);
-    }
-
-    return false;
+  public async getWindowIsCloseable(): Promise<boolean> {
+    return this.ipcService.sendAndReturn("IS_WINDOW_CLOSABLE");
   }
 
-  public getWindowIsMinimizable(): boolean {
-    if (this.ipcService.ipc) {
-      return this.ipcService.ipc.sendSync(IPC_CHANNELS.IS_WINDOW_MINIMIZABLE);
-    }
-
-    return false;
+  public async getWindowIsMaximizable(): Promise<boolean> {
+    return this.ipcService.sendAndReturn("IS_WINDOW_MAXIMIZABLE");
   }
 
-  public getIsMaximized(): boolean {
-    if (this.ipcService.ipc) {
-      return this.ipcService.ipc.sendSync(IPC_CHANNELS.IS_MAXIMIZED);
-    }
+  public async getWindowIsMinimizable(): Promise<boolean> {
+    return this.ipcService.sendAndReturn("IS_WINDOW_MINIMIZABLE");
+  }
 
-    return false;
+  public async getIsMaximized(): Promise<boolean> {
+    return this.ipcService.sendAndReturn("IS_MAXIMIZED");
   }
 
   public maximizeOrRestore() {
-    if (this.ipcService.ipc) {
-      this.ipcService.ipc.send(IPC_CHANNELS.MAXIMIZE_OR_RESTORE);
-    }
+    this.ipcService.send("MAXIMIZE_OR_RESTORE");
   }
 
   public minimize() {
-    if (this.ipcService.ipc) {
-      this.ipcService.ipc.send(IPC_CHANNELS.MINIMIZE);
-    }
+    this.ipcService.send("MINIMIZE");
   }
 
-  public getExtensions(): LoadableExtension[] {
+  public async getExtensions(): Promise<LoadableExtension[]> {
     if (this.extensions) {
       return this.extensions;
     }
 
-    if (this.ipcService.ipc) {
-      this.extensions = this.ipcService.ipc.sendSync(IPC_CHANNELS.GET_EXTENSIONS);
-      return this.extensions!;
-    }
-
-    return [];
+    this.extensions = await this.ipcService.sendAndReturn("GET_EXTENSIONS");
+    return this.extensions!;
   }
 
   public show() {
-    if (this.ipcService.ipc) {
-      return this.ipcService.ipc.send(IPC_CHANNELS.READY_TO_SHOW);
-    }
+    this.ipcService.send("READY_TO_SHOW");
+  }
+
+  public showDevTools() {
+    this.ipcService.send("TOGGLE_DEV_TOOLS");
+  }
+
+  public close() {
+    this.ipcService.send("CLOSE");
   }
 
   private removeIpcListeners() {
-    if (this.ipcService.ipc) {
-      this.ipcService.ipc.removeListener(IPC_CHANNELS.USER_SETTINGS_UPDATE, this.handleUserSettingsUpdate);
-      this.ipcService.ipc.removeListener(
-        IPC_CHANNELS.INTERNAL_SETTINGS_UPDATE,
-        this.handleInteralSettingsUpdate
-      );
+    this.ipcService.removeListener("USER_SETTING_UPDATE", this.handleUserSettingsUpdate);
+    this.ipcService.removeListener("INTERNAL_SETTING_UPDATE", this.handleInternalSettingsUpdate);
 
-      this.ipcService.ipc.removeListener(IPC_CHANNELS.MAXIMIZED, this.handleWindowMaximized);
-      this.ipcService.ipc.removeListener(IPC_CHANNELS.MINIMIZED, this.handleWindowMinimized);
-      this.ipcService.ipc.removeListener(IPC_CHANNELS.RESTORED, this.handleWindowRestored);
-    }
+    this.ipcService.removeListener("MAXIMIZED", this.handleWindowMaximized);
+    this.ipcService.removeListener("MINIMIZED", this.handleWindowMinimized);
+    this.ipcService.removeListener("RESTORED", this.handleWindowRestored);
   }
 
   private addIpcListeners() {
-    if (this.ipcService.ipc) {
-      this.ipcService.ipc.addListener(IPC_CHANNELS.USER_SETTINGS_UPDATE, this.handleUserSettingsUpdate);
-      this.ipcService.ipc.addListener(
-        IPC_CHANNELS.INTERNAL_SETTINGS_UPDATE,
-        this.handleInteralSettingsUpdate
-      );
+    this.ipcService.addListener("USER_SETTING_UPDATE", this.handleUserSettingsUpdate);
+    this.ipcService.addListener("INTERNAL_SETTING_UPDATE", this.handleInternalSettingsUpdate);
 
-      this.ipcService.ipc.addListener(IPC_CHANNELS.MAXIMIZED, this.handleWindowMaximized);
-      this.ipcService.ipc.addListener(IPC_CHANNELS.MINIMIZED, this.handleWindowMinimized);
-      this.ipcService.ipc.addListener(IPC_CHANNELS.RESTORED, this.handleWindowRestored);
-    }
+    this.ipcService.addListener("MAXIMIZED", this.handleWindowMaximized);
+    this.ipcService.addListener("MINIMIZED", this.handleWindowMinimized);
+    this.ipcService.addListener("RESTORED", this.handleWindowRestored);
   }
 
   private handleWindowMaximized() {
@@ -149,11 +116,11 @@ export default class CommonViewBrowserService {
     this.onRestore.propagate({});
   }
 
-  private handleUserSettingsUpdate(setting: { key: string; value: any }) {
+  private handleUserSettingsUpdate(setting: SettingKey<any>) {
     this.userSettings.updateSetting(setting.key, setting.value);
   }
 
-  private handleInteralSettingsUpdate(setting: { key: string; value: any }) {
+  private handleInternalSettingsUpdate(setting: SettingKey<any>) {
     this.internalSettings.updateSetting(setting.key, setting.value);
   }
 }

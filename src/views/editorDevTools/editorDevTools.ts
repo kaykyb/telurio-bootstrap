@@ -9,6 +9,7 @@ import CommonEvent from "@src/common/common/commonEvent";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import UserSettingsService from "@src/common/node/services/settings/user/userSettingsService";
 import InternalSettingsService from "@src/common/node/services/settings/internal/internalSettingsService";
+import ICommandIndex from "@src/common/common/extensions/commandIndex";
 
 const WINDOW_HEIGHT = 500;
 const WINDOW_WIDTH = 800;
@@ -22,7 +23,7 @@ export default class EditorDevTools {
   constructor(
     i18nService: I18nService,
     private editorWindow: BrowserWindow,
-    private editorCommands: { [key: string]: EditorExtensionBridgeCommand<any> },
+    private editorCommands: ICommandIndex,
     private userSettingsService: UserSettingsService,
     private readonly internalSettingsService: InternalSettingsService
   ) {
@@ -34,7 +35,7 @@ export default class EditorDevTools {
     this.createWindow(i18nService);
   }
 
-  public updateExtCommands(cmds: { [key: string]: EditorExtensionBridgeCommand<any> }) {
+  public updateExtCommands(cmds: ICommandIndex) {
     if (this.browserWindow) {
       this.browserWindow.webContents.send(EDITOR_DEV_TOOLS_IPC_CHANNELS.UPDATE_EXT_COMMANDS, cmds);
     }
@@ -74,6 +75,13 @@ export default class EditorDevTools {
       this.userSettingsService,
       this.internalSettingsService
     );
+
+    this.commonMain.onCloseRequest.addListener(() => {
+      if (this.commonMain && this.browserWindow) {
+        this.commonMain.removeListeners();
+        this.browserWindow.close();
+      }
+    });
   }
 
   private startIpc() {

@@ -5,6 +5,7 @@ import ExtensionMessage from "@src/common/common/extensions/extensionMessage";
 import ExtensionCommandActivationArgs from "@src/common/common/extensions/extensionCommandActivationArgs";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
 import LogUtility from "@src/common/common/util/logUtility";
+import { ENV } from "@src/env";
 
 export default class ExtensionHost {
   private sandbox?: HTMLIFrameElement;
@@ -68,7 +69,7 @@ export default class ExtensionHost {
       if (this.sandbox && this.sandbox.contentWindow) {
         this.sandbox.contentWindow!.postMessage(
           new ExtensionMessage("cmd", new ExtensionCommandActivationArgs(realCmd, args.args, args.cbCmdId)),
-          this.editorService.commonService.ipcService.ipc ? "*" : window.origin
+          "*"
         );
       }
     }

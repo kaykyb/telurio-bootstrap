@@ -7,5 +7,9 @@ export const ENV = {
   INSTALLED_THEMES_APPDATA_PATH: "User/installed-themes",
 
   INSTALLED_EXT_PROTOCOL: "telurio-ext://",
-  INTERNAL_EXT_PROTOCOL: "telurio-internal-ext://"
+  INTERNAL_EXT_PROTOCOL: "telurio-internal-ext://",
+
+  IPC_RETURN_COMPLEMENT: "__listenerReturn",
+
+  IPC_COMMON_PREFIX: "COMMON"
 };

@@ -3,6 +3,7 @@ import EditorDevToolsViewComponent from "../editorDevToolsViewComponent";
 import CommandsList from "./commandsList/commandsList";
 import EditorDevToolsBrowserService from "../service/editorDevToolsService";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
+import ICommandIndex from "@src/common/common/extensions/commandIndex";
 
 export default class Commander {
   private domElement?: HTMLDivElement;
@@ -21,7 +22,7 @@ export default class Commander {
     return this.domElement;
   }
 
-  private handleCmdList(cmds: { [key: string]: EditorExtensionBridgeCommand<any> }) {
+  private handleCmdList(cmds: ICommandIndex) {
     const commandsList = new CommandsList(this.editorDevToolsService, cmds);
     this.domElement!.appendChild(commandsList.render());
   }

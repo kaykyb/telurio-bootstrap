@@ -58,11 +58,12 @@ export default class Marketplace {
       this.userSettingsService,
       this.internalSettingsService
     );
-  }
 
-  private onWindowReady() {
-    if (this.browserWindow) {
-      this.browserWindow.show();
-    }
+    this.commonMain.onCloseRequest.addListener(() => {
+      if (this.commonMain && this.browserWindow) {
+        this.commonMain.removeListeners();
+        this.browserWindow.close();
+      }
+    });
   }
 }

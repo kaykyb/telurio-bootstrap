@@ -4,15 +4,16 @@ import ExtensionHost from "./extensionHost";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
 
 export default class ExtensionManager {
-  private extensions: LoadableExtension[];
+  private extensions: LoadableExtension[] = [];
   private extHosts: { [ext: string]: ExtensionHost } = {};
 
   constructor(private readonly editorService: EditorBrowserService) {
-    this.extensions = this.editorService.commonService.getExtensions();
     this.loadExtensions();
   }
 
-  private loadExtensions() {
+  private async loadExtensions() {
+    this.extensions = await this.editorService.commonService.getExtensions();
+
     const extHostContainer: HTMLDivElement = document.createElement("div");
     extHostContainer.style.display = "none";
 

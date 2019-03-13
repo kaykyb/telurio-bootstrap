@@ -17,9 +17,6 @@ export default class ConfigurationManager {
   public setSetting(key: string, value: any) {
     this.updateSetting(key, value);
     this.onSettingChangeRequest.propagate({ key, value });
-    // if (this.ipcService.ipc) {
-    //   this.ipcService.ipc.send(IPC_CHANNELS.SET_SETTING, { key, value });
-    // }
   }
 
   public updateSetting(key: string, value: any) {
