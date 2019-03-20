@@ -83,6 +83,7 @@ export default class IpcBrowserService<ChannelsArgs, ChannelsReturnValues> {
     this.ipc.send(`${this.prefix}:${channel}`, args);
   }
 
+  // TODO: Add Unique IDs to Callbacks!
   /**
    * Sends a message to the main and waits for the return.
    * @param channel The channel to send the message
