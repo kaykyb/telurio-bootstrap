@@ -16,13 +16,13 @@
 .resizer.row {
   height: 4px;
   left: 0;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid var(--resizerColor);
 }
 
 .resizer.col {
   width: 4px;
   top: 32px;
-  border-right: 1px solid #e5e5e5;
+  border-right: 1px solid var(--resizerColor);
 }
 
 .hider {

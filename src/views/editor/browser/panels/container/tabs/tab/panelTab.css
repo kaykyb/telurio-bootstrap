@@ -3,7 +3,7 @@
   animation-duration: 1s;
   animation-iteration-count: infinite;
 
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--tabDragOverBackground);
 }
 
 .tab {
@@ -11,15 +11,16 @@
   line-height: 32px;
   padding: 0 8px;
   flex-shrink: 0;
-  background: white;
+  background: var(--tabBackground);
+  color: var(--tabForeground);
   cursor: pointer;
   opacity: 0.5;
 }
 
 .active {
   height: 32px;
-  border-bottom: 1px solid blue;
-  color: blue;
+  border-bottom: 1px solid var(--tabActiveBorder);
+  color: var(--tabActiveForeground);
   opacity: 1;
 }
 

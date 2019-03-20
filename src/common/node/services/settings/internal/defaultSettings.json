@@ -1,1 +1,26 @@
-{}
+{
+  "themeColors": {
+    "background": "#000000",
+    "foreground": "#ffffff",
+    "primary": "#0000ff",
+
+    "resizerColor": "#1a1a1a",
+    "tabsPanelBorder": "#1a1a1a",
+
+    "tabBackground": "#000000",
+    "tabForeground": "#ffffff",
+    "tabActiveBorder": "#0000ff",
+    "tabActiveForeground": "#0000ff",
+    "tabDragOverBackground": "rgba(255, 255, 255, 0.1)",
+
+    "titlebarButtonsForeground": "rgba(255, 255, 255, 0.2)",
+    "titlebarButtonsBackground": "transparent",
+    "titlebarButtonsHoverForeground": "#ffffff",
+    "titlebarButtonsHoverBackground": "rgba(255, 255, 255, 0.1)",
+
+    "windowBorder": "#0000ff",
+
+    "panelDragOverOverlay": "rgba(255, 255, 255, 0.1)",
+    "panelDragOverOverlayBorder": "rgba(255, 255, 255, 0.1)"
+  }
+}

@@ -3,7 +3,7 @@
   width: 46px;
   border: none;
   padding: 0;
-  background: none;
+  background: var(--titlebarButtonsBackground);
 }
 
 .button.closeButton:hover {
@@ -11,7 +11,11 @@
 }
 
 .button:hover {
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--titlebarButtonsHoverBackground);
+}
+
+.button:hover .icon {
+  background: var(--titlebarButtonsHoverForeground);
 }
 
 .button:hover .icon.close {
@@ -23,7 +27,7 @@
   width: 100%;
   border: none;
   padding: 0;
-  background: black;
+  background: var(--titlebarButtonsForeground);
 }
 
 .close {

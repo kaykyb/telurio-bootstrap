@@ -10,6 +10,7 @@ import IEditorIpcArgs from "../../common/ipc/EditorIpcServiceArgs";
 import IpcBrowserService from "@src/common/browser/services/ipc/ipcBrowserService";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import ICommandIndex from "@src/common/common/extensions/commandIndex";
+import ThemeBrowserService from "@src/common/browser/services/themeBrowserService";
 
 export default class EditorBrowserService {
   public extensionBridge: EditorExtensionBridge = new EditorExtensionBridge();
@@ -19,11 +20,14 @@ export default class EditorBrowserService {
   public panelTabsIndex: PanelTab[] = [];
 
   private ipcService = new IpcBrowserService<IEditorIpcArgs, IEditorIpcReturns>("EDITOR");
+  private themeService = new ThemeBrowserService();
 
   constructor(public readonly commonService: CommonViewBrowserService) {
     this.handleGetExtCommands = this.handleGetExtCommands.bind(this);
 
     this.coreService = new CoreExtensibilityService(this.extensionBridge, commonService);
+    this.themeService.apply(commonService.internalSettings.getSetting("themeColors"));
+
     this.initIpc();
   }
 

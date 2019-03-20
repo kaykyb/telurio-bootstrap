@@ -3,11 +3,13 @@
   width: 36px;
   border: none;
   padding: 0;
-  background: none;
+  background: var(--titlebarButtonsBackground);
+  color: var(--titlebarButtonsForeground);
 }
 
 .button:hover {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--titlebarButtonsHoverBackground);
+  color: var(--titlebarButtonsHoverForeground);
 }
 
 .icon {
