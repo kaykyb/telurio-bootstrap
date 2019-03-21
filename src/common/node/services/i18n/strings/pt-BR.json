@@ -19,6 +19,10 @@
     "marketplaceView": {
       "title": "Telúrio - Loja de Extensões",
       "searchBarText": "Pesquisar extensões..."
+    },
+
+    "settingsEditorView": {
+      "title": "Configurações"
     }
   }
 }

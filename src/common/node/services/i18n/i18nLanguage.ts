@@ -15,4 +15,8 @@ export default interface Ii18nLanguage {
     title: string;
     searchBarText: string;
   };
+
+  settingsEditorView: {
+    title: string;
+  };
 }
