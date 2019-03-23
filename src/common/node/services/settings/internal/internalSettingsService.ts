@@ -13,9 +13,11 @@ export default class InternalSettingsService {
     this.loadSettings();
   }
 
-  public setSettingAndSave(key: string, value: any) {
+  public setSettingAndSave(key: string, value: any, propagate = true) {
     this.settings[key] = value;
-    this.onSettingChange.propagate({ key, value });
+    if (propagate) {
+      this.onSettingChange.propagate({ key, value });
+    }
     this.save();
   }
 

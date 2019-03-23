@@ -1,4 +1,9 @@
 {
+  "windowState": {
+    "height": 600,
+    "width": 800
+  },
+
   "themeColors": {
     "background": "#000a1a",
     "foreground": "#ffffff",

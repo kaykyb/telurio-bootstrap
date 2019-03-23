@@ -54,9 +54,26 @@ export default class Editor {
   }
 
   private createWindow(i18nService: I18nService) {
+    let targetWindowHeight = WINDOW_HEIGHT;
+    let targetWindowWidth = WINDOW_WIDTH;
+    let targetWindowX;
+    let targetWindowY;
+
+    const windowState = this.internalSettingsService.settings.windowState;
+
+    if (windowState && windowState.editor) {
+      targetWindowHeight = windowState.editor.height;
+      targetWindowWidth = windowState.editor.width;
+      targetWindowX = windowState.editor.x;
+      targetWindowY = windowState.editor.y;
+    }
+
     this.browserWindow = new BrowserWindow({
-      height: WINDOW_HEIGHT,
-      width: WINDOW_WIDTH,
+      height: targetWindowHeight,
+      width: targetWindowWidth,
+
+      x: targetWindowX,
+      y: targetWindowY,
 
       frame: false,
       show: false,
@@ -90,6 +107,7 @@ export default class Editor {
 
     this.commonMain.onCloseRequest.addListener(() => {
       if (this.commonMain && this.browserWindow) {
+        this.saveWindowState();
         this.commonMain.removeListeners();
         this.browserWindow.close();
       }
@@ -216,5 +234,24 @@ export default class Editor {
         this.editorDevTools = undefined;
       });
     }
+  }
+
+  private saveWindowState() {
+    if (!this.browserWindow) {
+      return;
+    }
+
+    let windowState = this.internalSettingsService.settings.windowState;
+    const currentState = this.browserWindow.getBounds();
+
+    if (windowState) {
+      windowState.editor = currentState;
+    } else {
+      windowState = {
+        editor: windowState
+      };
+    }
+
+    this.internalSettingsService.setSettingAndSave("windowState", windowState, false);
   }
 }
