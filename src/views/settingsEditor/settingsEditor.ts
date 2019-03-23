@@ -42,7 +42,9 @@ export default class SettingsEditor {
         contextIsolation: false,
         nodeIntegration: false,
         preload: path.join(__dirname, "browser", "preload.compiled.js")
-      }
+      },
+
+      backgroundColor: this.getWindowColor()
     });
 
     this.browserWindow.loadFile(path.join(__dirname, "browser", "index.html"));
@@ -65,5 +67,17 @@ export default class SettingsEditor {
         this.browserWindow.close();
       }
     });
+  }
+
+  private getWindowColor(): string {
+    const themeColors = this.internalSettingsService.settings.themeColors;
+
+    if (themeColors && themeColors.background) {
+      if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/.test(themeColors.background)) {
+        return themeColors.background;
+      }
+    }
+
+    return "#000000";
   }
 }

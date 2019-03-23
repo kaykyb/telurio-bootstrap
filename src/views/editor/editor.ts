@@ -65,7 +65,9 @@ export default class Editor {
         contextIsolation: false,
         nodeIntegration: false,
         preload: path.join(__dirname, "browser", "preload.compiled.js")
-      }
+      },
+
+      backgroundColor: this.getWindowColor()
     });
 
     this.ipcService = new IpcNodeService<IEditorIpcArgs, IEditorIpcReturns>(this.browserWindow, "EDITOR");
@@ -92,6 +94,18 @@ export default class Editor {
         this.browserWindow.close();
       }
     });
+  }
+
+  private getWindowColor(): string {
+    const themeColors = this.internalSettingsService.settings.themeColors;
+
+    if (themeColors && themeColors.background) {
+      if (/(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)/.test(themeColors.background)) {
+        return themeColors.background;
+      }
+    }
+
+    return "#000000";
   }
 
   private startIpc() {
