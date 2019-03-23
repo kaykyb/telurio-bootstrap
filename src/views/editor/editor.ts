@@ -58,6 +58,7 @@ export default class Editor {
     let targetWindowWidth = WINDOW_WIDTH;
     let targetWindowX;
     let targetWindowY;
+    let isMaximized;
 
     const windowState = this.internalSettingsService.settings.windowState;
 
@@ -66,6 +67,7 @@ export default class Editor {
       targetWindowWidth = windowState.editor.width;
       targetWindowX = windowState.editor.x;
       targetWindowY = windowState.editor.y;
+      isMaximized = windowState.editor.maximized;
     }
 
     this.browserWindow = new BrowserWindow({
@@ -86,6 +88,14 @@ export default class Editor {
 
       backgroundColor: this.getWindowColor()
     });
+
+    if (isMaximized) {
+      this.browserWindow.once("show", () => {
+        if (this.browserWindow) {
+          this.browserWindow.maximize();
+        }
+      });
+    }
 
     this.ipcService = new IpcNodeService<IEditorIpcArgs, IEditorIpcReturns>(this.browserWindow, "EDITOR");
 
@@ -242,7 +252,13 @@ export default class Editor {
     }
 
     let windowState = this.internalSettingsService.settings.windowState;
-    const currentState = this.browserWindow.getBounds();
+    let currentState;
+
+    if (this.browserWindow.isMaximized()) {
+      currentState = { ...windowState.editor, maximized: true };
+    } else {
+      currentState = { ...this.browserWindow.getBounds(), maximized: false };
+    }
 
     if (windowState) {
       windowState.editor = currentState;
