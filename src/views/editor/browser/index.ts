@@ -40,12 +40,12 @@ async function start() {
       [
         {
           callback: () => editorService.showMarketplace(),
-          icon: "extension",
+          icon: "box",
           label: commonService.i18n.contents.editorView.manageExtensions
         },
         {
           callback: () => editorService.showEditorDevTools(),
-          icon: "build",
+          icon: "terminal",
           label: commonService.i18n.contents.editorView.openTelurioDevTools
         }
       ],

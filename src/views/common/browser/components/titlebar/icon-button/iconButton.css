@@ -5,6 +5,9 @@
   padding: 0;
   background: var(--titlebarButtonsBackground);
   color: var(--titlebarButtonsForeground);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
 }
 
 .button:hover {
@@ -12,8 +15,21 @@
   color: var(--titlebarButtonsHoverForeground);
 }
 
-.icon {
-  text-align: center;
-  font-size: 15px !important;
+.iconContainer {
   line-height: 30px !important;
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  display: block;
 }

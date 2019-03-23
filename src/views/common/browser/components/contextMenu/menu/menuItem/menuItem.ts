@@ -1,8 +1,8 @@
 import styles from "./menuItem.css";
 import ContextMenuItem from "../../contextMenuItem";
-import { materialIcons } from "@src/views/common/browser/fonts/material-icons/material-icons.css";
 import Menu from "../menu";
 import CommonEvent from "@src/common/common/commonEvent";
+import FeatherIcons from "@src/common/browser/icons/feather";
 
 export default class MenuItem {
   public onPropagate = new CommonEvent();
@@ -17,12 +17,21 @@ export default class MenuItem {
     this.domElement.classList.add(styles.item);
 
     // add icon
-    const icon = document.createElement("i");
-    icon.classList.add(styles.icon, materialIcons);
+    const iconContainer = document.createElement("div");
+    iconContainer.classList.add(styles.iconContainer);
 
-    icon.innerText = this.ctxItem.icon || "";
+    if (this.ctxItem.icon) {
+      const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svgIcon.setAttribute("viewBox", "0 0 24 24");
 
-    this.domElement.appendChild(icon);
+      svgIcon.classList.add(styles.icon);
+
+      svgIcon.innerHTML = FeatherIcons.getSvgPath(this.ctxItem.icon);
+
+      iconContainer.appendChild(svgIcon);
+    }
+
+    this.domElement.appendChild(iconContainer);
 
     // add text
     const label = document.createElement("div");
@@ -48,10 +57,19 @@ export default class MenuItem {
     this.domElement.appendChild(placeholder);
 
     // add arrow
-    const arrow = document.createElement("i");
-    arrow.classList.add(styles.arrow, materialIcons);
+    const arrow = document.createElement("div");
+    arrow.classList.add(styles.arrow);
 
-    arrow.innerText = this.ctxItem.subitems ? "chevron_right" : "";
+    if (this.ctxItem.subitems) {
+      const svgIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svgIcon.setAttribute("viewBox", "0 0 24 24");
+
+      svgIcon.classList.add(styles.icon);
+
+      svgIcon.innerHTML = FeatherIcons.getSvgPath("chevron-right");
+
+      arrow.appendChild(svgIcon);
+    }
 
     this.domElement.appendChild(arrow);
 
