@@ -1,4 +1,4 @@
-import styles from "@src/views/common/browser/commonStyles.css";
+import styles from "./index.css";
 import Sidebar from "./marketplace/sidebar/sidebar";
 import MainView from "./marketplace/main-view/mainView";
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";

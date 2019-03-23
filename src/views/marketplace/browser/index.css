@@ -1,0 +1,27 @@
+* :global {
+  box-sizing: border-box;
+  user-select: none;
+  outline: none;
+}
+
+body :global,
+html :global {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Inter UI", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+body :global {
+  border: 1px solid blue;
+}
+
+.root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: row;
+}
