@@ -1,8 +1,13 @@
 export default interface Ii18nLanguage {
   editorView: {
     title: string;
-    manageExtensions: string;
-    openTelurioDevTools: string;
+    menu: {
+      extensionsSubmenu: {
+        label: string;
+        manageExtensions: string;
+      };
+      openTelurioDevTools: string;
+    };
   };
 
   editorDevToolsView: {

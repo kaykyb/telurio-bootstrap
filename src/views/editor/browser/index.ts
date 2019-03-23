@@ -35,18 +35,24 @@ async function start() {
 
   hamburguerButton.onClick.addListener(() => {
     const hbElementRect = hbElement.getBoundingClientRect();
-
+    const menuI18n = commonService.i18n.contents.editorView.menu;
     commonService.contextMenu.show(
       [
         {
-          callback: () => editorService.showMarketplace(),
           icon: "box",
-          label: commonService.i18n.contents.editorView.manageExtensions
+          label: menuI18n.extensionsSubmenu.label,
+          subitems: [
+            {
+              callback: () => editorService.showMarketplace(),
+              icon: "package",
+              label: menuI18n.extensionsSubmenu.manageExtensions
+            }
+          ]
         },
         {
           callback: () => editorService.showEditorDevTools(),
           icon: "terminal",
-          label: commonService.i18n.contents.editorView.openTelurioDevTools
+          label: menuI18n.openTelurioDevTools
         }
       ],
 
