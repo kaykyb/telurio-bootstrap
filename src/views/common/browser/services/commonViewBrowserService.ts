@@ -9,11 +9,14 @@ import ICommonViewIpcArgs from "../../common/ipc/CommonViewIpcArgs";
 import { ENV } from "@src/env";
 import SettingKey from "@src/common/node/services/settings/settingKey";
 import ThemeBrowserService from "@src/common/browser/services/themeBrowserService";
+import ContextMenu from "../components/contextMenu/contextMenu";
 
 export default class CommonViewBrowserService {
   public onMinimize = new CommonEvent();
   public onMaximize = new CommonEvent();
   public onRestore = new CommonEvent();
+
+  public contextMenu = new ContextMenu();
 
   public i18n!: I18nLanguageFile;
 
