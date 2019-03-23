@@ -1,6 +1,6 @@
 import PanelManager from "./panels/panelManager";
 
-import styles from "./index.css";
+import styles from "@src/views/common/browser/commonStyles.css";
 
 import EditorBrowserService from "./service/editorBrowserService";
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
