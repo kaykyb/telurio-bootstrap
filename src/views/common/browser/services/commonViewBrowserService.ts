@@ -48,6 +48,8 @@ export default class CommonViewBrowserService {
 
     // apply theme
     this.themeService.apply(this.internalSettings.getSetting("themeColors"));
+
+    document.body.appendChild(this.contextMenu.render());
   }
 
   public async getWindowIsCloseable(): Promise<boolean> {
