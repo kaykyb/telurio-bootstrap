@@ -42,6 +42,7 @@ export default class Menu {
     });
 
     if (this.domElement) {
+      this.domElement.innerHTML = "";
       this.domElement.appendChild(frag);
     }
   }
