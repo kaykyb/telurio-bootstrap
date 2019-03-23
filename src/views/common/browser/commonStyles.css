@@ -4,6 +4,10 @@
   outline: none;
 }
 
+::selection {
+  background: var(--textSelection);
+}
+
 body :global,
 html :global {
   margin: 0;

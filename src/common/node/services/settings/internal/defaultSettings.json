@@ -4,6 +4,8 @@
     "foreground": "#ffffff",
     "primary": "#00e5ff",
 
+    "textSelection": "#00e5ff",
+
     "resizerColor": "#001433",
     "tabsPanelBorder": "#001433",
 
@@ -30,6 +32,11 @@
     "contextMenuItemBackground": "transparent",
     "contextMenuItemForeground": "inherit",
     "contextMenuItemHoverBackground": "rgba(0, 0, 0, 0.2)",
-    "contextMenuItemHoverForeground": "#00e5ff"
+    "contextMenuItemHoverForeground": "#00e5ff",
+
+    "extensionsSideBarBackground": "rgba(0, 0, 0, 0.2)",
+    "extensionsSideBarBorder": "#001433",
+    "extensionsSearchBarBackground": "rgba(0, 0, 0, 0.1)",
+    "extensionsSearchBarBorder": "#001433"
   }
 }

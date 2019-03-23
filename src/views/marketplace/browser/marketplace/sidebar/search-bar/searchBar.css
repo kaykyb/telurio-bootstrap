@@ -3,13 +3,14 @@
   padding: 0;
   height: 30px;
   border: none;
-  border-bottom: 1px solid #d8d8d8;
+  border-bottom: 1px solid var(--extensionsSearchBarBorder);
   width: 100%;
-  background: rgba(0, 0, 0, 0.02);
+  background: var(--extensionsSearchBarBackground);
   display: flex;
 }
 
 .input {
+  color: var(--foreground);
   margin: 0;
   padding: 0 12px;
   height: 30px;
@@ -22,7 +23,8 @@
 }
 
 .input::placeholder {
-  color: rgba(0, 0, 0, 0.5);
+  color: var(--foreground);
+  opacity: 0.5;
   font-style: italic;
 }
 
