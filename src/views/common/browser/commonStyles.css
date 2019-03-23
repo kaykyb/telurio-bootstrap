@@ -22,9 +22,16 @@ body :global {
   border: 1px solid var(--windowBorder);
 }
 
-.root {
+.cRoot {
   height: calc(100vh - 2px);
   width: calc(100vw - 2px);
   display: flex;
   flex-direction: column;
+}
+
+.rRoot {
+  height: calc(100vh - 2px);
+  width: calc(100vw - 2px);
+  display: flex;
+  flex-direction: row;
 }

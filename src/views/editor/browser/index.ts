@@ -17,7 +17,7 @@ async function start() {
 
   // script ----------------------------
   const root = document.getElementById("app-root") as HTMLElement;
-  root.classList.add(styles.root);
+  root.classList.add(styles.cRoot);
 
   let panelManager: PanelManager;
   let extManager: ExtensionManager;

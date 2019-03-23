@@ -20,13 +20,11 @@ export default class EditorBrowserService {
   public panelTabsIndex: PanelTab[] = [];
 
   private ipcService = new IpcBrowserService<IEditorIpcArgs, IEditorIpcReturns>("EDITOR");
-  private themeService = new ThemeBrowserService();
 
   constructor(public readonly commonService: CommonViewBrowserService) {
     this.handleGetExtCommands = this.handleGetExtCommands.bind(this);
 
     this.coreService = new CoreExtensibilityService(this.extensionBridge, commonService);
-    this.themeService.apply(commonService.internalSettings.getSetting("themeColors"));
 
     this.initIpc();
   }

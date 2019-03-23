@@ -11,7 +11,7 @@ async function start() {
   const root = document.getElementById("app-root");
 
   if (root) {
-    root.classList.add(styles.root);
+    root.classList.add(styles.rRoot);
 
     const sidebar = new Sidebar(commonService);
     root.appendChild(sidebar.render());

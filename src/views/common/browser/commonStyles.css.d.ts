@@ -1,1 +1,2 @@
-export const root: string;
+export const cRoot: string;
+export const rRoot: string;

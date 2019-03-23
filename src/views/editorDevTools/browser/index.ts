@@ -8,7 +8,7 @@ import Titlebar from "@src/views/common/browser/components/titlebar/titlebar";
 
 async function start() {
   const root = document.getElementById("app-root") as HTMLElement;
-  root.classList.add(styles.root);
+  root.classList.add(styles.cRoot);
 
   const commonService = new CommonViewBrowserService();
   await commonService.start();
