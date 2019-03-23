@@ -1,16 +1,16 @@
 {
   "themeColors": {
-    "background": "#000000",
+    "background": "#000a1a",
     "foreground": "#ffffff",
-    "primary": "#0000ff",
+    "primary": "#00e5ff",
 
-    "resizerColor": "#1a1a1a",
-    "tabsPanelBorder": "#1a1a1a",
+    "resizerColor": "#001433",
+    "tabsPanelBorder": "#001433",
 
-    "tabBackground": "#000000",
+    "tabBackground": "#000a1a",
     "tabForeground": "#ffffff",
-    "tabActiveBorder": "#0000ff",
-    "tabActiveForeground": "#0000ff",
+    "tabActiveBorder": "#00e5ff",
+    "tabActiveForeground": "#00e5ff",
     "tabDragOverBackground": "rgba(255, 255, 255, 0.1)",
 
     "titlebarButtonsForeground": "rgba(255, 255, 255, 0.2)",
@@ -18,9 +18,18 @@
     "titlebarButtonsHoverForeground": "#ffffff",
     "titlebarButtonsHoverBackground": "rgba(255, 255, 255, 0.1)",
 
-    "windowBorder": "#0000ff",
+    "windowBorder": "#001433",
 
     "panelDragOverOverlay": "rgba(255, 255, 255, 0.1)",
-    "panelDragOverOverlayBorder": "rgba(255, 255, 255, 0.1)"
+    "panelDragOverOverlayBorder": "rgba(255, 255, 255, 0.1)",
+
+    "contextMenuBackground": "#0d1d35",
+    "contextMenuForeground": "rgba(255, 255, 255, 0.8)",
+    "contextMenuShadow": "#000000",
+
+    "contextMenuItemBackground": "transparent",
+    "contextMenuItemForeground": "inherit",
+    "contextMenuItemHoverBackground": "rgba(0, 0, 0, 0.2)",
+    "contextMenuItemHoverForeground": "#00e5ff"
   }
 }
