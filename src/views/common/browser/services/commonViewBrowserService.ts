@@ -8,6 +8,7 @@ import ICommonViewIpcReturns from "../../common/ipc/CommonViewIpcReturns";
 import ICommonViewIpcArgs from "../../common/ipc/CommonViewIpcArgs";
 import { ENV } from "@src/env";
 import SettingKey from "@src/common/node/services/settings/settingKey";
+import ThemeBrowserService from "@src/common/browser/services/themeBrowserService";
 
 export default class CommonViewBrowserService {
   public onMinimize = new CommonEvent();
@@ -21,6 +22,8 @@ export default class CommonViewBrowserService {
 
   private extensions?: LoadableExtension[];
   private ipcService: IpcBrowserService<ICommonViewIpcArgs, ICommonViewIpcReturns>;
+
+  private themeService = new ThemeBrowserService();
 
   constructor() {
     this.ipcService = new IpcBrowserService<ICommonViewIpcArgs, ICommonViewIpcReturns>(ENV.IPC_COMMON_PREFIX);
@@ -39,6 +42,9 @@ export default class CommonViewBrowserService {
     this.i18n = initArgs.i18nArgs.i18nLanguageFile;
     this.userSettings = new ConfigurationManager(initArgs.userSettingsArg.userSettings);
     this.internalSettings = new ConfigurationManager(initArgs.internalSettingsArgs.internalSettings);
+
+    // apply theme
+    this.themeService.apply(this.internalSettings.getSetting("themeColors"));
   }
 
   public async getWindowIsCloseable(): Promise<boolean> {
