@@ -1,4 +1,81 @@
 {
+  "editorState": {
+    "layout": {
+      "rootRow": {
+        "columns": [
+          {
+            "rows": [
+              {
+                "columns": [
+                  {
+                    "rows": [
+                      {
+                        "height": 400,
+                        "panels": [
+                          {
+                            "active": true,
+                            "args": "0",
+                            "panelId": "a",
+                            "panelName": "cake",
+                            "panelTitle": "Painel A"
+                          },
+                          { "active": false, "panelId": "b", "panelName": "cake", "panelTitle": "Painel B" }
+                        ]
+                      },
+                      {
+                        "height": 200,
+                        "panels": [
+                          { "active": false, "panelId": "c", "panelName": "cake", "panelTitle": "Painel C" },
+                          {
+                            "active": true,
+                            "args": "0",
+                            "panelId": "d",
+                            "panelName": "cake",
+                            "panelTitle": "Painel D"
+                          }
+                        ]
+                      }
+                    ],
+                    "width": 300
+                  },
+                  {
+                    "panels": [
+                      {
+                        "active": true,
+                        "args": "0",
+                        "panelId": "e",
+                        "panelName": "cake",
+                        "panelTitle": "Painel E"
+                      },
+                      { "active": false, "panelId": "f", "panelName": "cake", "panelTitle": "Painel F" }
+                    ],
+                    "width": 500
+                  }
+                ],
+                "height": 400
+              },
+              {
+                "height": 200,
+                "panels": [
+                  {
+                    "active": true,
+                    "args": "0",
+                    "panelId": "g",
+                    "panelName": "cake",
+                    "panelTitle": "Painel G"
+                  },
+                  { "active": false, "panelId": "h", "panelName": "cake", "panelTitle": "Painel H" }
+                ]
+              }
+            ],
+            "width": 800
+          }
+        ],
+        "height": 600
+      }
+    }
+  },
+
   "windowState": {
     "editor": {
       "height": 600,

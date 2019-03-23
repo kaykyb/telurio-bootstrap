@@ -24,6 +24,10 @@ export default class PanelManager {
     this.render();
   }
 
+  public getCurrentLayoutConfig(): CommonLayoutConfig {
+    return new CommonLayoutConfig(this.config.convertToCommmonRow());
+  }
+
   private render() {
     this.root.appendChild(this.config.render(undefined, undefined));
     this.config.fill = true;

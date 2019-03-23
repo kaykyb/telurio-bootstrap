@@ -19,7 +19,6 @@ async function start() {
   const root = document.getElementById("app-root") as HTMLElement;
   root.classList.add(styles.cRoot);
 
-  let panelManager: PanelManager;
   let extManager: ExtensionManager;
   let titlebar: Titlebar;
 
@@ -65,7 +64,7 @@ async function start() {
   titlebar = new Titlebar(commonService, undefined, leftSideElements);
   root.appendChild(await titlebar.render());
 
-  panelManager = new PanelManager(root, config, editorService);
+  editorService.panelManager = new PanelManager(root, config, editorService);
   extManager = new ExtensionManager(editorService);
 
   commonService.show();

@@ -11,6 +11,7 @@ import DropArea from "@src/views/editor/browser/panels/container/frame/drop-area
 import CommonEvent from "@src/common/common/commonEvent";
 import ObservableArray from "@src/common/common/observableArray";
 import EditorBrowserService from "../../../service/editorBrowserService";
+import CommonPanelRow from "@src/views/editor/common/classes/panelRow";
 
 export default class PanelRow extends PanelCel {
   public onEmpty = new CommonEvent<PanelRow>();
@@ -74,6 +75,24 @@ export default class PanelRow extends PanelCel {
 
   public prepareForResize() {
     this.height = this.domElement!.offsetHeight;
+  }
+
+  public convertToCommmonRow(): CommonPanelRow {
+    let cols;
+    let panels;
+
+    if (this.columns) {
+      cols = this.columns.map(v => v.convertToCommmonCol());
+    }
+
+    if (this.panels) {
+      panels = [];
+      this.panels.forEach(v => {
+        panels.push(v);
+      });
+    }
+
+    return new CommonPanelRow(this.height, cols, panels);
   }
 
   protected handlePanelTabDrop(tab: Tab, sender: DropArea): void {

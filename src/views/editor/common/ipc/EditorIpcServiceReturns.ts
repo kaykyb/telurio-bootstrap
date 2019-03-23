@@ -24,4 +24,5 @@ export default interface IEditorIpcReturns {
   // Environment Non-binary Events
   EXEC_EXT_COMMAND: undefined;
   GET_EXT_COMMANDS: ICommandIndex;
+  GET_EDITOR_LAYOUT: CommonLayoutConfig;
 }

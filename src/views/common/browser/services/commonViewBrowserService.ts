@@ -23,8 +23,9 @@ export default class CommonViewBrowserService {
   public userSettings!: ConfigurationManager;
   public internalSettings!: ConfigurationManager;
 
-  private extensions?: LoadableExtension[];
   private ipcService: IpcBrowserService<ICommonViewIpcArgs, ICommonViewIpcReturns>;
+
+  private extensions?: LoadableExtension[];
 
   private themeService = new ThemeBrowserService();
 

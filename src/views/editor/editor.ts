@@ -115,11 +115,10 @@ export default class Editor {
       this.internalSettingsService
     );
 
-    this.commonMain.onCloseRequest.addListener(() => {
+    this.commonMain.onCloseRequest.addListener(async () => {
       if (this.commonMain && this.browserWindow) {
         this.saveWindowState();
-        this.commonMain.removeListeners();
-        this.browserWindow.close();
+        this.saveEditorStateAndClose();
       }
     });
   }
@@ -179,32 +178,7 @@ export default class Editor {
   }
 
   private getConfigs(): CommonLayoutConfig {
-    return new CommonLayoutConfig(
-      new CommonPanelRow(600, [
-        new CommonPanelColumn(800, [
-          new CommonPanelRow(400, [
-            new CommonPanelColumn(300, [
-              new CommonPanelRow(400, undefined, [
-                new Tab("cake", "a", "Painel A", "0", true),
-                new Tab("cake", "b", "Painel B")
-              ]),
-              new CommonPanelRow(200, undefined, [
-                new Tab("cake", "c", "Painel C"),
-                new Tab("cake", "d", "Painel D", "0", true)
-              ])
-            ]),
-            new CommonPanelColumn(500, undefined, [
-              new Tab("cake", "e", "Painel E", "0", true),
-              new Tab("cake", "f", "Painel F")
-            ])
-          ]),
-          new CommonPanelRow(200, undefined, [
-            new Tab("cake", "g", "Painel G", "0", true),
-            new Tab("cake", "h", "Painel H")
-          ])
-        ])
-      ])
-    );
+    return this.internalSettingsService.settings.editorState.layout;
   }
 
   // Methods
@@ -269,5 +243,20 @@ export default class Editor {
     }
 
     this.internalSettingsService.setSettingAndSave("windowState", windowState, false);
+  }
+
+  private async saveEditorStateAndClose() {
+    if (!this.browserWindow) {
+      return;
+    }
+
+    const layout = await this.ipcService.sendAndReturn("GET_EDITOR_LAYOUT");
+
+    this.internalSettingsService.setSettingAndSave("editorState", { layout }, false);
+
+    if (this.commonMain && this.browserWindow) {
+      this.commonMain.removeListeners();
+      this.browserWindow.close();
+    }
   }
 }

@@ -11,8 +11,11 @@ import IpcBrowserService from "@src/common/browser/services/ipc/ipcBrowserServic
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import ICommandIndex from "@src/common/common/extensions/commandIndex";
 import ThemeBrowserService from "@src/common/browser/services/themeBrowserService";
+import PanelManager from "../panels/panelManager";
 
 export default class EditorBrowserService {
+  public panelManager?: PanelManager;
+
   public extensionBridge: EditorExtensionBridge = new EditorExtensionBridge();
   public coreService: CoreExtensibilityService;
 
@@ -23,6 +26,7 @@ export default class EditorBrowserService {
 
   constructor(public readonly commonService: CommonViewBrowserService) {
     this.handleGetExtCommands = this.handleGetExtCommands.bind(this);
+    this.handleGetLayout = this.handleGetLayout.bind(this);
 
     this.coreService = new CoreExtensibilityService(this.extensionBridge, commonService);
 
@@ -43,10 +47,17 @@ export default class EditorBrowserService {
 
   private initIpc() {
     this.ipcService.addListener("GET_EXT_COMMANDS", this.handleGetExtCommands);
+    this.ipcService.addListener("GET_EDITOR_LAYOUT", this.handleGetLayout);
 
     this.extensionBridge.onCommandRegister.addListener(() => {
       this.ipcService.send("UPDATE_EXT_COMMANDS", this.extensionBridge.commands);
     });
+  }
+
+  private handleGetLayout(args: undefined, resolve: (returnValue: CommonLayoutConfig) => any) {
+    if (this.panelManager) {
+      resolve(this.panelManager.getCurrentLayoutConfig());
+    }
   }
 
   private handleGetExtCommands(args: undefined, resolve: (returnValue: ICommandIndex) => any) {

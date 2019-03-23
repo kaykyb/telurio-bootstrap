@@ -24,4 +24,5 @@ export default interface IEditorIpcArgs {
   // Environment Non-binary Events
   EXEC_EXT_COMMAND: string;
   GET_EXT_COMMANDS: undefined;
+  GET_EDITOR_LAYOUT: undefined;
 }
