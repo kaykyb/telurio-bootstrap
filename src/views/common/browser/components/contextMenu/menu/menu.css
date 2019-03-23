@@ -1,0 +1,14 @@
+.menu {
+  /* Themable Properties */
+  background: var(--contextMenuBackground);
+  color: var(--contextMenuForeground);
+  box-shadow: 0 2px 5px 0px var(--contextMenuShadow);
+
+  padding: 8px 0px;
+  position: fixed;
+  z-index: 100001;
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 4px;
+}
