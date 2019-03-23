@@ -1,7 +1,9 @@
 {
   "windowState": {
-    "height": 600,
-    "width": 800
+    "editor": {
+      "height": 600,
+      "width": 800
+    }
   },
 
   "themeColors": {
