@@ -29,19 +29,32 @@ async function start() {
 
   const leftSideElements = document.createElement("div");
 
-  // mktplace btn
-  const marketplaceButton = new IconButton("extension");
-  marketplaceButton.onClick.addListener(() => {
-    editorService.showMarketplace();
-  });
-  leftSideElements.appendChild(marketplaceButton.render());
+  // hamburguer
+  const hamburguerButton = new IconButton("menu");
+  const hbElement = hamburguerButton.render();
 
-  // telurio editor devtools
-  const devToolsBtn = new IconButton("build");
-  devToolsBtn.onClick.addListener(() => {
-    editorService.showEditorDevTools();
+  hamburguerButton.onClick.addListener(() => {
+    const hbElementRect = hbElement.getBoundingClientRect();
+
+    commonService.contextMenu.show(
+      [
+        {
+          callback: () => editorService.showMarketplace(),
+          icon: "extension",
+          label: commonService.i18n.contents.editorView.manageExtensions
+        },
+        {
+          callback: () => editorService.showEditorDevTools(),
+          icon: "build",
+          label: commonService.i18n.contents.editorView.openTelurioDevTools
+        }
+      ],
+
+      hbElementRect.left,
+      hbElementRect.top + hbElementRect.height
+    );
   });
-  leftSideElements.appendChild(devToolsBtn.render());
+  leftSideElements.appendChild(hbElement);
 
   titlebar = new Titlebar(commonService, undefined, leftSideElements);
   root.appendChild(await titlebar.render());

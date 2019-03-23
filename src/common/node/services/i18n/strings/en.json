@@ -5,7 +5,9 @@
   },
   "contents": {
     "editorView": {
-      "title": "Telurio Editor"
+      "title": "Telurio Editor",
+      "manageExtensions": "Manage Extensions",
+      "openTelurioDevTools": "Open Telurio Dev Tools"
     },
 
     "editorDevToolsView": {
