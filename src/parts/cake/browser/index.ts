@@ -1,14 +1,20 @@
 import styles from "@src/common/browser/styles/commonStyles.css";
 
 import PanelBridge from "@src/common/common/extensions/sdk/panelBridge";
+import Topbar from "./topbar/topbar";
+import MsgConsole from "./console/console";
+
+const bridge = new PanelBridge();
+bridge.applyTheme();
 
 const root = styles.cRoot;
+document.body.classList.add(root);
 
-if (root) {
-  const bridge = new PanelBridge();
-  bridge.applyTheme();
+const body = document.body;
+body.style.border = "none";
 
-  document.write("Cake! + " + Math.random());
+const topbar = new Topbar();
+const co = new MsgConsole();
 
-  bridge.sendMessage("WOOOOOW!");
-}
+body.appendChild(topbar.render());
+body.appendChild(co.render());

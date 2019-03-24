@@ -1,0 +1,12 @@
+.console {
+  flex: 1;
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+}
+
+.message {
+  height: 32px;
+  line-height: 32px;
+  padding: 0 8px;
+}

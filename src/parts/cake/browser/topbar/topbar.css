@@ -1,0 +1,23 @@
+.topbar {
+  height: 32px;
+  background: rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--tabsPanelBorder);
+  display: flex;
+}
+
+.topbar input {
+  flex: 1;
+  background: none;
+  border: none;
+  line-height: 32px;
+  color: var(--foreground);
+  padding: 0 8px;
+}
+
+.topbar button {
+  background: var(--tabsPanelBorder);
+  border: none;
+  color: var(--foreground);
+  padding: 0 16px;
+  cursor: pointer;
+}

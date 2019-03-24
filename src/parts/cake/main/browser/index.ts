@@ -25,5 +25,11 @@ bridge.execCommand("core.getSetting", "stringToPrint", cmd => {
 bridge.execCommand("core.registerPanel", new PanelRegistrationArgs("cake", "browser/browser.html"));
 
 bridge.onPanelMessage.addListener(e => {
-  bridge.execCommand("core.editor.sendMessageToTab", { tabId: e.tab.id, message: "Test" });
+  bridge.execCommand("core.editor.getOwnedTabs", undefined, cmd => {
+    const tabs = cmd.args as Tab[];
+
+    tabs.forEach(tab => {
+      bridge.execCommand("core.editor.sendMessageToTab", { tabId: tab.id, message: e.message });
+    });
+  });
 });

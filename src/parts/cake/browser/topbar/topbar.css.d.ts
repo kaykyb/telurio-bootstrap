@@ -1,0 +1,1 @@
+export const topbar: string;
