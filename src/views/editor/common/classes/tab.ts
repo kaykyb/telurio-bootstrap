@@ -6,6 +6,7 @@ export default class Tab {
     public panelName: string,
     public panelId: string,
     public panelTitle: string,
+    public panelOwnerName: string,
     public args?: any,
     public active: boolean = false
   ) {}

@@ -61,7 +61,11 @@ export default class PanelView {
   }
 
   private load(panel: Panel) {
-    if (panel.name === this.tab.panelName && this.iframe) {
+    if (
+      panel.name === this.tab.panelName &&
+      this.iframe &&
+      panel.owner.extension.name === this.tab.panelOwnerName // security
+    ) {
       this.panel = panel;
       this.iframe.src = panel.htmlFile;
     }
