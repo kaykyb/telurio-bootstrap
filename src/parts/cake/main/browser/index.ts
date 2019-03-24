@@ -1,4 +1,4 @@
-import TelurioBridge from "@src/common/common/extensions/telurioBridge";
+import TelurioBridge from "@src/common/common/extensions/sdk/telurioBridge";
 import ExtensionCommandActivationArgs from "@src/common/common/extensions/extensionCommandActivationArgs";
 import PanelRegistrationArgs from "@src/views/editor/common/classes/panelRegistrationArgs";
 

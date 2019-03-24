@@ -1,4 +1,4 @@
-import TelurioBridge from "@src/common/common/extensions/telurioBridge";
+import TelurioBridge from "@src/common/common/extensions/sdk/telurioBridge";
 import ExtensionCommandActivationArgs from "@src/common/common/extensions/extensionCommandActivationArgs";
 
 // tslint:disable-next-line:no-console

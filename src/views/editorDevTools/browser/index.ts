@@ -1,7 +1,7 @@
 import Commander from "./commander/commander";
 import EditorDevToolsBrowserService from "./service/editorDevToolsService";
 
-import styles from "@src/views/common/browser/commonStyles.css";
+import styles from "@src/common/browser/styles/commonStyles.css";
 
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 import Titlebar from "@src/views/common/browser/components/titlebar/titlebar";

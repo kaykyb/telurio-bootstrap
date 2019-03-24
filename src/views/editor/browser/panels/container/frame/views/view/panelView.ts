@@ -5,6 +5,7 @@ import EditorBrowserService from "@src/views/editor/browser/service/editorBrowse
 import Panel from "@src/views/editor/common/classes/panel";
 import LogUtility from "@src/common/common/util/logUtility";
 import ResizeObserver from "resize-observer-polyfill";
+import PanelMessage from "@src/common/common/extensions/sdk/panelMessage";
 
 export default class PanelView {
   public domElement!: HTMLElement;
@@ -27,6 +28,7 @@ export default class PanelView {
   }
 
   constructor(private readonly editorService: EditorBrowserService, tab: Tab, iframe?: HTMLIFrameElement) {
+    this.handleWindowMessage = this.handleWindowMessage.bind(this);
     this.iframe = iframe;
 
     // workaround to the chrome < 72 iframe drop bug
@@ -37,6 +39,8 @@ export default class PanelView {
     this.tab = tab;
 
     editorService.extensionBridge.onPanelRegister.addListener(this.load);
+
+    window.addEventListener("message", this.handleWindowMessage);
   }
 
   public render(): HTMLElement {
@@ -51,21 +55,12 @@ export default class PanelView {
     }
 
     this.domElement.appendChild(this.iframe);
-
     return this.domElement;
   }
 
   private load(panel: Panel) {
     if (panel.name === this.tab.panelName && this.iframe) {
       this.iframe.src = panel.htmlFile;
-      // let scripts = "";
-
-      // panel.javascriptContents.forEach(script => {
-      //   scripts = scripts + '<script src="' + script + '"></script>';
-      // });
-
-      // const html = "<html><body>" + scripts + "</body></html>";
-      // this.iframe.srcdoc = html;
     }
   }
 
@@ -77,5 +72,32 @@ export default class PanelView {
   private active() {
     this.domElement.classList.add(styles.active);
     this.domElement.classList.remove(styles.deactive);
+  }
+
+  private handleWindowMessage(ev: MessageEvent) {
+    if (this.iframe && ev.source === this.iframe.contentWindow && ev.data) {
+      const messageParsed: PanelMessage<any> = ev.data;
+
+      switch (messageParsed.type) {
+        case "requestTheme":
+          this.sendTheme();
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+
+  private sendTheme() {
+    if (this.iframe && this.iframe.contentWindow) {
+      this.iframe.contentWindow.postMessage(
+        new PanelMessage(
+          "theme",
+          this.editorService.commonService.internalSettings.getSetting("themeColors")
+        ),
+        "*"
+      );
+    }
   }
 }

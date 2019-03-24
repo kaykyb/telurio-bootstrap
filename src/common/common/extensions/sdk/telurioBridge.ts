@@ -1,6 +1,6 @@
 import ExtensionMessage from "./extensionMessage";
-import CommonEvent from "../commonEvent";
-import ExtensionCommandActivationArgs from "./extensionCommandActivationArgs";
+import CommonEvent from "../../commonEvent";
+import ExtensionCommandActivationArgs from "../extensionCommandActivationArgs";
 
 /**
  * The bridge to communicate with the Telurio Editor
