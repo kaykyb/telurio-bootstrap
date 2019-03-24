@@ -6,6 +6,7 @@ import Panel from "@src/views/editor/common/classes/panel";
 import LogUtility from "@src/common/common/util/logUtility";
 import ResizeObserver from "resize-observer-polyfill";
 import PanelMessage from "@src/common/common/extensions/sdk/panelMessage";
+import PanelHostCommunicationArgs from "@src/common/common/extensions/sdk/panelHostCommunicationArgs";
 
 export default class PanelView {
   public domElement!: HTMLElement;
@@ -58,6 +59,12 @@ export default class PanelView {
 
     this.domElement.appendChild(this.iframe);
     return this.domElement;
+  }
+
+  public sendMessageToPanel(message: any) {
+    if (this.iframe && this.iframe.contentWindow) {
+      this.iframe.contentWindow.postMessage(new PanelMessage("messageFromHost", message), "*");
+    }
   }
 
   private load(panel: Panel) {

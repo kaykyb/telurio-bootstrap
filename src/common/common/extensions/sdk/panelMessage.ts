@@ -5,8 +5,8 @@ import PanelHostCommunicationArgs from "./panelHostCommunicationArgs";
 export interface IPanelMessageTypes {
   theme: ITheme;
   requestTheme: undefined;
-  sendMessage: string;
-  messageFromHost: PanelHostCommunicationArgs;
+  sendMessage: any;
+  messageFromHost: any;
 }
 
 export default class PanelMessage<T extends keyof IPanelMessageTypes> {

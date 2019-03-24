@@ -8,12 +8,18 @@ import CommonLayoutConfig from "../common/classes/commonLayoutConfig";
 import Titlebar from "@src/views/common/browser/components/titlebar/titlebar";
 import ExtensionManager from "./extensions/extensionManager";
 import IconButton from "@src/views/common/browser/components/titlebar/icon-button/iconButton";
+import EditorExtensibilityService from "./service/editorExtensibilityService";
 
 async function start() {
   const commonService = new CommonViewBrowserService();
   await commonService.start();
 
   const editorService = new EditorBrowserService(commonService);
+
+  const editorExtensibilityService = new EditorExtensibilityService(
+    editorService.extensionBridge,
+    editorService
+  );
 
   // script ----------------------------
   const root = document.getElementById("app-root") as HTMLElement;

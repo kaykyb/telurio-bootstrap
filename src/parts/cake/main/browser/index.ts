@@ -1,6 +1,7 @@
 import TelurioBridge from "@src/common/common/extensions/sdk/telurioBridge";
 import ExtensionCommandActivationArgs from "@src/common/common/extensions/extensionCommandActivationArgs";
 import PanelRegistrationArgs from "@src/views/editor/common/classes/panelRegistrationArgs";
+import Tab from "@src/views/editor/common/classes/tab";
 
 // tslint:disable-next-line:no-console
 console.log("Cake!");
@@ -23,4 +24,6 @@ bridge.execCommand("core.getSetting", "stringToPrint", cmd => {
 
 bridge.execCommand("core.registerPanel", new PanelRegistrationArgs("cake", "browser/browser.html"));
 
-bridge.onPanelMessage.addListener(event => console.log(event));
+bridge.onPanelMessage.addListener(e => {
+  bridge.execCommand("core.editor.sendMessageToTab", { tabId: e.tab.id, message: "Test" });
+});

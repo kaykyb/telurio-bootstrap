@@ -2,8 +2,11 @@ import PanelMessage from "./panelMessage";
 import ITheme from "../../theme";
 import ThemeBrowserService from "@src/common/browser/services/themeBrowserService";
 import PanelHostCommunicationArgs from "./panelHostCommunicationArgs";
+import CommonEvent from "../../commonEvent";
 
 export default class PanelBridge {
+  public onMessageFromHost = new CommonEvent<any>();
+
   constructor() {
     this.handleWindowMessage = this.handleWindowMessage.bind(this);
     this.handleTheme = this.handleTheme.bind(this);
@@ -15,7 +18,7 @@ export default class PanelBridge {
     window.top.postMessage(new PanelMessage("requestTheme", undefined), "*");
   }
 
-  public sendMessage(data: string) {
+  public sendMessage(data: any) {
     window.top.postMessage(new PanelMessage("sendMessage", data), "*");
   }
 
@@ -25,6 +28,10 @@ export default class PanelBridge {
     switch (data.type) {
       case "theme":
         this.handleTheme(data.data);
+        break;
+
+      case "messageFromHost":
+        this.onMessageFromHost.propagate(data.data);
         break;
 
       default:
