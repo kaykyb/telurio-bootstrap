@@ -73,7 +73,7 @@ export default class PanelContainer {
     this.panelFrame.onTabDrop.addListener((t, s) => {
       this.onTabDrop.propagate(t, s);
 
-      const panelTab = this.editorService.panelTabsIndex.find(x => x.tab.panelId === t.panelId);
+      const panelTab = this.editorService.panelTabsIndex.find(x => x.tab.id === t.id);
 
       if (panelTab) {
         panelTab.onTabDragOut.propagate(t, panelTab);
@@ -82,23 +82,23 @@ export default class PanelContainer {
 
     this.panels.forEach(v => {
       if (v.active) {
-        this.activePanel = v.panelId;
+        this.activePanel = v.id;
       }
     });
 
     if (this._activePanel === "" && this.panels.length > 0) {
-      this.activePanel = this.panels.get(0).panelId;
+      this.activePanel = this.panels.get(0).id;
     }
 
     return this.domElement;
   }
 
   private handlePanelTabsTabClick(sender: PanelTab) {
-    this.activePanel = sender.tab.panelId;
+    this.activePanel = sender.tab.id;
   }
 
   private handlePanelTabsDragOut(tab: Tab, sender: PanelTabs) {
-    const tabIndex = this.panels.first(x => x.panelId === tab.panelId);
+    const tabIndex = this.panels.first(x => x.id === tab.id);
 
     if (tabIndex > -1) {
       this.panels.delete(tabIndex, 1);
@@ -107,15 +107,15 @@ export default class PanelContainer {
     if (!this.panels || this.panels.length === 0) {
       this.onEmpty.propagate({});
     } else if (this.panels && this.panels.length > 0) {
-      this.activePanel = this.panels.get(0).panelId;
+      this.activePanel = this.panels.get(0).id;
     }
   }
 
   private handlePanelTabsDrop(tab: Tab, sender: PanelTabs) {
     this.panels.push(tab);
-    this.activePanel = tab.panelId;
+    this.activePanel = tab.id;
 
-    const panelTab = this.editorService.panelTabsIndex.find(x => x.tab.panelId === tab.panelId);
+    const panelTab = this.editorService.panelTabsIndex.find(x => x.tab.id === tab.id);
 
     if (panelTab) {
       panelTab.onTabDragOut.propagate(tab, panelTab);

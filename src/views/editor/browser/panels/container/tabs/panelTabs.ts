@@ -70,7 +70,7 @@ export default class PanelTabs {
       this.activeTab.isActive = false;
     }
 
-    this.activeTab = this.panelTabs.filter(x => x.tab.panelId === tabId)[0];
+    this.activeTab = this.panelTabs.filter(x => x.tab.id === tabId)[0];
 
     if (this.activeTab) {
       this.activeTab.isActive = true;

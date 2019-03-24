@@ -15,17 +15,17 @@
                           {
                             "active": true,
                             "args": "0",
-                            "panelId": "a",
+                            "id": "a",
                             "panelName": "cake",
                             "panelOwnerName": "cake",
-                            "panelTitle": "Painel A"
+                            "title": "Painel A"
                           },
                           {
                             "active": false,
-                            "panelId": "b",
+                            "id": "b",
                             "panelName": "cake",
                             "panelOwnerName": "cake",
-                            "panelTitle": "Painel B"
+                            "title": "Painel B"
                           }
                         ]
                       },
@@ -34,18 +34,18 @@
                         "panels": [
                           {
                             "active": false,
-                            "panelId": "c",
+                            "id": "c",
                             "panelName": "cake",
                             "panelOwnerName": "cake",
-                            "panelTitle": "Painel C"
+                            "title": "Painel C"
                           },
                           {
                             "active": true,
                             "args": "0",
-                            "panelId": "d",
+                            "id": "d",
                             "panelName": "cake",
                             "panelOwnerName": "cake",
-                            "panelTitle": "Painel D"
+                            "title": "Painel D"
                           }
                         ]
                       }
@@ -57,17 +57,17 @@
                       {
                         "active": true,
                         "args": "0",
-                        "panelId": "e",
+                        "id": "e",
                         "panelName": "cake",
                         "panelOwnerName": "cake",
-                        "panelTitle": "Painel E"
+                        "title": "Painel E"
                       },
                       {
                         "active": false,
-                        "panelId": "f",
+                        "id": "f",
                         "panelName": "cake",
                         "panelOwnerName": "cake",
-                        "panelTitle": "Painel F"
+                        "title": "Painel F"
                       }
                     ],
                     "width": 500
@@ -81,17 +81,17 @@
                   {
                     "active": true,
                     "args": "0",
-                    "panelId": "g",
+                    "id": "g",
                     "panelName": "cake",
                     "panelOwnerName": "cake",
-                    "panelTitle": "Painel G"
+                    "title": "Painel G"
                   },
                   {
                     "active": false,
-                    "panelId": "h",
+                    "id": "h",
                     "panelName": "cake",
                     "panelOwnerName": "cake",
-                    "panelTitle": "Painel H"
+                    "title": "Painel H"
                   }
                 ]
               }

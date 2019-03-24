@@ -54,7 +54,7 @@ export default class PanelViews {
       this.activeTab.isActive = false;
     }
 
-    this.activeTab = this.panelViews.filter(x => x.tab.panelId === tabId)[0];
+    this.activeTab = this.panelViews.filter(x => x.tab.id === tabId)[0];
 
     if (this.activeTab) {
       this.activeTab.isActive = true;
@@ -64,7 +64,7 @@ export default class PanelViews {
   private addPanelView(tab: Tab, parent?: HTMLElement | DocumentFragment) {
     let panelView: PanelView;
 
-    const previousView = this.editorService.panelViewsIndex.find(x => x.tab.panelId === tab.panelId);
+    const previousView = this.editorService.panelViewsIndex.find(x => x.tab.id === tab.id);
     if (previousView && previousView.iframe) {
       panelView = new PanelView(this.editorService, tab, previousView.iframe);
     } else {

@@ -42,7 +42,7 @@ export default class PanelTab {
   public render(): HTMLDivElement {
     this.domElement = document.createElement("div");
     this.domElement.className = styles.tab;
-    this.domElement.innerText = this.tab.panelTitle;
+    this.domElement.innerText = this.tab.title;
     this.domElement.draggable = true;
 
     this.domElement.ondragstart = this.handleDragStart.bind(this);
