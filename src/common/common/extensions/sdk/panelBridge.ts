@@ -1,6 +1,7 @@
 import PanelMessage from "./panelMessage";
 import ITheme from "../../theme";
 import ThemeBrowserService from "@src/common/browser/services/themeBrowserService";
+import PanelHostCommunicationArgs from "./panelHostCommunicationArgs";
 
 export default class PanelBridge {
   constructor() {
@@ -12,6 +13,10 @@ export default class PanelBridge {
 
   public applyTheme() {
     window.top.postMessage(new PanelMessage("requestTheme", undefined), "*");
+  }
+
+  public sendMessage(data: string) {
+    window.top.postMessage(new PanelMessage("sendMessage", data), "*");
   }
 
   //#region Event Handlers

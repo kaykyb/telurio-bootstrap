@@ -22,3 +22,5 @@ bridge.execCommand("core.getSetting", "stringToPrint", cmd => {
 });
 
 bridge.execCommand("core.registerPanel", new PanelRegistrationArgs("cake", "browser/browser.html"));
+
+bridge.onPanelMessage.addListener(event => console.log(event));

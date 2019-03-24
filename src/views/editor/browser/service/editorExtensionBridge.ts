@@ -4,6 +4,7 @@ import CommonEvent from "@src/common/common/commonEvent";
 import Panel from "../../common/classes/panel";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
 import ICommandIndex from "@src/common/common/extensions/commandIndex";
+import ExtensionHost from "../extensions/extensionHost";
 
 export default class EditorExtensionBridge {
   public onCommandRegister = new CommonEvent<EditorExtensionBridgeCommand<any>>();
@@ -34,10 +35,12 @@ export default class EditorExtensionBridge {
   }
 
   // Panels
-  public registerPanel(name: string, owner: LoadableExtension, contentsUrl: string) {
+  public registerPanel(name: string, owner: LoadableExtension, contentsUrl: string): Panel {
     const panel = new Panel(name, owner, contentsUrl);
 
     this.panels.push(panel);
     this.onPanelRegister.propagate(panel);
+
+    return panel;
   }
 }

@@ -7,6 +7,10 @@ import PanelRegistrationArgs from "../../common/classes/panelRegistrationArgs";
 import LogUtility from "@src/common/common/util/logUtility";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
 import { SecurityValidation } from "@src/common/common/securityValidation";
+import ExtensionHost from "../extensions/extensionHost";
+import IExtensionHost from "../../common/extensions/extensionHostInterface";
+import ExtensionMessage from "@src/common/common/extensions/sdk/extensionMessage";
+import PanelHostCommunicationArgs from "@src/common/common/extensions/sdk/panelHostCommunicationArgs";
 
 export default class CoreExtensibilityService {
   constructor(
@@ -68,7 +72,10 @@ export default class CoreExtensibilityService {
     this.extensionBridge.getCommand(event.cbCmdId).execute(undefined, CORE_EXTENSION_MANIFEST);
   }
 
-  private handleRegisterPanel(event: EditorExtensionBridgeCommandArgs<PanelRegistrationArgs>) {
+  private handleRegisterPanel(
+    event: EditorExtensionBridgeCommandArgs<PanelRegistrationArgs>,
+    senderHost?: IExtensionHost
+  ) {
     const extSourceUri = event.sender.sourceUri;
     const extName = event.sender.extension.name;
 
@@ -83,7 +90,17 @@ export default class CoreExtensibilityService {
       throw new Error("InvalidPermissions");
     }
 
-    this.extensionBridge.registerPanel(event.args.name, event.sender, htmlUrl);
+    const panel = this.extensionBridge.registerPanel(event.args.name, event.sender, htmlUrl);
+    panel.onMessage.addListener(data => {
+      if (senderHost) {
+        senderHost.postMessage(
+          new ExtensionMessage(
+            "messageFromPanel",
+            new PanelHostCommunicationArgs(panel.name, data.panelArgs, data.message)
+          )
+        );
+      }
+    });
   }
 
   private checkURLOwnership(urls: string[], ext: LoadableExtension): boolean {

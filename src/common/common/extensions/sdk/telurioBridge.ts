@@ -1,12 +1,13 @@
 import ExtensionMessage from "./extensionMessage";
 import CommonEvent from "../../commonEvent";
 import ExtensionCommandActivationArgs from "../extensionCommandActivationArgs";
+import PanelHostCommunicationArgs from "./panelHostCommunicationArgs";
 
 /**
  * The bridge to communicate with the Telurio Editor
  */
 export default class TelurioBridge {
-  // public onCommandActivation = new CommonEvent<ExtensionCommandActivationArgs>();
+  public onPanelMessage = new CommonEvent<PanelHostCommunicationArgs>();
 
   private commandListeners: Array<{
     cmd: string;
@@ -61,11 +62,15 @@ export default class TelurioBridge {
 
   //#region Event Handlers
   private handleWindowMessage(ev: MessageEvent) {
-    const data = ev.data as ExtensionMessage;
+    const data = ev.data as ExtensionMessage<any>;
     switch (data.type) {
       case "cmd":
         const cmd = data.data as ExtensionCommandActivationArgs;
         this.handleCommandActivation(cmd);
+        break;
+
+      case "messageFromPanel":
+        this.onPanelMessage.propagate(data.data);
         break;
 
       default:

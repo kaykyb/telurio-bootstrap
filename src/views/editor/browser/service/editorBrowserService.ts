@@ -12,6 +12,7 @@ import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorEx
 import ICommandIndex from "@src/common/common/extensions/commandIndex";
 import ThemeBrowserService from "@src/common/browser/services/themeBrowserService";
 import PanelManager from "../panels/panelManager";
+import ExtensionManager from "@src/views/common/node/extensionManager";
 
 export default class EditorBrowserService {
   public panelManager?: PanelManager;

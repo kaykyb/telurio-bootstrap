@@ -12,6 +12,8 @@ export default class PanelView {
   public iframe?: HTMLIFrameElement;
   public tab: Tab;
 
+  private panel?: Panel;
+
   // tslint:disable-next-line:variable-name
   private _isActive: boolean = false;
   public get isActive(): boolean {
@@ -60,6 +62,7 @@ export default class PanelView {
 
   private load(panel: Panel) {
     if (panel.name === this.tab.panelName && this.iframe) {
+      this.panel = panel;
       this.iframe.src = panel.htmlFile;
     }
   }
@@ -83,9 +86,18 @@ export default class PanelView {
           this.sendTheme();
           break;
 
+        case "sendMessage":
+          this.propagateMessage(messageParsed.data);
+
         default:
           break;
       }
+    }
+  }
+
+  private propagateMessage(data: string) {
+    if (this.panel) {
+      this.panel.onMessage.propagate({ panelArgs: this.tab.args, message: data });
     }
   }
 

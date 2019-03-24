@@ -5,9 +5,9 @@ import ExtensionMessage from "@src/common/common/extensions/sdk/extensionMessage
 import ExtensionCommandActivationArgs from "@src/common/common/extensions/extensionCommandActivationArgs";
 import LoadableExtension from "@src/common/common/extensions/loadableExtension";
 import LogUtility from "@src/common/common/util/logUtility";
-import { ENV } from "@src/env";
+import IExtensionHost from "../../common/extensions/extensionHostInterface";
 
-export default class ExtensionHost {
+export default class ExtensionHost implements IExtensionHost {
   private sandbox?: HTMLIFrameElement;
   private isOnSecureContext = true;
 
@@ -48,6 +48,12 @@ export default class ExtensionHost {
     return this.sandbox;
   }
 
+  public postMessage(message: ExtensionMessage<any>) {
+    if (this.sandbox && this.sandbox.contentWindow) {
+      this.sandbox.contentWindow!.postMessage(message, "*");
+    }
+  }
+
   private registerExtCommands() {
     if (this.ext.extension.contributions && this.ext.extension.contributions.commands) {
       this.ext.extension.contributions.commands.forEach(c => {
@@ -85,7 +91,7 @@ export default class ExtensionHost {
 
   private handleWindowMessage(ev: MessageEvent) {
     if (this.sandbox && ev.source === this.sandbox.contentWindow && ev.data) {
-      const messageParsed: ExtensionMessage = ev.data;
+      const messageParsed: ExtensionMessage<any> = ev.data;
 
       switch (messageParsed.type) {
         case "cmd":
@@ -113,11 +119,11 @@ export default class ExtensionHost {
         this.handleCommandActivation(ev);
       });
 
-      if (!cmd.execute(args.args, this.ext, cbCmdId)) {
+      if (!cmd.execute(args.args, this.ext, cbCmdId, this)) {
         this.editorService.extensionBridge.removeCommand(cbCmdId);
       }
     } else {
-      cmd.execute(args.args, this.ext);
+      cmd.execute(args.args, this.ext, undefined, this);
     }
   }
 }

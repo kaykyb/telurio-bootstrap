@@ -9,4 +9,6 @@ if (root) {
   bridge.applyTheme();
 
   document.write("Cake! + " + Math.random());
+
+  bridge.sendMessage("WOOOOOW!");
 }

@@ -1,6 +1,11 @@
 import ExtensionCommandActivationArgs from "../extensionCommandActivationArgs";
+import PanelHostCommunicationArgs from "./panelHostCommunicationArgs";
 
-export default class ExtensionMessage {
-  constructor(type: "cmd", data: ExtensionCommandActivationArgs);
-  constructor(public type: string, public data: any) {}
+export interface IExtensionMessageDataKeys {
+  cmd: ExtensionCommandActivationArgs;
+  messageFromPanel: PanelHostCommunicationArgs;
+}
+
+export default class ExtensionMessage<T extends keyof IExtensionMessageDataKeys> {
+  constructor(public type: Extract<T, string>, public data: IExtensionMessageDataKeys[T]) {}
 }
