@@ -96,7 +96,7 @@ export default class CoreExtensibilityService {
         senderHost.postMessage(
           new ExtensionMessage(
             "messageFromPanel",
-            new PanelHostCommunicationArgs(panel.name, data.panelArgs, data.message)
+            new PanelHostCommunicationArgs(panel.name, data.tab, data.message)
           )
         );
       }

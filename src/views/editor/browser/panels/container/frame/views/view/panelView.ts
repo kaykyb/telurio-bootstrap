@@ -101,7 +101,7 @@ export default class PanelView {
 
   private propagateMessage(data: string) {
     if (this.panel) {
-      this.panel.onMessage.propagate({ panelArgs: this.tab.args, message: data });
+      this.panel.onMessage.propagate({ tab: this.tab, message: data });
     }
   }
 
