@@ -161,7 +161,7 @@
     "extensionsSearchBarBackground": "rgba(0, 0, 0, 0.1)",
     "extensionsSearchBarBorder": "var(--resizerColor)",
 
-    "extensionsSidebarItemHoverBackground": "rgba(255, 255, 255, 0.02)",
+    "extensionsSidebarItemHoverBackground": "rgba(255, 255, 255, 0.05)",
     "extensionsSidebarItemHoverColor": "var(--foreground)",
     "extensionsSidebarItemSelectedBackground": "transparent",
     "extensionsSidebarItemSelectedColor": "var(--primary)",
