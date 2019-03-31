@@ -29,11 +29,73 @@
         "risk": 0
       }
     ],
+    "settingsSections": [
+      {
+        "name": "tests",
+        "label": [
+          {
+            "lang": "en",
+            "content": "Test Settings"
+          },
+          {
+            "lang": "pt-BR",
+            "content": "Config. Teste"
+          }
+        ]
+      }
+    ],
     "settings": [
       {
+        "name": "printString",
+        "label": [
+          {
+            "lang": "en",
+            "content": "Print String"
+          },
+          {
+            "lang": "pt-BR",
+            "content": "Imprimir Texto"
+          }
+        ],
+        "description": [
+          {
+            "lang": "en",
+            "content": "Print the stringToPrint string."
+          },
+          {
+            "lang": "pt-BR",
+            "content": "Imprimir o texto contido no stringToPrint."
+          }
+        ],
+        "type": "boolean",
+        "defaultValue": true,
+        "section": "tests"
+      },
+      {
         "name": "stringToPrint",
+        "label": [
+          {
+            "lang": "en",
+            "content": "String to Print"
+          },
+          {
+            "lang": "pt-BR",
+            "content": "Texto a Imprimir"
+          }
+        ],
+        "description": [
+          {
+            "lang": "en",
+            "content": "The string to print to the console."
+          },
+          {
+            "lang": "pt-BR",
+            "content": "O texto a imprimir no console."
+          }
+        ],
         "type": "string",
-        "defaultValue": "Super!"
+        "defaultValue": "Super!",
+        "section": "tests"
       }
     ]
   }
