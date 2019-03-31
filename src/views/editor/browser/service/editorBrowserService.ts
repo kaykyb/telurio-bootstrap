@@ -46,6 +46,10 @@ export default class EditorBrowserService {
     this.ipcService.send("OPEN_EDITOR_DEVTOOLS");
   }
 
+  public showSettingsEditor() {
+    this.ipcService.send("OPEN_SETTINGS_EDITOR");
+  }
+
   private initIpc() {
     this.ipcService.addListener("GET_EXT_COMMANDS", this.handleGetExtCommands);
     this.ipcService.addListener("GET_EDITOR_LAYOUT", this.handleGetLayout);

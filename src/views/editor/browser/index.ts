@@ -44,10 +44,12 @@ async function start() {
     commonService.contextMenu.show(
       [
         {
+          // Extensions Menu
           icon: "box",
           label: menuI18n.extensionsSubmenu.label,
           subitems: [
             {
+              // Show Marketplace
               callback: () => editorService.showMarketplace(),
               icon: "package",
               label: menuI18n.extensionsSubmenu.manageExtensions
@@ -55,9 +57,16 @@ async function start() {
           ]
         },
         {
+          // Show Telurio Dev Tools
           callback: () => editorService.showEditorDevTools(),
           icon: "terminal",
           label: menuI18n.openTelurioDevTools
+        },
+        {
+          // Show Settings Editor
+          callback: () => editorService.showSettingsEditor(),
+          icon: "settings",
+          label: menuI18n.openSettingsEditor
         }
       ],
 

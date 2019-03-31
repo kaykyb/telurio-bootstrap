@@ -10,6 +10,7 @@ export default interface IEditorIpcArgs {
   //  Window commands
   OPEN_EDITOR_DEVTOOLS: undefined;
   OPEN_MARKETPLACE: undefined;
+  OPEN_SETTINGS_EDITOR: undefined;
 
   // Environment Non-binary Questions
   GET_WORKSPACE_CONFIGS: undefined;
