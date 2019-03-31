@@ -1,0 +1,45 @@
+.searchBar {
+  margin: 0;
+  padding: 0;
+  height: 30px;
+  border: none;
+  border-bottom: 1px solid var(--extensionsSearchBarBorder);
+  width: 100%;
+  background: var(--extensionsSearchBarBackground);
+  display: flex;
+  /* flex-grow: 1; */
+  min-height: 32px;
+}
+
+.input {
+  color: var(--foreground);
+  margin: 0;
+  padding: 0 12px;
+  height: 30px;
+  border: none;
+  background: none;
+  flex: 1;
+  font-family: "Inter UI", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 12px;
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--foreground);
+  opacity: 0.5;
+  font-style: italic;
+}
+
+.icon {
+  height: 30px;
+  width: 30px;
+  opacity: 0.2;
+  cursor: text;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchBar:focus-within .icon {
+  opacity: 0.5;
+}

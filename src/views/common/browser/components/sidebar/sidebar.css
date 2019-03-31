@@ -1,0 +1,19 @@
+.sidebar {
+  width: 232px;
+  border-right: 1px solid var(--extensionsSideBarBorder);
+  background: var(--extensionsSideBarBackground);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.listContainer {
+  flex-grow: 1;
+  display: flex;
+}
+
+.container {
+  flex-grow: 1;
+  flex-direction: column;
+  display: flex;
+}
