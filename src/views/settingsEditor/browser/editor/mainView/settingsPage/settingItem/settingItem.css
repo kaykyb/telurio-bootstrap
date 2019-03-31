@@ -1,0 +1,30 @@
+.settingItem {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 32px;
+}
+
+.labelArea {
+  display: flex;
+}
+
+.label {
+  flex: 1;
+  line-height: 32px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--settingsPageForeground);
+}
+
+.desc {
+  color: var(--settingsPageForeground);
+}
+
+.stringEditorContainer {
+  margin-top: 8px;
+  display: flex;
+}
+
+.stringEditor {
+  flex: 1;
+}

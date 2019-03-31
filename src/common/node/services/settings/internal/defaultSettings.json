@@ -114,17 +114,27 @@
   "themeColors": {
     "background": "#000a1a",
     "foreground": "#ffffff",
-    "primary": "#00e5ff",
-
-    "textSelection": "#00e5ff",
+    "primary": "#004de5",
 
     "resizerColor": "#001433",
-    "tabsPanelBorder": "#001433",
+    "tabsPanelBorder": "var(--resizerColor)",
+
+    "textSelection": "var(--primary)",
+
+    "inputBackground": "rgba(0, 0, 0, 0.2)",
+    "inputForeground": "rgba(255, 255, 255, 0.5)",
+    "inputBorder": "var(--resizerColor)",
+    "inputFocusForeground": "var(--foreground)",
+    "inputFocusBorder": "var(--primary)",
+
+    "switchOffForeground": "#7b8797",
+    "switchOnBackground": "var(--primary)",
+    "switchOnForeground": "var(--foreground)",
 
     "tabBackground": "#000a1a",
     "tabForeground": "#ffffff",
-    "tabActiveBorder": "#00e5ff",
-    "tabActiveForeground": "#00e5ff",
+    "tabActiveBorder": "var(--primary)",
+    "tabActiveForeground": "var(--primary)",
     "tabDragOverBackground": "rgba(255, 255, 255, 0.1)",
 
     "titlebarButtonsForeground": "rgba(255, 255, 255, 0.2)",
@@ -132,7 +142,7 @@
     "titlebarButtonsHoverForeground": "#ffffff",
     "titlebarButtonsHoverBackground": "rgba(255, 255, 255, 0.1)",
 
-    "windowBorder": "#001433",
+    "windowBorder": "var(--resizerColor)",
 
     "panelDragOverOverlay": "rgba(255, 255, 255, 0.1)",
     "panelDragOverOverlayBorder": "rgba(255, 255, 255, 0.1)",
@@ -144,11 +154,22 @@
     "contextMenuItemBackground": "transparent",
     "contextMenuItemForeground": "inherit",
     "contextMenuItemHoverBackground": "rgba(0, 0, 0, 0.2)",
-    "contextMenuItemHoverForeground": "#00e5ff",
+    "contextMenuItemHoverForeground": "var(--primary)",
 
     "extensionsSideBarBackground": "rgba(0, 0, 0, 0.2)",
-    "extensionsSideBarBorder": "#001433",
+    "extensionsSideBarBorder": "var(--resizerColor)",
     "extensionsSearchBarBackground": "rgba(0, 0, 0, 0.1)",
-    "extensionsSearchBarBorder": "#001433"
+    "extensionsSearchBarBorder": "var(--resizerColor)",
+
+    "extensionsSidebarItemHoverBackground": "rgba(255, 255, 255, 0.02)",
+    "extensionsSidebarItemHoverColor": "var(--foreground)",
+    "extensionsSidebarItemSelectedBackground": "transparent",
+    "extensionsSidebarItemSelectedColor": "var(--primary)",
+
+    "scrollbarThumbBackground": "rgba(255, 255, 255, 0.1)",
+    "scrollbarThumbHoverBackground": "rgba(255, 255, 255, 0.05)",
+    "scrollbarThumbScrollingBackground": "var(--primary)",
+
+    "settingsPageForeground": "rgba(255, 255, 255, 0.5)"
   }
 }
