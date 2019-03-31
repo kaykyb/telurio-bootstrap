@@ -45,7 +45,14 @@ export default class CommonViewBrowserService {
 
     this.i18n = initArgs.i18nArgs.i18nLanguageFile;
     this.userSettings = new ConfigurationManager(initArgs.userSettingsArg.userSettings);
+    this.userSettings.onSettingChangeRequest.addListener(ev => {
+      this.ipcService.send("SET_USER_SETTING", ev);
+    });
+
     this.internalSettings = new ConfigurationManager(initArgs.internalSettingsArgs.internalSettings);
+    this.internalSettings.onSettingChangeRequest.addListener(ev => {
+      this.ipcService.send("SET_INTERNAL_SETTING", ev);
+    });
 
     // apply theme
     this.themeService.apply(this.internalSettings.getSetting("themeColors"));
