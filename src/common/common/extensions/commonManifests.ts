@@ -6,12 +6,7 @@ export const CORE_EXTENSION_MANIFEST: LoadableExtension = new LoadableExtension(
     "",
     "core",
 
-    [
-      {
-        content: "Telurio Core",
-        lang: "en"
-      }
-    ],
+    "Telurio Core",
 
     "0.1.0",
 
@@ -28,12 +23,7 @@ export const EDITOR_EXTENSION_MANIFEST: LoadableExtension = new LoadableExtensio
     "",
     "editor",
 
-    [
-      {
-        content: "Telurio Editor",
-        lang: "en"
-      }
-    ],
+    "Telurio Editor",
 
     "0.1.0",
 

@@ -127,10 +127,7 @@ export default class SettingsPage {
 
     const extSectionLabel = document.createElement("div");
     extSectionLabel.classList.add(styles.extSectionLabel);
-    extSectionLabel.innerText = StringUtil.getAppropriateLabel(
-      ext.label,
-      this.commonService.i18n.language.code
-    ).content;
+    extSectionLabel.innerText = ext.label;
 
     extSection.appendChild(extSectionLabel);
 

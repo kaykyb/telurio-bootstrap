@@ -31,8 +31,7 @@ async function start() {
     exts.forEach(ext => {
       if (ext.extension.contributions && ext.extension.contributions.settings) {
         const ownList = getSettingsSectionsFromExtensions(ext.extension, commonService);
-        const label = StringUtil.getAppropriateLabel(ext.extension.label, commonService.i18n.language.code);
-        listItems.push(new TreeViewListItem(label.content, ext.extension.name, false, "box", ownList));
+        listItems.push(new TreeViewListItem(ext.extension.label, ext.extension.name, false, "box", ownList));
       }
     });
 

@@ -5,7 +5,7 @@ export default class ExtensionManifest {
   constructor(
     public entry: string,
     public name: string,
-    public label: Label[],
+    public label: string,
     public version: string,
     public author: string,
     public permissions: string[],

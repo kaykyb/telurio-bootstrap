@@ -1,12 +1,7 @@
 {
   "entry": "main/browser/bundle.compiled.js",
   "name": "cake",
-  "label": [
-    {
-      "lang": "en",
-      "content": "Test Extension"
-    }
-  ],
+  "label": "Cake",
   "version": "0.1.0",
   "author": "Kayky B.",
   "permissions": ["core.settings", "core.panels"],

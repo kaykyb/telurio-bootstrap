@@ -1,12 +1,7 @@
 {
   "entry": "main/browser/bundle.compiled.js",
   "name": "chocolate",
-  "label": [
-    {
-      "lang": "en",
-      "content": "Chocolate"
-    }
-  ],
+  "label": "Chocolate",
   "version": "0.1.0",
   "author": "Kayky B.",
   "permissions": ["cake.mathCommands"],
