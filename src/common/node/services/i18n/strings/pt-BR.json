@@ -4,6 +4,18 @@
     "name": "Português do Brasil"
   },
   "contents": {
+    "core": {
+      "settingsSection": {
+        "developer": "Desenvolvedor"
+      },
+      "settings": {
+        "enableDevTools": {
+          "label": "Ativar Ferramentas do Desenvolvedor",
+          "desc": "Ativar as Ferramentas do Desenvolvedor do Telurio para o desenvolvimento de extensões"
+        }
+      }
+    },
+
     "editorView": {
       "title": "Editor do Telúrio",
       "menu": {

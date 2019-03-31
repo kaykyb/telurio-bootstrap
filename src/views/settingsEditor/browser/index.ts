@@ -5,9 +5,9 @@ import Sidebar from "@src/views/common/browser/components/sidebar/sidebar";
 import TreeViewList from "@src/views/common/browser/components/treeViewList/treeViewList";
 import TreeViewListItem from "@src/views/common/browser/components/treeViewList/treeViewListItem";
 import ScrollableElement from "@src/views/common/browser/components/scrollable-element/scrollableElement";
-import { CORE_EXTENSION_MANIFEST } from "@src/common/common/extensions/commonManifests";
 import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
 import StringUtil from "@src/common/common/util/stringUtil";
+import CommonManifests from "@src/common/common/extensions/commonManifests";
 
 async function start() {
   const commonService = new CommonViewBrowserService();
@@ -21,7 +21,10 @@ async function start() {
 
     const listItems: TreeViewListItem[] = [];
 
-    const coreItems = getSettingsSectionsFromExtensions(CORE_EXTENSION_MANIFEST.extension, commonService);
+    const coreItems = getSettingsSectionsFromExtensions(
+      CommonManifests.getCoreExtensionManifest(commonService.i18n).extension,
+      commonService
+    );
 
     if (coreItems) {
       listItems.push(...coreItems);
@@ -124,7 +127,7 @@ function getSettingsSectionsFromExtensions(
     const sections = ext.contributions.settingsSections;
     sections.forEach(s => {
       const label = StringUtil.getAppropriateLabel(s.label, commonService.i18n.language.code);
-      listItems.push(new TreeViewListItem(label.content, ext.name + "." + s.name, false, "box"));
+      listItems.push(new TreeViewListItem(label.content, ext.name + "." + s.name, false, s.icon));
     });
   }
 

@@ -1,5 +1,4 @@
 import EditorExtensionBridge from "./editorExtensionBridge";
-import { CORE_EXTENSION_MANIFEST } from "@src/common/common/extensions/commonManifests";
 import EditorExtensionBridgeCommandArgs from "@src/common/common/extensions/editorExtensionBridgeCommandArgs";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
@@ -11,6 +10,7 @@ import ExtensionHost from "../extensions/extensionHost";
 import IExtensionHost from "../../common/extensions/extensionHostInterface";
 import ExtensionMessage from "@src/common/common/extensions/sdk/extensionMessage";
 import PanelHostCommunicationArgs from "@src/common/common/extensions/sdk/panelHostCommunicationArgs";
+import CommonManifests from "@src/common/common/extensions/commonManifests";
 
 export default class CoreExtensibilityService {
   constructor(
@@ -43,7 +43,7 @@ export default class CoreExtensibilityService {
     const command = this.extensionBridge.registerCommand(
       "core." + cmd,
       "core." + permissionRequired,
-      CORE_EXTENSION_MANIFEST.extension
+      CommonManifests.getCoreExtensionManifest(this.commonService.i18n).extension
     );
     command.addListener(listener);
     return command;
@@ -65,11 +65,15 @@ export default class CoreExtensibilityService {
     if (settingMetadata) {
       const setting = this.commonService.userSettings.getSetting(settingName) || settingMetadata.defaultValue;
 
-      this.extensionBridge.getCommand(event.cbCmdId).execute(setting, CORE_EXTENSION_MANIFEST);
+      this.extensionBridge
+        .getCommand(event.cbCmdId)
+        .execute(setting, CommonManifests.getCoreExtensionManifest(this.commonService.i18n));
       return;
     }
 
-    this.extensionBridge.getCommand(event.cbCmdId).execute(undefined, CORE_EXTENSION_MANIFEST);
+    this.extensionBridge
+      .getCommand(event.cbCmdId)
+      .execute(undefined, CommonManifests.getCoreExtensionManifest(this.commonService.i18n));
   }
 
   private handleRegisterPanel(

@@ -4,6 +4,18 @@
     "name": "English"
   },
   "contents": {
+    "core": {
+      "settingsSection": {
+        "developer": "Developer"
+      },
+      "settings": {
+        "enableDevTools": {
+          "label": "Enable Developer Tools",
+          "desc": "Enable the Telurio Developer Tools for extension development."
+        }
+      }
+    },
+
     "editorView": {
       "title": "Telurio Editor",
       "menu": {

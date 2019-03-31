@@ -1,4 +1,16 @@
 export default interface Ii18nLanguage {
+  core: {
+    settingsSection: {
+      developer: string;
+    };
+    settings: {
+      enableDevTools: {
+        label: string;
+        desc: string;
+      };
+    };
+  };
+
   editorView: {
     title: string;
     menu: {

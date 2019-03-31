@@ -36,7 +36,8 @@
             "lang": "pt-BR",
             "content": "Config. Teste"
           }
-        ]
+        ],
+        "icon": "check-circle"
       }
     ],
     "settings": [

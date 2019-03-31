@@ -1,10 +1,10 @@
 import EditorExtensionBridge from "./editorExtensionBridge";
-import { CORE_EXTENSION_MANIFEST } from "@src/common/common/extensions/commonManifests";
 import EditorExtensionBridgeCommandArgs from "@src/common/common/extensions/editorExtensionBridgeCommandArgs";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 import EditorBrowserService from "./editorBrowserService";
 import IExtensionHost from "../../common/extensions/extensionHostInterface";
+import CommonManifests from "@src/common/common/extensions/commonManifests";
 
 export default class EditorExtensibilityService {
   constructor(
@@ -37,7 +37,7 @@ export default class EditorExtensibilityService {
     const command = this.extensionBridge.registerCommand(
       "core.editor." + cmd,
       "core." + permissionRequired,
-      CORE_EXTENSION_MANIFEST.extension
+      CommonManifests.getCoreExtensionManifest(this.editorService.commonService.i18n).extension
     );
     command.addListener(listener);
     return command;
@@ -53,7 +53,9 @@ export default class EditorExtensibilityService {
       .filter(v => v.tab.panelOwnerName === event.sender.extension.name)
       .map(v => v.tab);
 
-    this.extensionBridge.getCommand(event.cbCmdId).execute(ownedTabs, CORE_EXTENSION_MANIFEST);
+    this.extensionBridge
+      .getCommand(event.cbCmdId)
+      .execute(ownedTabs, CommonManifests.getCoreExtensionManifest(this.editorService.commonService.i18n));
   }
 
   private handleSendMessageToTab(event: EditorExtensionBridgeCommandArgs<{ tabId: string; message: any }>) {

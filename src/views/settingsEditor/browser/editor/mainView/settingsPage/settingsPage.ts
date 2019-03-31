@@ -6,6 +6,7 @@ import SettingMetadata from "@src/common/node/services/settings/settingMetadata"
 import StringUtil from "@src/common/common/util/stringUtil";
 import CommonEvent from "@src/common/common/commonEvent";
 import ScrollableElement from "@src/views/common/browser/components/scrollable-element/scrollableElement";
+import CommonManifests from "@src/common/common/extensions/commonManifests";
 
 export default class SettingsPage {
   public onSectionInViewChange = new CommonEvent<string>();
@@ -35,6 +36,8 @@ export default class SettingsPage {
 
     this.containerElement = document.createElement("div");
     this.containerElement.classList.add(styles.settingsContainer);
+
+    this.addSettings(CommonManifests.getCoreExtensionManifest(this.commonService.i18n).extension);
 
     exts.forEach(ext => {
       this.addSettings(ext.extension);
