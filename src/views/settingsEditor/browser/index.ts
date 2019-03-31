@@ -29,9 +29,11 @@ async function start() {
 
     const exts = await commonService.getExtensions();
     exts.forEach(ext => {
-      const ownList = getSettingsSectionsFromExtensions(ext.extension, commonService);
-      const label = StringUtil.getAppropriateLabel(ext.extension.label, commonService.i18n.language.code);
-      listItems.push(new TreeViewListItem(label.content, ext.extension.name, false, "box", ownList));
+      if (ext.extension.contributions && ext.extension.contributions.settings) {
+        const ownList = getSettingsSectionsFromExtensions(ext.extension, commonService);
+        const label = StringUtil.getAppropriateLabel(ext.extension.label, commonService.i18n.language.code);
+        listItems.push(new TreeViewListItem(label.content, ext.extension.name, false, "box", ownList));
+      }
     });
 
     const list = new TreeViewList(listItems);
