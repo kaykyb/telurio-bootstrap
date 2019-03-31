@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.clickableElement {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.clickableElement:hover {
+  color: var(--extensionsSidebarItemHoverColor);
+  background: var(--extensionsSidebarItemHoverBackground);
+}
+
+.expandableElement {
+  display: none;
+  /* padding-left: 16px; */
+}
+
+.container.selected > .clickableElement {
+  color: var(--extensionsSidebarItemSelectedColor);
+  background: var(--extensionsSidebarItemSelectedBackground);
+}
+
+.container.selected > .clickableElement:hover {
+  color: var(--extensionsSidebarItemSelectedColor);
+  background: var(--extensionsSidebarItemHoverBackground);
+}
+
+.container.open > .expandableElement {
+  display: block;
+}
+
+.iconContainer {
+  height: 32px;
+  width: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 4px;
+}
+
+.container .chevronDownIconContainer {
+  display: none;
+}
+
+.container.open > .clickableElement > .iconContainer > .chevronDownIconContainer {
+  display: block;
+}
+
+.container.open > .clickableElement > .iconContainer > .chevronRightIconContainer {
+  display: none;
+}
+
+.labelContainer {
+  flex: 1;
+}
