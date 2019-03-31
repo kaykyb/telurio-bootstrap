@@ -18,6 +18,7 @@ import { IpcNodeService } from "@src/common/node/services/ipc/ipcNodeService";
 import IEditorIpcArgs from "./common/ipc/EditorIpcServiceArgs";
 import IEditorIpcReturns from "./common/ipc/EditorIpcServiceReturns";
 import ICommandIndex from "@src/common/common/extensions/commandIndex";
+import SettingsEditor from "../settingsEditor/settingsEditor";
 
 // the sizes to use to create the window
 const WINDOW_HEIGHT = 600;
@@ -33,6 +34,7 @@ export default class Editor {
   // editor window dialogs
   private marketplace?: Marketplace;
   private editorDevTools?: EditorDevTools;
+  private settingsEditor?: SettingsEditor;
 
   private ipcService!: IpcNodeService<IEditorIpcArgs, IEditorIpcReturns>;
 
@@ -50,6 +52,7 @@ export default class Editor {
     this.handleGetWorkspaceConfigs = this.handleGetWorkspaceConfigs.bind(this);
     this.handleShowMarketplace = this.handleShowMarketplace.bind(this);
     this.handleShowEditorDevTools = this.handleShowEditorDevTools.bind(this);
+    this.handleShowSettingsEditor = this.handleShowSettingsEditor.bind(this);
     this.handleUpdateExtCommands = this.handleUpdateExtCommands.bind(this);
   }
 
@@ -143,6 +146,7 @@ export default class Editor {
     this.ipcService.addListener("GET_WORKSPACE_CONFIGS", this.handleGetWorkspaceConfigs);
     this.ipcService.addListener("OPEN_EDITOR_DEVTOOLS", this.handleShowEditorDevTools);
     this.ipcService.addListener("OPEN_MARKETPLACE", this.handleShowMarketplace);
+    this.ipcService.addListener("OPEN_SETTINGS_EDITOR", this.handleShowSettingsEditor);
     this.ipcService.addListener("UPDATE_EXT_COMMANDS", this.handleUpdateExtCommands);
   }
 
@@ -175,6 +179,10 @@ export default class Editor {
 
   private handleShowEditorDevTools() {
     this.showEditorDevTools();
+  }
+
+  private handleShowSettingsEditor() {
+    this.showSettingsWindow();
   }
 
   private getConfigs(): CommonLayoutConfig {
@@ -216,6 +224,21 @@ export default class Editor {
 
       this.editorDevTools.onClose.addListener(() => {
         this.editorDevTools = undefined;
+      });
+    }
+  }
+
+  private showSettingsWindow() {
+    if (!this.settingsEditor && this.browserWindow) {
+      this.settingsEditor = new SettingsEditor(
+        this.i18nService,
+        this.browserWindow,
+        this.userSettingsService,
+        this.internalSettingsService
+      );
+
+      this.settingsEditor.onClose.addListener(() => {
+        this.settingsEditor = undefined;
       });
     }
   }
