@@ -1,5 +1,7 @@
+import Label from "@src/common/common/extensions/manifest-type/label";
+
 interface ISettingsMap {
-  any: any;
+  // any: any;
   number: number;
   string: string;
   boolean: boolean;
@@ -9,5 +11,19 @@ interface ISettingsMap {
 }
 
 export default class SettingMetadata<K extends keyof ISettingsMap> {
-  constructor(public type: K, public name: string, public defaultValue: ISettingsMap[K]) {}
+  /**
+   * Definition for a setting key
+   * @param type The Type of the value stored
+   * @param name The Name of the setting key
+   * @param defaultValue The default value
+   */
+  constructor(
+    public type: Extract<K, string>,
+    public name: string,
+    public label: Label[],
+    public defaultValue: ISettingsMap[K],
+    public acceptedValues?: Array<ISettingsMap[K]>,
+    public description?: Label[],
+    public section?: string
+  ) {}
 }
