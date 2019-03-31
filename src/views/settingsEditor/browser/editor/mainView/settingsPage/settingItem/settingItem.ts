@@ -35,7 +35,7 @@ export default class SettingItem {
     const enLabelText = this.setting.label.find(l => l.lang === "en");
     const firstLabelText = this.setting.label[0];
 
-    label.innerText =
+    label.textContent =
       (locLabelText && locLabelText.content) ||
       (enLabelText && enLabelText.content) ||
       firstLabelText.content;
@@ -99,7 +99,7 @@ export default class SettingItem {
     const enDescText = this.setting.description.find(l => l.lang === "en");
     const firstDescText = this.setting.description[0];
 
-    desc.innerText =
+    desc.textContent =
       (locDescText && locDescText.content) || (enDescText && enDescText.content) || firstDescText.content;
 
     this.domElement.appendChild(desc);

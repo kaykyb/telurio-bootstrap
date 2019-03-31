@@ -14,7 +14,7 @@ export default class Topbar {
     e.appendChild(input);
 
     const button = document.createElement("button");
-    button.innerText = "Enviar";
+    button.textContent = "Enviar";
 
     e.appendChild(button);
 

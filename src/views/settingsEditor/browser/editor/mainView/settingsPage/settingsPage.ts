@@ -142,7 +142,7 @@ export default class SettingsPage {
 
     const extSectionLabel = document.createElement("div");
     extSectionLabel.classList.add(styles.extSectionLabel);
-    extSectionLabel.innerText = ext.label;
+    extSectionLabel.textContent = ext.label;
 
     extSection.appendChild(extSectionLabel);
 
@@ -187,7 +187,7 @@ export default class SettingsPage {
       const sectionLabel = document.createElement("div");
       sectionLabel.classList.add(styles.sectionLabel);
 
-      sectionLabel.innerText = label;
+      sectionLabel.textContent = label;
 
       sectionContainer.appendChild(sectionLabel);
     }

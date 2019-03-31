@@ -48,7 +48,7 @@ export default class Item {
     const label = document.createElement("div");
     label.classList.add(styles.labelContainer);
 
-    label.innerText = this.item.label;
+    label.textContent = this.item.label;
 
     this.clickableElement.appendChild(label);
 

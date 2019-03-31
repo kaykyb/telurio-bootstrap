@@ -22,19 +22,19 @@ export default class CommandsListItem extends EditorDevToolsViewComponent {
 
     const name = document.createElement("p");
     name.classList.add(styles.name);
-    name.innerText = this.command;
+    name.textContent = this.command;
 
     const permission = document.createElement("div");
     permission.classList.add(styles.permission);
 
     const permissionLabel = document.createElement("p");
     permissionLabel.classList.add(styles.permissionLabel);
-    permissionLabel.innerText = i18n.editorDevToolsView.cmdList.permissionLabel;
+    permissionLabel.textContent = i18n.editorDevToolsView.cmdList.permissionLabel;
     permission.appendChild(permissionLabel);
 
     const permissionContrib = document.createElement("p");
     permissionContrib.classList.add(styles.permissionContrib);
-    permissionContrib.innerText = this.permissionRequired
+    permissionContrib.textContent = this.permissionRequired
       ? this.permissionRequired
       : i18n.editorDevToolsView.cmdList.nonePermission;
 

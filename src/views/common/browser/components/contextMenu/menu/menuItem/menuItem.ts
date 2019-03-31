@@ -36,7 +36,7 @@ export default class MenuItem {
     // add text
     const label = document.createElement("div");
 
-    label.innerText = this.ctxItem.label;
+    label.textContent = this.ctxItem.label;
 
     this.domElement.appendChild(label);
 
@@ -45,7 +45,7 @@ export default class MenuItem {
       const shortcut = document.createElement("div");
       shortcut.classList.add(styles.shortcut);
 
-      shortcut.innerText = this.ctxItem.shortcut;
+      shortcut.textContent = this.ctxItem.shortcut;
 
       this.domElement.appendChild(shortcut);
     }

@@ -11,7 +11,7 @@ export default class MsgConsole {
       const msg = document.createElement("div");
       msg.classList.add(styles.message);
 
-      msg.innerText = ev;
+      msg.textContent = ev;
 
       e.appendChild(msg);
     });

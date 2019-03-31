@@ -34,11 +34,11 @@ export default class Titlebar {
 
     const title = document.createElement("div");
     title.classList.add(styles.title);
-    title.innerText = document.title;
+    title.textContent = document.title;
 
     // stackoverflow -> https://stackoverflow.com/a/29540461 Creative Commons CC BY-SA
     new MutationObserver(mutations => {
-      title.innerText = document.title;
+      title.textContent = document.title;
     }).observe(document.querySelector("title") as HTMLTitleElement, {
       characterData: true,
       childList: true,
