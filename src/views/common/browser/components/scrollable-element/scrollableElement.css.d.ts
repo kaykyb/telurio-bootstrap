@@ -6,3 +6,6 @@ export const verticalScrollThumb: string;
 export const notVisible: string;
 export const container: string;
 export const scrolling: string;
+export const scrollX: string;
+export const scrollY: string;
+export const scrollXY: string;

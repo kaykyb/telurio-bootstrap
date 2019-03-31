@@ -4,7 +4,7 @@ import styles from "./scrollableElement.css";
 export default class ScrollableElement {
   private domElement?: HTMLDivElement;
 
-  private contentContainer?: HTMLDivElement;
+  private contentContainer?: HTMLElement;
 
   private hScroll?: HTMLDivElement;
   private hScrollThumb?: HTMLDivElement;
@@ -22,6 +22,7 @@ export default class ScrollableElement {
     this.handleVerticalScrollThumbUp = this.handleVerticalScrollThumbUp.bind(this);
     this.handleVerticalScrollThumbDown = this.handleVerticalScrollThumbDown.bind(this);
     this.handleVerticalScrollThumbDrag = this.handleVerticalScrollThumbDrag.bind(this);
+    this.handleWheel = this.handleWheel.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
   }
 
@@ -29,12 +30,15 @@ export default class ScrollableElement {
     this.domElement = document.createElement("div");
     this.domElement.classList.add(styles.scrollElement);
 
-    this.contentContainer = document.createElement("div");
-    this.contentContainer.classList.add(styles.container);
+    // this.contentContainer = document.createElement("div");
+    this.contentContainer = this.inner;
+    const dirClass =
+      this.direction === "xy" ? styles.scrollXY : this.direction === "x" ? styles.scrollX : styles.scrollY;
+    this.contentContainer.classList.add(styles.container, dirClass);
 
     this.contentContainer.addEventListener("scroll", this.handleScroll);
 
-    this.contentContainer.appendChild(this.inner);
+    // this.contentContainer.appendChild(this.inner);
     this.domElement.appendChild(this.contentContainer);
 
     // insert horizontal scroll
@@ -52,6 +56,11 @@ export default class ScrollableElement {
     });
     this.domElementResizeObserver.observe(this.domElement);
 
+    this.innerResizeObserver = new ResizeObserver(entries => {
+      this.updateScrolls();
+    });
+    this.innerResizeObserver.observe(this.inner);
+
     new MutationObserver(mutations => {
       this.updateScrolls();
     }).observe(this.inner, {
@@ -62,7 +71,24 @@ export default class ScrollableElement {
 
     this.updateScrolls();
 
+    // this.domElement.addEventListener("wheel", this.handleWheel);
+
     return this.domElement;
+  }
+
+  private handleWheel(ev: WheelEvent) {
+    if (!this.contentContainer) {
+      return;
+    }
+
+    if (this.direction === "x") {
+      return;
+    }
+
+    this.contentContainer.scrollTo(
+      this.contentContainer.scrollLeft,
+      this.contentContainer.scrollTop + ev.deltaY
+    );
   }
 
   private handleHorizontalScrollThumbDown() {
@@ -141,7 +167,7 @@ export default class ScrollableElement {
     this.vScrollThumb = document.createElement("div");
 
     this.vScroll.classList.add(styles.verticalScrollTrack);
-    this.vScroll.classList.add(styles.verticalScrollThumb);
+    this.vScrollThumb.classList.add(styles.verticalScrollThumb);
 
     if (this.customSize) {
       this.vScroll.style.width = this.customSize;
@@ -149,7 +175,7 @@ export default class ScrollableElement {
 
     this.vScrollThumb.addEventListener("mousedown", this.handleVerticalScrollThumbDown);
 
-    this.vScroll.appendChild(this.vScroll);
+    this.vScroll.appendChild(this.vScrollThumb);
     insertIn.appendChild(this.vScroll);
   }
 
@@ -224,7 +250,8 @@ export default class ScrollableElement {
       this.contentContainer
     ) {
       this.hScrollThumb.style.left =
-        (this.contentContainer.scrollLeft / this.contentContainer.scrollWidth) * this.hScroll.offsetWidth + "px";
+        (this.contentContainer.scrollLeft / this.contentContainer.scrollWidth) * this.hScroll.offsetWidth +
+        "px";
     }
 
     if (
@@ -234,7 +261,8 @@ export default class ScrollableElement {
       this.contentContainer
     ) {
       this.vScrollThumb.style.top =
-        (this.contentContainer.scrollTop / this.contentContainer.scrollHeight) * this.vScroll.offsetHeight + "px";
+        (this.contentContainer.scrollTop / this.contentContainer.scrollHeight) * this.vScroll.offsetHeight +
+        "px";
     }
   }
 }

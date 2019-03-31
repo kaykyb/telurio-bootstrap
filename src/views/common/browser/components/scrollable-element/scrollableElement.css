@@ -1,11 +1,32 @@
 .scrollElement {
   overflow: hidden;
   position: relative;
+  width: 100%;
+}
+
+.scrollX {
+  overflow: scroll hidden;
+}
+
+.scrollY {
+  overflow: hidden scroll;
+}
+
+.scrollXY {
+  overflow: scroll;
 }
 
 .container {
-  overflow: hidden;
   position: relative;
+  height: 100%;
+}
+
+.container::-webkit-scrollbar {
+  display: none;
+}
+
+.container ::-webkit-scrollbar {
+  display: none;
 }
 
 .horizontalScrollTrack {
@@ -26,7 +47,7 @@
   visibility: inherit;
   position: absolute;
 
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--scrollbarThumbBackground);
 
   height: 8px;
 }
@@ -49,7 +70,7 @@
   visibility: inherit;
   position: absolute;
 
-  background: rgba(0, 0, 0.2);
+  background: var(--scrollbarThumbBackground);
 
   width: 8px;
 }
@@ -64,12 +85,12 @@
 
 .horizontalScrollThumb:hover,
 .verticalScrollThumb:hover {
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--scrollbarThumbHoverBackground);
 }
 
 .horizontalScrollTrack.scrolling .horizontalScrollThumb,
 .verticalScrollTrack.scrolling .verticalScrollThumb {
-  background: rgba(0, 0, 255, 0.8);
+  background: var(--scrollbarThumbScrollingBackground);
 }
 
 .notVisible {
