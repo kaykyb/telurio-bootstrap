@@ -20,6 +20,8 @@ export default class SettingsPage {
   private containerElement?: HTMLDivElement;
   private lastSectionInView = "";
 
+  private items: SettingItem[] = [];
+
   constructor(private readonly commonService: CommonViewBrowserService) {
     this.handleScroll = this.handleScroll.bind(this);
     // this.collectSectionsOffsets = this.collectSectionsOffsets.bind(this);
@@ -75,7 +77,6 @@ export default class SettingsPage {
         behavior: "smooth",
         top: sectionDiv.offsetTop
       });
-      // sectionDiv.scrollIntoView({ behavior: "smooth" });
     }
   }
 
@@ -94,6 +95,17 @@ export default class SettingsPage {
       divBoundingRect.top - domElementBoundingRect.top + divBoundingRect.height >=
         domElementBoundingRect.height / 2
     );
+  }
+
+  public filterSettings(predicate: (x: SettingItem) => boolean) {
+    this.items.forEach(i => {
+      if (predicate(i)) {
+        i.show();
+        return;
+      }
+
+      i.hide();
+    });
   }
 
   private handleScroll() {
@@ -179,6 +191,7 @@ export default class SettingsPage {
 
     settings.forEach(setting => {
       const settingItem = new SettingItem(ext, setting, this.commonService);
+      this.items.push(settingItem);
       sectionContainer.appendChild(settingItem.render());
     });
 

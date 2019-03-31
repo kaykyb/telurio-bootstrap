@@ -2,8 +2,11 @@ import styles from "./searchBar.css";
 
 import materialIcons from "@src/views/common/browser/fonts/material-icons/material-icons.css";
 import Icon from "../../icon/icon";
+import CommonEvent from "@src/common/common/commonEvent";
 
 export default class SearchBar {
+  public onChange = new CommonEvent<string>();
+
   private domElement?: HTMLDivElement;
 
   // tslint:disable-next-line: variable-name
@@ -36,6 +39,10 @@ export default class SearchBar {
     iconContainer.appendChild(icon.render());
 
     iconContainer.onclick = () => input.focus();
+
+    input.addEventListener("keyup", () => {
+      this.onChange.propagate(input.value);
+    });
 
     this.domElement.appendChild(input);
     this.domElement.appendChild(iconContainer);

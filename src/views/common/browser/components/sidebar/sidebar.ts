@@ -1,7 +1,10 @@
 import styles from "./sidebar.css";
 import SearchBar from "./search-bar/searchBar";
+import CommonEvent from "@src/common/common/commonEvent";
 
 export default class Sidebar {
+  public onSearchBarTextChange = new CommonEvent<string>();
+
   private domElement!: HTMLDivElement;
 
   private searchBar?: SearchBar;
@@ -29,8 +32,8 @@ export default class Sidebar {
     const outContainer = document.createElement("div");
     outContainer.classList.add(styles.container);
 
-    const searchBar = new SearchBar(this.initialSearchBarPlaceholder);
-    outContainer.appendChild(searchBar.render());
+    this.searchBar = new SearchBar(this.initialSearchBarPlaceholder);
+    outContainer.appendChild(this.searchBar.render());
 
     const listElementContainer = document.createElement("div");
     listElementContainer.classList.add(styles.listContainer);
@@ -38,6 +41,8 @@ export default class Sidebar {
     listElementContainer.appendChild(this.listElement);
 
     outContainer.appendChild(listElementContainer);
+
+    this.searchBar.onChange.addListener(s => this.onSearchBarTextChange.propagate(s));
 
     this.domElement.appendChild(outContainer);
 

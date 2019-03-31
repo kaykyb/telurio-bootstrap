@@ -46,6 +46,57 @@ async function start() {
 
     const mainView = new MainView(commonService);
 
+    sidebar.onSearchBarTextChange.addListener(s => {
+      const availableExts: string[] = [];
+      const availableSections: string[] = [];
+
+      // filter main
+      mainView.filterSettingsPage(x => {
+        const normalizedS = s.replace(" ", "").toLowerCase();
+        const labelContains = StringUtil.getAppropriateLabel(
+          x.setting.label,
+          commonService.i18n.language.code
+        )
+          .content.replace(" ", "")
+          .toLowerCase()
+          .includes(normalizedS);
+
+        // optimization
+        if (labelContains) {
+          availableExts.push(x.owner.name);
+          availableSections.push(x.owner.name + "." + x.setting.section);
+          return true;
+        }
+
+        let descContains = false;
+
+        if (x.setting.description) {
+          descContains = StringUtil.getAppropriateLabel(
+            x.setting.description,
+            commonService.i18n.language.code
+          )
+            .content.replace(" ", "")
+            .toLowerCase()
+            .includes(normalizedS);
+        }
+
+        if (descContains) {
+          availableExts.push(x.owner.name);
+          availableSections.push(x.owner.name + "." + x.setting.section);
+        }
+
+        return descContains;
+      });
+
+      list.filter(x => {
+        if (x.sublist) {
+          return availableExts.find(ext => x.item.id === ext) !== undefined;
+        }
+
+        return availableSections.find(sect => x.item.id === sect) !== undefined;
+      });
+    });
+
     list.onSelect.addListener(ev => {
       if (ev.propagate) {
         mainView.scrollSectionIntoView(ev.item.id);

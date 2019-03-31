@@ -4,3 +4,4 @@ export const label: string;
 export const desc: string;
 export const stringEditor: string;
 export const stringEditorContainer: string;
+export const hidden: string;

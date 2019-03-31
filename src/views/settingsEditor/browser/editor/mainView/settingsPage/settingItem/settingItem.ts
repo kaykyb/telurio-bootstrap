@@ -63,6 +63,26 @@ export default class SettingItem {
     return this.domElement;
   }
 
+  public show() {
+    if (!this.domElement) {
+      return;
+    }
+
+    if (this.domElement.classList.contains(styles.hidden)) {
+      this.domElement.classList.remove(styles.hidden);
+    }
+  }
+
+  public hide() {
+    if (!this.domElement) {
+      return;
+    }
+
+    if (!this.domElement.classList.contains(styles.hidden)) {
+      this.domElement.classList.add(styles.hidden);
+    }
+  }
+
   private addDescription() {
     if (!this.domElement) {
       return;

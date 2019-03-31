@@ -4,6 +4,7 @@ import Titlebar from "@src/views/common/browser/components/titlebar/titlebar";
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 import SettingsPage from "./settingsPage/settingsPage";
 import CommonEvent from "@src/common/common/commonEvent";
+import SettingItem from "./settingsPage/settingItem/settingItem";
 
 export default class MainView {
   public onSectionIntoViewChanged = new CommonEvent<string>();
@@ -42,5 +43,13 @@ export default class MainView {
     if (this.settingsPage) {
       this.settingsPage.scrollSectionIntoView(section);
     }
+  }
+
+  public filterSettingsPage(predicate: (x: SettingItem) => boolean) {
+    if (!this.settingsPage) {
+      return;
+    }
+
+    this.settingsPage.filterSettings(predicate);
   }
 }

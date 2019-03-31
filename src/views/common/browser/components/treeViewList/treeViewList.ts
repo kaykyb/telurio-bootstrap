@@ -58,6 +58,22 @@ export default class TreeViewList {
     }
   }
 
+  public filter(predicate: (x: Item) => boolean) {
+    this.itemsElements.forEach(v => {
+      if (predicate(v)) {
+        v.show();
+
+        if (v.sublist) {
+          v.sublist.filter(predicate);
+        }
+
+        return;
+      }
+
+      v.hide();
+    });
+  }
+
   private handleElementSelection(ev: { item: TreeViewListItem; propagate: boolean }) {
     this.doUnselection(ev.item.id);
     this.onSelect.propagate(ev);

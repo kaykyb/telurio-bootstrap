@@ -6,5 +6,5 @@ export const chevronDownIconContainer: string;
 export const chevronRightIconContainer: string;
 export const open: string;
 export const selected: string;
-
+export const hidden: string;
 export const labelContainer: string;

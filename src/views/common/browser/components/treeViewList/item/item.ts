@@ -139,6 +139,26 @@ export default class Item {
     this.onUnselect.propagate(this.item);
   }
 
+  public hide() {
+    if (!this.domElement) {
+      return;
+    }
+
+    if (!this.domElement.classList.contains(styles.hidden)) {
+      this.domElement.classList.add(styles.hidden);
+    }
+  }
+
+  public show() {
+    if (!this.domElement) {
+      return;
+    }
+
+    if (this.domElement.classList.contains(styles.hidden)) {
+      this.domElement.classList.remove(styles.hidden);
+    }
+  }
+
   private handleSublistSelect(ev: { item: TreeViewListItem; propagate: boolean }) {
     this.open();
     this.onSelect.propagate(ev);
