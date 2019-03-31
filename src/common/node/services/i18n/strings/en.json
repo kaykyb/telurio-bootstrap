@@ -11,7 +11,8 @@
           "label": "Extensions",
           "manageExtensions": "Manage Extensions"
         },
-        "openTelurioDevTools": "Open Telurio Dev Tools"
+        "openTelurioDevTools": "Open Telurio Dev Tools",
+        "openSettingsEditor": "Settings"
       }
     },
 
@@ -24,12 +25,13 @@
     },
 
     "marketplaceView": {
-      "title": "Telurio - Extensions Marketplace",
+      "title": "Extensions Marketplace",
       "searchBarText": "Search Extensions..."
     },
 
     "settingsEditorView": {
-      "title": "Settings"
+      "title": "Settings",
+      "searchBarText": "Search Settings..."
     }
   }
 }

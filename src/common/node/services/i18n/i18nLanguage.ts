@@ -7,6 +7,7 @@ export default interface Ii18nLanguage {
         manageExtensions: string;
       };
       openTelurioDevTools: string;
+      openSettingsEditor: string;
     };
   };
 
@@ -25,5 +26,6 @@ export default interface Ii18nLanguage {
 
   settingsEditorView: {
     title: string;
+    searchBarText: string;
   };
 }
