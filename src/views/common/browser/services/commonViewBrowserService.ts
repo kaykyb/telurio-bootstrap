@@ -7,7 +7,7 @@ import ConfigurationManager from "./subservices/configurationManager";
 import ICommonViewIpcReturns from "../../common/ipc/CommonViewIpcReturns";
 import ICommonViewIpcArgs from "../../common/ipc/CommonViewIpcArgs";
 import { ENV } from "@src/env";
-import SettingKey from "@src/common/node/services/settings/settingKey";
+import SettingKey from "@src/common/common/settings/settingKey";
 import ThemeBrowserService from "@src/common/browser/services/themeBrowserService";
 import ContextMenu from "../components/contextMenu/contextMenu";
 

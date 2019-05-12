@@ -6,9 +6,15 @@
   "contents": {
     "core": {
       "settingsSection": {
+        "appearance": "Aparência",
         "developer": "Desenvolvedor"
       },
       "settings": {
+        "colorTheme": {
+          "label": "Tema",
+          "desc": "Altera o tema de cores da interface."
+        },
+
         "enableDevTools": {
           "label": "Ativar Ferramentas do Desenvolvedor",
           "desc": "Ativar as Ferramentas do Desenvolvedor do Telurio para o desenvolvimento de extensões"

@@ -1,6 +1,6 @@
 import styles from "./settingItem.css";
 
-import SettingMetadata from "@src/common/node/services/settings/settingMetadata";
+import SettingMetadata from "@src/common/common/settings/settingMetadata";
 import CommonViewBrowserService from "@src/views/common/browser/services/commonViewBrowserService";
 import ExtensionManifest from "@src/common/common/extensions/manifest-type/extensionManifest";
 import Switch from "@src/views/common/browser/components/switch/switch";

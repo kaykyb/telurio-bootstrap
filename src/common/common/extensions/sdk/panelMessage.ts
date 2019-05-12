@@ -1,9 +1,9 @@
 import ExtensionCommandActivationArgs from "../extensionCommandActivationArgs";
-import ITheme from "../../theme";
+import IThemeColors from "../../themes/themeColors";
 import PanelHostCommunicationArgs from "./panelHostCommunicationArgs";
 
 export interface IPanelMessageTypes {
-  theme: ITheme;
+  theme: IThemeColors;
   requestTheme: undefined;
   sendMessage: any;
   messageFromHost: any;

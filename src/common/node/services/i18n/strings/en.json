@@ -6,9 +6,15 @@
   "contents": {
     "core": {
       "settingsSection": {
+        "appearance": "Appearance",
         "developer": "Developer"
       },
       "settings": {
+        "colorTheme": {
+          "label": "Theme",
+          "desc": "Changes the interface theme."
+        },
+
         "enableDevTools": {
           "label": "Enable Developer Tools",
           "desc": "Enable the Telurio Developer Tools for extension development."

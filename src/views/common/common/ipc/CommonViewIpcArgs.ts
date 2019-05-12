@@ -1,4 +1,4 @@
-import SettingKey from "@src/common/node/services/settings/settingKey";
+import SettingKey from "@src/common/common/settings/settingKey";
 
 /**
  * The arguments that should be expected.

@@ -37,7 +37,7 @@ export default class EditorExtensibilityService {
     const command = this.extensionBridge.registerCommand(
       "core.editor." + cmd,
       "core." + permissionRequired,
-      CommonManifests.getCoreExtensionManifest(this.editorService.commonService.i18n).extension
+      CommonManifests.getCoreExtensionManifest([], this.editorService.commonService.i18n).extension
     );
     command.addListener(listener);
     return command;
@@ -55,7 +55,10 @@ export default class EditorExtensibilityService {
 
     this.extensionBridge
       .getCommand(event.cbCmdId)
-      .execute(ownedTabs, CommonManifests.getCoreExtensionManifest(this.editorService.commonService.i18n));
+      .execute(
+        ownedTabs,
+        CommonManifests.getCoreExtensionManifest([], this.editorService.commonService.i18n)
+      );
   }
 
   private handleSendMessageToTab(event: EditorExtensionBridgeCommandArgs<{ tabId: string; message: any }>) {

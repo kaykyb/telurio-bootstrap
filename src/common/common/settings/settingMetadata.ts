@@ -1,4 +1,5 @@
 import Label from "@src/common/common/extensions/manifest-type/label";
+import SettingAcceptedValuesEntry from "./settingAcceptedValuesEntry";
 
 interface ISettingsMap {
   // any: any;
@@ -22,7 +23,7 @@ export default class SettingMetadata<K extends keyof ISettingsMap> {
     public name: string,
     public label: Label[],
     public defaultValue: ISettingsMap[K],
-    public acceptedValues?: Array<ISettingsMap[K]>,
+    public acceptedValues?: Array<SettingAcceptedValuesEntry<ISettingsMap[K]>>,
     public description?: Label[],
     public section?: string
   ) {}

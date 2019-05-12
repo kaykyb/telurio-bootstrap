@@ -21,8 +21,10 @@ async function start() {
 
     const listItems: TreeViewListItem[] = [];
 
+    const exts = await commonService.getExtensions();
+
     const coreItems = getSettingsSectionsFromExtensions(
-      CommonManifests.getCoreExtensionManifest(commonService.i18n).extension,
+      CommonManifests.getCoreExtensionManifest(exts, commonService.i18n).extension,
       commonService
     );
 
@@ -30,7 +32,6 @@ async function start() {
       listItems.push(...coreItems);
     }
 
-    const exts = await commonService.getExtensions();
     exts.forEach(ext => {
       if (ext.extension.contributions && ext.extension.contributions.settings) {
         const ownList = getSettingsSectionsFromExtensions(ext.extension, commonService);

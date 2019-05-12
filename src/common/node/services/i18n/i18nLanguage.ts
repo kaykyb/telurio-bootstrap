@@ -1,9 +1,15 @@
 export default interface Ii18nLanguage {
   core: {
     settingsSection: {
+      appearance: string;
       developer: string;
     };
     settings: {
+      colorTheme: {
+        label: string;
+        desc: string;
+      };
+
       enableDevTools: {
         label: string;
         desc: string;

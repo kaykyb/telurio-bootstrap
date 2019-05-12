@@ -1,6 +1,6 @@
 import * as fs from "fs-extra";
 import * as path from "path";
-import ISettingStore from "../settingStore";
+import ISettingStore from "../../../../common/settings/settingStore";
 import CommonEvent from "@src/common/common/commonEvent";
 import { ENV } from "@src/env";
 

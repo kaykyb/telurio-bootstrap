@@ -1,7 +1,7 @@
-import ITheme from "@src/common/common/theme";
+import IThemeColors from "@src/common/common/themes/themeColors";
 
 export default class ThemeBrowserService {
-  public apply(theme: ITheme) {
+  public apply(theme: IThemeColors) {
     const root = document.documentElement;
 
     for (const variable in theme) {

@@ -1,4 +1,4 @@
-import ISettingStore from "@src/common/node/services/settings/settingStore";
+import ISettingStore from "@src/common/common/settings/settingStore";
 import CommonEvent from "@src/common/common/commonEvent";
 
 export default class ConfigurationManager {

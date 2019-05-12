@@ -106,6 +106,8 @@ export default class Editor {
 
     this.browserWindow.loadFile(path.join(__dirname, "browser", "index.html"));
 
+    this.browserWindow.webContents.toggleDevTools();
+
     this.browserWindow.on("closed", () => {
       this.browserWindow = undefined;
       this.commonMain = undefined;

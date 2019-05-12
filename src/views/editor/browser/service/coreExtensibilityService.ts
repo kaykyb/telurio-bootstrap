@@ -43,7 +43,7 @@ export default class CoreExtensibilityService {
     const command = this.extensionBridge.registerCommand(
       "core." + cmd,
       "core." + permissionRequired,
-      CommonManifests.getCoreExtensionManifest(this.commonService.i18n).extension
+      CommonManifests.getCoreExtensionManifest([], this.commonService.i18n).extension
     );
     command.addListener(listener);
     return command;
@@ -67,13 +67,13 @@ export default class CoreExtensibilityService {
 
       this.extensionBridge
         .getCommand(event.cbCmdId)
-        .execute(setting, CommonManifests.getCoreExtensionManifest(this.commonService.i18n));
+        .execute(setting, CommonManifests.getCoreExtensionManifest([], this.commonService.i18n));
       return;
     }
 
     this.extensionBridge
       .getCommand(event.cbCmdId)
-      .execute(undefined, CommonManifests.getCoreExtensionManifest(this.commonService.i18n));
+      .execute(undefined, CommonManifests.getCoreExtensionManifest([], this.commonService.i18n));
   }
 
   private handleRegisterPanel(

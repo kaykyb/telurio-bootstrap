@@ -1,4 +1,4 @@
-import SettingKey from "@src/common/node/services/settings/settingKey";
+import SettingKey from "@src/common/common/settings/settingKey";
 import EditorExtensionBridgeCommand from "@src/common/common/extensions/editorExtensionBridgeCommand";
 import ICommandIndex from "@src/common/common/extensions/commandIndex";
 

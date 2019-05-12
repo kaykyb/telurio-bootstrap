@@ -1,5 +1,5 @@
 import PanelMessage from "./panelMessage";
-import ITheme from "../../theme";
+import IThemeColors from "../../themes/themeColors";
 import ThemeBrowserService from "@src/common/browser/services/themeBrowserService";
 import PanelHostCommunicationArgs from "./panelHostCommunicationArgs";
 import CommonEvent from "../../commonEvent";
@@ -39,7 +39,7 @@ export default class PanelBridge {
     }
   }
 
-  private handleTheme(theme: ITheme) {
+  private handleTheme(theme: IThemeColors) {
     const themeService = new ThemeBrowserService();
     themeService.apply(theme);
   }

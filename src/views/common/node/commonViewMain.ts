@@ -14,7 +14,7 @@ import InternalSettingsArgs from "@src/common/common/ipcEvents/internalSettingsA
 import { IpcNodeService } from "@src/common/node/services/ipc/ipcNodeService";
 import ICommonViewIpcReturns from "../common/ipc/CommonViewIpcReturns";
 import ICommonViewIpcArgs from "../common/ipc/CommonViewIpcArgs";
-import SettingKey from "@src/common/node/services/settings/settingKey";
+import SettingKey from "@src/common/common/settings/settingKey";
 import { ENV } from "@src/env";
 
 export default class CommonViewMain {
