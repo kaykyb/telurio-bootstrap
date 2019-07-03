@@ -1,0 +1,22 @@
+{
+  "entry": "placeholder.compiled.js",
+  "name": "default-themes",
+  "label": "Default Themes",
+  "version": "0.1.0",
+  "author": "Kayky B.",
+  "permissions": [],
+  "contributions": {
+    "colorThemes": [
+      {
+        "name": "Milennium Dark",
+        "type": "dark",
+        "file": "themes/milennium/milennium-dark.json"
+      },
+      {
+        "name": "Milennium Light",
+        "type": "light",
+        "file": "themes/milennium/milennium-light.json"
+      }
+    ]
+  }
+}

@@ -2,7 +2,6 @@ import Label from "@src/common/common/extensions/manifest-type/label";
 import SettingAcceptedValuesEntry from "./settingAcceptedValuesEntry";
 
 interface ISettingsMap {
-  // any: any;
   number: number;
   string: string;
   boolean: boolean;
