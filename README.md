@@ -1,10 +1,8 @@
 ![Telurio: The future editor](docs/images/logo-big-banner.png)
 
----
-
-Telurio is a video editor and compositor, with focus on 2d motion graphics animations.
-
-Contribute with Telurio.
+> Telurio is a video editor and compositor, with focus on 2d motion graphics animations, based on Telurio Bootstrap.
+>
+> **Contribute with Telurio.**
 
 ---
 
