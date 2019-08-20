@@ -4,8 +4,6 @@
 >
 > **Contribute with Telurio.**
 
----
-
 # Telurio Bootstrap
 
 Telurio Bootstrap is a common base for Telurio and other editing apps.
