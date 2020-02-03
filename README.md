@@ -13,5 +13,7 @@ Contribute with Telurio Bootstrap and help me kill an evil company that just wan
 ## Scripts
 
 ```npm run start``` build and starts the application.
+
 ```npm run start:no-build``` starts the application without building it.
+
 ```npm run build``` builds the application.
